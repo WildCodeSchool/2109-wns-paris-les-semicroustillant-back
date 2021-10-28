@@ -6,7 +6,7 @@ import wilderController from './controllers/wilder';
 
 const app = express();
 
-//Database
+// Database
 mongoose
   .connect('mongodb://127.0.0.1:27017/wilderdb', {
     autoIndex: true,
