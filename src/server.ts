@@ -11,7 +11,7 @@ const start = async () => {
     resolvers: [UsersResolver],
   });
 
-  const server = new ApolloServer({ schema: schema });
+  const server = new ApolloServer({ schema });
 
   const { url } = await server.listen(4000);
   console.log(`Server is running, GraphQL Playground available at ${url}`); // eslint-disable-line no-console
