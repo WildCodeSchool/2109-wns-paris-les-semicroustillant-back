@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "apollo-server": "^3.4.0",
+    "class-validator": "^0.13.1",
     "cors": "^2.8.5",
     "eslint-plugin-prettier": "^3.4.1",
     "express": "^4.17.1",
