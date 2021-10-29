@@ -1,33 +1,27 @@
-import express from 'express';
+// import express from 'express';
+import 'reflect-metadata';
 import mongoose from 'mongoose';
-import cors from 'cors';
+import { ApolloServer } from 'apollo-server';
+import { buildSchema } from 'type-graphql';
+import UsersResolver from './UsersResolver';
+// import cors from 'cors';
 
-import wilderController from './controllers/wilder';
+const start = async () => {
+  const schema = await buildSchema({
+    resolvers: [UsersResolver],
+  });
 
-const app = express();
+  const server = new ApolloServer({ schema: schema });
 
-// Database
-mongoose
-  .connect('mongodb://127.0.0.1:27017/wilderdb', {
-    autoIndex: true,
-  })
-  .then(() => console.log('Connected to database')) // eslint-disable-line no-console
-  .catch((err) => console.log(err)); // eslint-disable-line no-console
+  const { url } = await server.listen(4000);
+  console.log(`Server is running, GraphQL Playground available at ${url}`); // eslint-disable-line no-console
 
-// Middleware
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(cors());
+  mongoose
+    .connect('mongodb://127.0.0.1:27017/semidb', {
+      autoIndex: true,
+    })
+    .then(() => console.log('Connected to database')) // eslint-disable-line no-console
+    .catch((err) => console.log(err)); // eslint-disable-line no-console
+};
 
-// Routes
-app.get('/', (req, res) => {
-  res.send('Hello World');
-});
-
-app.post('/api/wilders', wilderController.create);
-app.get('/api/wilders', wilderController.read);
-app.put('/api/wilders', wilderController.update);
-app.delete('/api/wilders', wilderController.delete);
-
-// Start Server
-app.listen(5000, () => console.log('Server started on 5000')); // eslint-disable-line no-console
+start();
