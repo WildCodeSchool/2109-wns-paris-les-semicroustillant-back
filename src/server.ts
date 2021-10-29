@@ -16,11 +16,14 @@ const start = async () => {
   const { url } = await server.listen(4000);
   console.log(`Server is running, GraphQL Playground available at ${url}`); // eslint-disable-line no-console
 
+  const db = 'semidb';
+
+  // Database
   mongoose
-    .connect('mongodb://127.0.0.1:27017/semidb', {
+    .connect(`mongodb://127.0.0.1:27017/${db}`, {
       autoIndex: true,
     })
-    .then(() => console.log('Connected to database')) // eslint-disable-line no-console
+    .then(() => console.log(`Connected to database ${db}`)) // eslint-disable-line no-console
     .catch((err) => console.log(err)); // eslint-disable-line no-console
 };
 
