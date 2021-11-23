@@ -1,10 +1,8 @@
-import { InputType, Field } from "type-graphql";
+import { InputType, Field, ID } from "type-graphql";
 // import mongoose from 'mongoose';
 
 @InputType()
-class IdInput {
-  @Field()
-  id: String;
+export default class IdInput {
+  @Field(() => ID)
+  id!: string;
 }
-
-export default IdInput;

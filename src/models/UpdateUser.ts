@@ -1,7 +1,7 @@
 import mongoose, { Schema, model } from 'mongoose';
 
 const UpdateUserSchema = new Schema({
-  _id: mongoose.Types.ObjectId,
+  id: mongoose.Types.ObjectId,
   firstname: String,
   lastname: String ,
   email: { type: String, unique: true },
