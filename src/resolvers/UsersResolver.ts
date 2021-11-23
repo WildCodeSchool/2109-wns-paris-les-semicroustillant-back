@@ -46,7 +46,7 @@ class UsersResolver {
 
   @Mutation(() => String)
   async updateUser(
-    @Arg('id') userId: IdInput,
+    @Arg('id', () => String) userId: IdInput,
     @Arg('userInputUpdate') userInputUpdate: UserInputUpdate) {
       try {
         const user = await UpdateUserModel.findByIdAndUpdate(
