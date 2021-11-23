@@ -1,11 +1,11 @@
 /* eslint-disable class-methods-use-this */
 import { Arg, Query, Resolver, Mutation } from 'type-graphql';
-import User from '../Users';
+import User from '../entities/Users';
 import UsersModel from '../models/Users';
 import UpdateUserModel from '../models/UpdateUser';
-import UserInput from '../UserInput';
-import UserInputUpdate from '../UserInputUpdate';
-import IdInput from '../Id';
+import UserInput from '../inputs/UserInput';
+import UserInputUpdate from '../inputs/UserInputUpdate';
+import IdInput from '../inputs/IdInput';
 
 @Resolver()
 class UsersResolver {
