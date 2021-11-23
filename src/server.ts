@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import mongoose from 'mongoose';
 import { ApolloServer } from 'apollo-server';
 import { buildSchema } from 'type-graphql';
-import UsersResolver from './UsersResolver';
+import UsersResolver from './resolvers/UsersResolver';
 // import cors from 'cors';
 
 const start = async () => {
