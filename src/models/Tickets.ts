@@ -1,17 +1,17 @@
-import mongoose, { Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 
 const ticketSchema = new Schema({
   subject: String,
   status: String,
   users: Array,
-  deadline: [Date],
+  deadline: Date,
   description: String,
   initial_time_estimated: Number,
-total_time_spent: Number,
+  total_time_spent: Number,
   advancement: Number,
-  files: Array
+  file_links: Array
    
 });
-const ticketModel = model('wilder', ticketSchema);
+const ticketModel = model('tickets', ticketSchema);
 
 export default ticketModel;

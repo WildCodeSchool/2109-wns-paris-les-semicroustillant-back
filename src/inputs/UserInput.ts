@@ -1,10 +1,7 @@
-import { Field, ObjectType } from 'type-graphql';
+import { InputType, Field } from "type-graphql";
 
-@ObjectType()
-class User {
-  @Field()
-  id: string;
-
+@InputType()
+export default class UserInput {
   @Field()
   firstname: string;
 
@@ -23,5 +20,3 @@ class User {
   @Field()
   position: string;
 }
-
-export default User;
