@@ -4,11 +4,12 @@ import mongoose from 'mongoose';
 import { ApolloServer } from 'apollo-server';
 import { buildSchema } from 'type-graphql';
 import UsersResolver from './resolvers/UsersResolver';
+import TicketsResolver from './resolvers/TicketsResolver';
 // import cors from 'cors';
 
 const start = async () => {
   const schema = await buildSchema({
-    resolvers: [UsersResolver],
+    resolvers: [UsersResolver, TicketsResolver],
   });
 
   const server = new ApolloServer({ schema });

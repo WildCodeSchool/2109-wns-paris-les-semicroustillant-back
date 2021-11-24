@@ -1,6 +1,7 @@
-import { Schema, model } from 'mongoose';
+import mongoose, { Schema, model } from 'mongoose';
 
 const ticketSchema = new Schema({
+  id: mongoose.Types.ObjectId,
   subject: String,
   status: String,
   users: Array,
@@ -9,9 +10,8 @@ const ticketSchema = new Schema({
   initial_time_estimated: Number,
   total_time_spent: Number,
   advancement: Number,
-  file_links: Array
-   
+  file_links: Array,
 });
-const ticketModel = model('tickets', ticketSchema);
+const TicketsModel = model('tickets', ticketSchema);
 
-export default ticketModel;
+export default TicketsModel;
