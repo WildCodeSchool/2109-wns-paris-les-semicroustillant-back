@@ -1,12 +1,13 @@
-import { Schema, model } from 'mongoose';
+import mongoose, { Schema, model } from 'mongoose';
 
 const UsersSchema = new Schema({
-  firstname: { type: String },
-  lastname: { type: String },
+  id: mongoose.Types.ObjectId,
+  firstname: String,
+  lastname: String ,
   email: { type: String, unique: true },
   hash: { type: String, unique: true },
-  role: { type: String },
-  position: { type: String },
+  role: String,
+  position: String,
 });
 const UsersModel = model('users', UsersSchema);
 export default UsersModel;

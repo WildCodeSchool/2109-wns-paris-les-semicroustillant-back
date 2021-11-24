@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import mongoose from 'mongoose';
 import { ApolloServer } from 'apollo-server';
 import { buildSchema } from 'type-graphql';
-import UsersResolver from './UsersResolver';
+import UsersResolver from './resolvers/UsersResolver';
 // import cors from 'cors';
 
 const start = async () => {
@@ -11,7 +11,7 @@ const start = async () => {
     resolvers: [UsersResolver],
   });
 
-  const server = new ApolloServer({ schema: schema });
+  const server = new ApolloServer({ schema });
 
   const { url } = await server.listen(4000);
   console.log(`Server is running, GraphQL Playground available at ${url}`); // eslint-disable-line no-console
