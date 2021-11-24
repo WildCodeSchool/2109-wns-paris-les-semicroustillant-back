@@ -10,42 +10,66 @@ import IdInput from '../inputs/IdInput';
 class UsersResolver {
   @Query(() => [User])
   async allUsers() {
-    const getAllUsers = await UsersModel.find();
+    try {
+      const getAllUsers = await UsersModel.find();
 
-    return getAllUsers;
+      return getAllUsers;
+    } catch (err) {
+      return console.log(err);
+    }
+  }
+
+  @Query(() => User)
+  async getOneUser(@Arg('id', () => String) userId: IdInput) {
+    try {
+      const getOneUser = await UsersModel.findById(userId);
+
+      return getOneUser;
+    } catch (err) {
+      return console.log(err);
+    }
   }
 
   @Mutation(() => User)
   async addUser(@Arg('userInput') userInput: UserInput) {
-    await UsersModel.init();
-    const user = await UsersModel.create(userInput);
-    await user.save();
+    try {
+      await UsersModel.init();
+      const user = await UsersModel.create(userInput);
+      await user.save();
 
-    return user;
+      return user;
+    } catch (err) {
+      return console.log(err);
+    }
   }
 
   @Mutation(() => User)
   async updateUser(
     @Arg('id', () => String) userId: IdInput,
-    @Arg('userInputUpdate') userInputUpdate: UserInputUpdate) {
-      try {
-        const user = await UsersModel.findByIdAndUpdate(userId, userInputUpdate, { new: true });
+    @Arg('userInputUpdate') userInputUpdate: UserInputUpdate
+  ) {
+    try {
+      await UsersModel.findByIdAndUpdate(userId, userInputUpdate, {
+        new: true,
+      });
+    } catch (err) {
+      console.log(err);
+    }
 
-        return user;
-      } catch (err) {
-        console.log(err);
-      }
-
-    return UsersModel.findOne(userId);
+    return UsersModel.findById(userId);
   }
 
   @Mutation(() => String)
   async deleteUser(@Arg('id', () => String) id: IdInput) {
-    await UsersModel.init();
-    await UsersModel.findByIdAndRemove(id);
+    try {
+      await UsersModel.init();
+      await UsersModel.findByIdAndRemove(id);
+    } catch (err) {
+      console.log(err);
+    }
 
     return 'User deleted';
-  }  
+  }
 }
 
 export default UsersResolver;
