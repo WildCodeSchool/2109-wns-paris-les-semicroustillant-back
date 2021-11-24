@@ -31,6 +31,19 @@ class UsersResolver {
   }
 
   @Mutation(() => User)
+  async addUser(@Arg('userInput') userInput: UserInput) {
+    try {
+      await UsersModel.init();
+      const user = await UsersModel.create(userInput);
+      await user.save();
+
+      return user;
+    } catch (err) {
+      return console.log(err);
+    }
+  }
+
+  @Mutation(() => User)
   async updateUser(
     @Arg('id', () => String) userId: IdInput,
     @Arg('userInputUpdate') userInputUpdate: UserInputUpdate
