@@ -2,7 +2,6 @@
 import { Arg, Query, Resolver, Mutation } from 'type-graphql';
 import User from '../entities/Users';
 import UsersModel from '../models/Users';
-import UpdateUserModel from '../models/UpdateUser';
 import UserInput from '../inputs/UserInput';
 import UserInputUpdate from '../inputs/UserInputUpdate';
 import IdInput from '../inputs/IdInput';
@@ -30,7 +29,7 @@ class UsersResolver {
     @Arg('id', () => String) userId: IdInput,
     @Arg('userInputUpdate') userInputUpdate: UserInputUpdate) {
       try {
-        const user = await UpdateUserModel.findByIdAndUpdate(userId, userInputUpdate);
+        const user = await UsersModel.findByIdAndUpdate(userId, userInputUpdate, { new: true });
 
         return user;
       } catch (err) {
