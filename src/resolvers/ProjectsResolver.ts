@@ -20,6 +20,22 @@ class ProjectsResolver {
     }
   }
 
+  // RESUME HERE
+  // @FIXME: issues with ids and objectId (cf. apolloserver)
+  @Query(() => Project)
+  async getOneProject(@Arg('projectId') id: ProjectInputUpdate) {
+    try {
+      const getOneProject = await ProjectModel.findById(id);
+      
+      if (!getOneProject) {
+        return 'Cannot find this project';
+      }
+      return getOneProject;
+    } catch (err) {
+      return console.log(err);
+    }
+  }
+
   @Mutation(() => Project)
   async createProject(@Arg('projectInput') projectInput: ProjectInput) {
     try {
