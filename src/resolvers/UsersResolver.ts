@@ -6,7 +6,6 @@ import UsersModel from '../models/Users';
 import UserInput from '../inputs/UserInput';
 import UserInputUpdate from '../inputs/UserInputUpdate';
 import IdInput from '../inputs/IdInput';
-import { Error } from 'mongoose';
 
 @Resolver()
 class UsersResolver {
