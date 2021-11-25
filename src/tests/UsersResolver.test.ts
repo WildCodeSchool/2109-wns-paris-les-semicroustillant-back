@@ -131,7 +131,120 @@ describe('UserResolver', () => {
 
       expect(res.data?.getOneUser).toEqual(expect.objectContaining(user1Data));
     });
+    it('fails getting a specific user due to wrong ID', async () => {
+      const user1InDb = new UserModel(user1Data);
+      const user2InDb = new UserModel(user2Data);
+      await user1InDb.save();
+      await user2InDb.save();
+
+      const getOneUserQuery = gql`
+        query getOneUser($getOneUserId: String!) {
+          getOneUser(id: $getOneUserId) {
+            _id
+            firstname
+            lastname
+            email
+            hash
+            role
+            position
+          }
+        }
+      `;
+
+      const wrongId = '619e14d317fc7b24dca41e56';
+      const variables = { getOneUserId: wrongId };
+      const res = await server.executeOperation({
+        query: getOneUserQuery,
+        variables,
+      });
+
+      // @FIXME: does not return the error message in !getOneUser condition in UsersResolver.ts
+      expect(res.data).toEqual(null);
+      expect(res.errors).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            message:
+              'Cannot return null for non-nullable field Query.getOneUser.',
+          }),
+        ])
+      );
+    });
   });
+
+  describe('addUser()', () => {
+    it('adds a new user', async () => {
+      const user1InDb = new UserModel(user1Data);
+      await user1InDb.save();
+
+      const addUserQuery = gql`
+        mutation addUser($userInput: UserInput!) {
+          addUser(userInput: $userInput) {
+            firstname
+            lastname
+            email
+            hash
+            role
+            position
+          }
+        }
+      `;
+
+      const variables = { userInput: user2Data };
+
+      const res = await server.executeOperation({
+        query: addUserQuery,
+        variables,
+      });
+
+      expect(res.data?.addUser).toEqual(
+        expect.objectContaining({ firstname: 'John' })
+      );
+    });
+    // it('throws an error if email already exist', async () => {
+    //   const user1InDb = new UserModel(user1Data);
+    //   await user1InDb.save();
+
+    //   const addUserQuery = gql`
+    //     mutation addUser($userInput: UserInput!) {
+    //       addUser(userInput: $userInput) {
+    //         firstname
+    //         lastname
+    //         email
+    //         hash
+    //         role
+    //         position
+    //       }
+    //     }
+    //   `;
+      
+    //   user2Data = {
+    //     firstname: 'John',
+    //     lastname: 'Doze',
+    //     email: 'jd@gmail.com',
+    //     hash: 'azert123456',
+    //     role: 'user',
+    //     position: 'PO',
+    //   };
+    //   const variables = { userInput: user2Data };
+
+    //   const res = await server.executeOperation({
+    //     query: addUserQuery,
+    //     variables,
+    //   });
+      
+    //   // @FIXME: does not return MongoServerError message
+    //   expect(res.data).toEqual(null);
+    //   expect(res.errors).toEqual(
+    //     expect.arrayContaining([
+    //       expect.objectContaining({
+    //         message:
+    //           'Cannot return null for non-nullable field Mutation.addUser.',
+    //       }),
+    //     ])
+    //   );
+    // });
+  });
+
   describe('deleteUser()', () => {
     it('deletes a specific user', async () => {
       const user1InDb = new UserModel(user1Data);
@@ -153,31 +266,13 @@ describe('UserResolver', () => {
       });
 
       // Get all users to check that he has been successfully deleted
-      const allUsersQuery = gql`
-        query allUsers {
-          allUsers {
-            _id
-            firstname
-            lastname
-            email
-            hash
-            role
-            position
-          }
-        }
-      `;
+      const all = await UserModel.find();
 
-      const all = await server.executeOperation({
-        query: allUsersQuery,
-      });
-
-      expect(res.data?.deleteUser).toEqual('User deleted');
-      expect(all.data?.allUsers.length).toEqual(1);
-      expect(all.data?.allUsers).toEqual(
-        expect.not.objectContaining(user1Data)
-      );
+      expect(res.data?.deleteUser).toEqual('User successfully deleted');
+      expect(all.length).toEqual(1);
+      expect(all).toEqual(expect.not.objectContaining(user1Data));
     });
-    it.only('fails deleting a specific user', async () => {
+    it('fails deleting a specific user', async () => {
       const user1InDb = new UserModel(user1Data);
       const user2InDb = new UserModel(user2Data);
       await user1InDb.save();
@@ -197,29 +292,13 @@ describe('UserResolver', () => {
         variables,
       });
 
-      const allUsersQuery = gql`
-        query allUsers {
-          allUsers {
-            _id
-            firstname
-            lastname
-            email
-            hash
-            role
-            position
-          }
-        }
-      `;
-
-      const all = await server.executeOperation({
-        query: allUsersQuery,
-      });
+      const all = await UserModel.find();
 
       expect(res.data?.deleteUser).toEqual('Error deleting');
-      expect(all.data?.allUsers.length).toEqual(2);
-      expect(all.data?.allUsers).toEqual([
+      expect(all.length).toEqual(2);
+      expect(all).toEqual([
         expect.objectContaining(user1Data),
-        expect.objectContaining(user2Data)
+        expect.objectContaining(user2Data),
       ]);
     });
   });
