@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable class-methods-use-this */
 import { Arg, Query, Resolver, Mutation } from 'type-graphql';
 import User from '../entities/Users';
@@ -5,6 +6,7 @@ import UsersModel from '../models/Users';
 import UserInput from '../inputs/UserInput';
 import UserInputUpdate from '../inputs/UserInputUpdate';
 import IdInput from '../inputs/IdInput';
+import { Error } from 'mongoose';
 
 @Resolver()
 class UsersResolver {
@@ -63,12 +65,17 @@ class UsersResolver {
   async deleteUser(@Arg('id', () => String) id: IdInput) {
     try {
       await UsersModel.init();
-      await UsersModel.findByIdAndRemove(id);
+      const del = await UsersModel.findByIdAndRemove(id);
+
+      if (!del) {
+        return 'Error deleting';
+      }
+      
     } catch (err) {
       console.log(err);
     }
 
-    return 'User deleted';
+    return 'User successfully deleted';
   }
 }
 
