@@ -2,7 +2,7 @@
 import { Arg, Query, Resolver, Mutation } from 'type-graphql';
 import Ticket from '../entities/Tickets';
 import TicketsModel from '../models/Tickets';
-import TicketInput from '../inputs/TicketInput';
+// import TicketInput from '../inputs/TicketInput';
 import IdInput from '../inputs/IdInput';
 
 @Resolver()
@@ -27,6 +27,8 @@ class TicketsResolver {
     }
   }
 
+  /* 
+  Get des users à obtenir
   @Mutation(() => Ticket)
   async addTicket(@Arg('ticketInput') ticketInput: TicketInput) {
     try {
@@ -38,7 +40,7 @@ class TicketsResolver {
     } catch (err) {
       return console.log(err);
     }
-  }
+  } */
 
   @Mutation(() => String)
   async deleteTicket(@Arg('id', () => String) ticketId: IdInput) {

@@ -28,7 +28,7 @@ export default class TicketInput {
   @Field()
   advancement?: number;
 
-  @Field()
+  @Field(() => [Filelink])
   file_links?: Filelink[];
 
   @Field()
