@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable class-methods-use-this */
 import { Arg, Query, Resolver, Mutation } from 'type-graphql';
+import { Error } from 'mongoose';
 import User from '../entities/Users';
 import UsersModel from '../models/Users';
 import UserInput from '../inputs/UserInput';
@@ -25,9 +26,14 @@ class UsersResolver {
     try {
       const getOneUser = await UsersModel.findById(userId);
 
+      if (!getOneUser) {
+        throw new Error('User not found');
+      }
+      
       return getOneUser;
+
     } catch (err) {
-      return console.log(err);
+      throw new Error('User not found');
     }
   }
 

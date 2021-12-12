@@ -158,13 +158,12 @@ describe('UserResolver', () => {
         variables,
       });
 
-      // @FIXME: does not return the error message in !getOneUser condition in UsersResolver.ts
       expect(res.data).toEqual(null);
       expect(res.errors).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             message:
-              'Cannot return null for non-nullable field Query.getOneUser.',
+              'User not found',
           }),
         ])
       );
@@ -200,6 +199,49 @@ describe('UserResolver', () => {
         expect.objectContaining({ firstname: 'John' })
       );
     });
+    // it('throws an error if email already exist', async () => {
+    //   const user1InDb = new UserModel(user1Data);
+    //   await user1InDb.save();
+
+    //   const addUserQuery = gql`
+    //     mutation addUser($userInput: UserInput!) {
+    //       addUser(userInput: $userInput) {
+    //         firstname
+    //         lastname
+    //         email
+    //         hash
+    //         role
+    //         position
+    //       }
+    //     }
+    //   `;
+      
+    //   user2Data = {
+    //     firstname: 'John',
+    //     lastname: 'Doze',
+    //     email: 'jd@gmail.com', // this email already exists in db
+    //     hash: 'azert123456',
+    //     role: 'user',
+    //     position: 'PO',
+    //   };
+    //   const variables = { userInput: user2Data };
+
+    //   const res = await server.executeOperation({
+    //     query: addUserQuery,
+    //     variables,
+    //   });
+      
+    //   // @FIXME: does not return MongoServerError message
+    //   expect(res.data).toEqual(null);
+    //   expect(res.errors).toEqual(
+    //     expect.arrayContaining([
+    //       expect.objectContaining({
+    //         message:
+    //           'Cannot return null for non-nullable field Mutation.addUser.',
+    //       }),
+    //     ])
+    //   );
+    // });
   });
 
   describe('deleteUser()', () => {
