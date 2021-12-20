@@ -22,11 +22,13 @@ class ProjectsResolver {
 
   // RESUME HERE
   // @FIXME: issues with ids and objectId (cf. apolloserver)
+
+  // Answer : We shouldn't ask for name, projectowner and members for a getOneProject. This causes a lot of issues. Id should be a string, not an object
   @Query(() => Project)
   async getOneProject(@Arg('projectId') id: ProjectInputUpdate) {
     try {
       const getOneProject = await ProjectModel.findById(id);
-      
+
       if (!getOneProject) {
         return 'Cannot find this project';
       }
@@ -48,11 +50,13 @@ class ProjectsResolver {
       return console.log(err);
     }
   }
+  // @FIXME: inside projectInputUpdate, fields "name" and "projectOwner", at least, are mandatory and they should be optionnal
 
   @Mutation(() => Project)
   async updateProject(
-    @Arg('projectInputUpdate') {id: projectId, ...projectInputUpdate}: ProjectInputUpdate,
-    ) {
+    @Arg('projectInputUpdate')
+    { id: projectId, ...projectInputUpdate }: ProjectInputUpdate
+  ) {
     try {
       await ProjectModel.findByIdAndUpdate(projectId, projectInputUpdate, {
         new: true,
@@ -79,7 +83,6 @@ class ProjectsResolver {
 
     return 'Project deleted';
   }
-
 }
 
 export default ProjectsResolver;
