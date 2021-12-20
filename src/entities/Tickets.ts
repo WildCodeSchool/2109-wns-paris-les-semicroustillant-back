@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType } from 'type-graphql';
-// import User from './Users';
-import Filelink from './Filelinks';
+import User from './Users';
+// import Filelink from './Filelinks';
 
 @ObjectType()
 class Ticket {
@@ -12,9 +12,6 @@ class Ticket {
 
   @Field()
   status?: string;
-
-  /* @Field(() => [User])
-  users?: User[]; */
 
   @Field()
   deadline?: Date;
@@ -31,11 +28,11 @@ class Ticket {
   @Field()
   advancement?: number;
 
-  @Field(() => String)
-  file_links?: Filelink[];
+  /* @Field()
+  projectId?: string; */
 
-  @Field()
-  projectId?: string;
+  @Field(() => [User])
+  users?: User[];
 }
 
 export default Ticket;

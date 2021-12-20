@@ -2,7 +2,7 @@
 import { Arg, Query, Resolver, Mutation } from 'type-graphql';
 import Ticket from '../entities/Tickets';
 import TicketsModel from '../models/Tickets';
-// import TicketInput from '../inputs/TicketInput';
+import TicketInput from '../inputs/TicketInput';
 import IdInput from '../inputs/IdInput';
 
 @Resolver()
@@ -27,20 +27,25 @@ class TicketsResolver {
     }
   }
 
-  /* 
-  Get des users à obtenir
   @Mutation(() => Ticket)
-  async addTicket(@Arg('ticketInput') ticketInput: TicketInput) {
+  async addTicket(
+    @Arg('ticketInput') ticketInput: TicketInput
+    /* @Arg('id', () => String) userId: IdInput */
+  ) {
     try {
       await TicketsModel.init();
       const ticket = await TicketsModel.create(ticketInput);
-      await ticket.save();
+      /* const createdTicket = await ticket.save();
+      const user = await User.findById(userId);
+      user.posts.push(createdTicket._id);
+      await user.save();
+      return createdTicket */
 
       return ticket;
     } catch (err) {
       return console.log(err);
     }
-  } */
+  }
 
   @Mutation(() => String)
   async deleteTicket(@Arg('id', () => String) ticketId: IdInput) {
