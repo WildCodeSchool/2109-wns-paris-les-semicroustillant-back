@@ -1,6 +1,6 @@
 import { InputType, Field } from 'type-graphql';
-// import User from '../entities/Users';
-import Filelink from '../entities/Filelinks';
+import User from '../entities/Users';
+// import Filelink from '../entities/Filelinks';
 
 @InputType()
 export default class TicketInput {
@@ -9,9 +9,6 @@ export default class TicketInput {
 
   @Field()
   status?: string;
-
-  /* @Field(() => String)
-  users?: User[]; */
 
   @Field()
   deadline?: Date;
@@ -28,9 +25,12 @@ export default class TicketInput {
   @Field()
   advancement?: number;
 
-  @Field(() => [Filelink])
-  file_links?: Filelink[];
+  /* @Field(() => [Filelink])
+  file_links?: Filelink[]; */
 
-  @Field()
-  projectId?: string;
+  @Field(() => String)
+  users?: User[];
+
+  /* @Field()
+  projectId?: string; */
 }
