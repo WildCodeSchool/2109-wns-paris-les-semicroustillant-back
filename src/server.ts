@@ -1,31 +1,18 @@
-// import express from 'express';
 import 'reflect-metadata';
-import mongoose from 'mongoose';
 import { ApolloServer } from 'apollo-server';
 import { buildSchema } from 'type-graphql';
 import UsersResolver from './resolvers/UsersResolver';
 import TicketsResolver from './resolvers/TicketsResolver';
 // import cors from 'cors';
 
-const start = async () => {
+async function createServer() {
   const schema = await buildSchema({
     resolvers: [UsersResolver, TicketsResolver],
   });
-
+  // Create the GraphQL server
   const server = new ApolloServer({ schema });
 
-  const { url } = await server.listen(4000);
-  console.log(`Server is running, GraphQL Playground available at ${url}`); // eslint-disable-line no-console
+  return server;
+}
 
-  const db = 'semidb';
-
-  // Database
-  mongoose
-    .connect(`mongodb://127.0.0.1:27017/${db}`, {
-      autoIndex: true,
-    })
-    .then(() => console.log(`Connected to database ${db}`)) // eslint-disable-line no-console
-    .catch((err) => console.log(err)); // eslint-disable-line no-console
-};
-
-start();
+export default createServer;
