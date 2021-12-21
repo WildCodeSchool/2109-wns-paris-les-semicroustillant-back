@@ -131,13 +131,58 @@ describe('TicketsResolver', () => {
       );
     });
 
-    describe('deleteUser()', () => {
-      it('deletes a specific user', async () => {
+    describe('deleteTicket()', () => {
+      it('deletes a specific ticket', async () => {
         const ticket1InDb = new TicketsModel(ticket1Data);
         const ticket2InDb = new TicketsModel(ticket2Data);
         await ticket1InDb.save();
         await ticket2InDb.save();
+
+        const deleteOneTicket = gql`
+          mutation DeleteTicketMutation($deleteTicketId: String!) {
+            deleteTicket(id: $deleteTicketId)
+          }
+        `;
+        const variables = { deleteTicketId: ticket1InDb._id.toString() };
+        const res = await server.executeOperation({
+          query: deleteOneTicket,
+          variables,
+        });
+
+        // Get all tickets to check that he has been successfully deleted
+        const all = await TicketsModel.find();
+
+        expect(res.data?.deleteTicket).toEqual('Ticket successfully deleted');
+        expect(all.length).toEqual(1);
+        expect(all).toEqual(expect.not.objectContaining(ticket1Data));
       });
+      /* it('fails deleting a specific ticket', async () => {
+        const ticket1InDb = new TicketsModel(ticket1Data);
+        const ticket2InDb = new TicketsModel(ticket2Data);
+        await ticket1InDb.save();
+        await ticket2InDb.save();
+
+        const deleteOneTicket = gql`
+          mutation DeleteTicketMutation($deleteTicketId: String!) {
+            deleteTicket(id: $deleteTicketId)
+          }
+        `;
+        const wrongId = '619fa6b902b538d856541718';
+        const variables = { deleteTicketId: wrongId };
+        const res = await server.executeOperation({
+          query: deleteOneTicket,
+          variables,
+        });
+
+        const all = await TicketsModel.find();
+
+        expect(res.data?.deleteTicket).toEqual('Ticket successfully deleted');
+        expect(all.length).toEqual(2);
+        expect(all).toEqual([
+          expect.objectContaining(ticket1Data),
+          expect.objectContaining(ticket2Data),
+        ]);
+      }); */
     });
   });
 });
