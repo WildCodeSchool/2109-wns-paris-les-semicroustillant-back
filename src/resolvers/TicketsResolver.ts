@@ -20,8 +20,8 @@ class TicketsResolver {
   @Query(() => Ticket)
   async getOneTicket(@Arg('id', () => String) ticketId: IdInput) {
     try {
-      const getOneUser = await TicketsModel.findById(ticketId);
-      return getOneUser;
+      const getOneTicket = await TicketsModel.findById(ticketId);
+      return getOneTicket;
     } catch (err) {
       return console.log(err);
     }
@@ -56,7 +56,7 @@ class TicketsResolver {
       console.log(err);
     }
 
-    return 'Ticket deleted';
+    return 'Ticket successfully deleted';
   }
 }
 
