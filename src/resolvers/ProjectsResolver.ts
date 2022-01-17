@@ -23,7 +23,10 @@ class ProjectsResolver {
   // RESUME HERE
   // @FIXME: issues with ids and objectId (cf. apolloserver)
 
-  // Answer : We shouldn't ask for name, projectowner and members for a getOneProject. This causes a lot of issues. Id should be a string, not an object
+  // Answer from Loris : We shouldn't ask for name, projectowner and members for a getOneProject. This causes a lot of issues. Id should be a string, not an object
+  
+  // Comment from Fredy: Try to remove try/catch blocs (handle errors later, hard to solve with unit/integration tests? Weird cause
+  // it is on another branch. May cause conflicts during merge on dev)
   @Query(() => Project)
   async getOneProject(@Arg('projectId') id: ProjectInputUpdate) {
     try {
