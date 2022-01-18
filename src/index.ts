@@ -10,7 +10,7 @@ async function start() {
     const db = 'semidb';
 
     console.log('awaiting for database connection');
-    await createConnection(`mongodb://127.0.0.1:27017/${db}`);
+    await createConnection(`mongodb://mongodb:27017/${db}`);
     console.log('connected to database');
     const server = await createServer();
 

@@ -6,7 +6,6 @@
   "scripts": {
     "build": "tsc",
     "start": "ts-node-dev src/index.ts",
-    "dev": "nodemon ts-node-dev src/index.ts",
     "lint": "eslint . ",
     "test": "jest --watch"
   },
