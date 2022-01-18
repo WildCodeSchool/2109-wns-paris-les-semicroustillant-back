@@ -2,10 +2,9 @@
 import { Arg, Query, Resolver, Mutation } from 'type-graphql';
 import Project from '../entities/Projects';
 import ProjectModel from '../models/ProjectModel';
-// import { ProjectInput, ProjectInputUpdate } from '../inputs/ProjectInput';
 import ProjectInput from '../inputs/ProjectInput';
-// import IdInput from '../inputs/IdInput';
 import ProjectInputUpdate from '../inputs/ProjectInputUpdate';
+import IdInput from '../inputs/IdInput';
 
 @Resolver()
 class ProjectsResolver {
@@ -20,21 +19,16 @@ class ProjectsResolver {
     }
   }
 
-  // RESUME HERE
-  // @FIXME: issues with ids and objectId (cf. apolloserver)
-
-  // Answer from Loris : We shouldn't ask for name, projectowner and members for a getOneProject. This causes a lot of issues. Id should be a string, not an object
-  
-  // Comment from Fredy: Try to remove try/catch blocs (handle errors later, hard to solve with unit/integration tests? Weird cause
-  // it is on another branch. May cause conflicts during merge on dev)
+  // Answer from Lorris : We shouldn't ask for name, projectowner and members for a getOneProject. This causes a lot of issues. Id should be a string, not an object
   @Query(() => Project)
-  async getOneProject(@Arg('projectId') id: ProjectInputUpdate) {
+  async getOneProject(@Arg('projectId', () => String) projectId: IdInput) {
     try {
-      const getOneProject = await ProjectModel.findById(id);
+      const getOneProject = await ProjectModel.findById(projectId);
 
       if (!getOneProject) {
         return 'Cannot find this project';
       }
+
       return getOneProject;
     } catch (err) {
       return console.log(err);
@@ -53,12 +47,12 @@ class ProjectsResolver {
       return console.log(err);
     }
   }
-  // @FIXME: inside projectInputUpdate, fields "name" and "projectOwner", at least, are mandatory and they should be optionnal
 
+  // @FIXME: inside projectInputUpdate, fields "name" and "projectOwner", at least, are mandatory and they should be optionnal
   @Mutation(() => Project)
   async updateProject(
     @Arg('projectInputUpdate')
-    { id: projectId, ...projectInputUpdate }: ProjectInputUpdate
+    { _id: projectId, ...projectInputUpdate }: ProjectInputUpdate
   ) {
     try {
       await ProjectModel.findByIdAndUpdate(projectId, projectInputUpdate, {
