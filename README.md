@@ -6,10 +6,10 @@ They must match the exact following names.
 ## Name of repositories
 
 ### Back-end folder
-2109-wns-paris-les-semicroustillant-back
+`2109-wns-paris-les-semicroustillant-back`
 
 ### Front-end folder
-2109-wns-paris-les-semicroustillant-front
+`2109-wns-paris-les-semicroustillant-front`
 
 ## Build images with docker-compose
 ```bash
