@@ -6,7 +6,7 @@ import UserInputUpdate from "./UserInputUpdate";
 // export default class ProjectInputUpdate implements Partial<Project> {
 export default class ProjectInputUpdate {
   @Field(() => ID)
-  id!: string;
+  _id!: string;
 
   @Field()
   name?: string;
