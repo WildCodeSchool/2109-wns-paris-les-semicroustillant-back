@@ -160,14 +160,7 @@ describe('UserResolver', () => {
 
       // @FIXME: does not return the error message in !getOneUser condition in UsersResolver.ts
       expect(res.data).toEqual(null);
-      expect(res.errors).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            message:
-              'Cannot return null for non-nullable field Query.getOneUser.',
-          }),
-        ])
-      );
+      expect(res.errors).toMatchSnapshot();
     });
   });
 
