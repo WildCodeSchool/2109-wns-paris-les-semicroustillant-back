@@ -4,7 +4,6 @@ import Ticket from '../entities/Tickets';
 import TicketsModel from '../models/Tickets';
 import TicketInput from '../inputs/TicketInput';
 import IdInput from '../inputs/IdInput';
-import User from '../models/Users';
 
 @Resolver()
 class TicketsResolver {
@@ -29,11 +28,7 @@ class TicketsResolver {
   }
 
   @Mutation(() => Ticket)
-  async addTicket(
-    @Arg('ticketInput') ticketInput: TicketInput,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Arg('id', () => String) userId: IdInput,
-  ) {
+  async addTicket(@Arg('ticketInput') ticketInput: TicketInput) {
     try {
       await TicketsModel.init();
       const ticket = await TicketsModel.create(ticketInput);
