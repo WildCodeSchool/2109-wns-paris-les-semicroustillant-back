@@ -15,3 +15,10 @@ They must match the exact following names.
 ```bash
 docker-compose -f docker-compose.dev.yml up --build
 ```
+
+## Connection Port
+### Back-end
+`http://localhost:5050/`
+
+### Front-end
+`http://localhost:8080/`
