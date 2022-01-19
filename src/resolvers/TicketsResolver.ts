@@ -3,6 +3,7 @@ import { Arg, Query, Resolver, Mutation } from 'type-graphql';
 import Ticket from '../entities/Tickets';
 import TicketsModel from '../models/Tickets';
 import TicketInput from '../inputs/TicketInput';
+import TicketInputUpdate from '../inputs/TicketInputUpdate';
 import IdInput from '../inputs/IdInput';
 
 @Resolver()
@@ -38,6 +39,21 @@ class TicketsResolver {
     } catch (err) {
       return console.log(err);
     }
+  }
+
+  @Mutation(() => Ticket)
+  async updateTicket(
+    @Arg('id', () => String) ticketId: IdInput,
+    @Arg('ticketInputUpdate') ticketInputUpdate: TicketInputUpdate
+  ) {
+    try {
+      await TicketsModel.findByIdAndUpdate(ticketId, ticketInputUpdate, {
+        new: true,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+    return TicketsModel.findById(ticketId);
   }
 
   @Mutation(() => String)
