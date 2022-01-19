@@ -13,22 +13,25 @@ class ProjectsResolver {
     try {
       const getAllProjects = await ProjectModel.find();
 
+      if (!getAllProjects) {
+        throw new Error('Cannot find any project');
+      }
+
       return getAllProjects;
     } catch (err) {
       return console.log(err);
     }
   }
 
-  // Answer from Lorris : We shouldn't ask for name, projectowner and members for a getOneProject. This causes a lot of issues. Id should be a string, not an object
   @Query(() => Project)
   async getOneProject(@Arg('projectId', () => String) projectId: IdInput) {
     try {
       const getOneProject = await ProjectModel.findById(projectId);
-
+      
       if (!getOneProject) {
-        return 'Cannot find this project';
+        throw new Error('Cannot find this project');
       }
-
+      
       return getOneProject;
     } catch (err) {
       return console.log(err);
@@ -72,13 +75,14 @@ class ProjectsResolver {
       const result = await ProjectModel.findByIdAndRemove(id);
 
       if (!result) {
-        return 'This user does not exist';
+        // return 'This project does not exist';
+        return new Error('This project does not exist');
       }
     } catch (err) {
       console.log(err);
     }
 
-    return 'Project deleted';
+    return 'Project successfully deleted';
   }
 }
 
