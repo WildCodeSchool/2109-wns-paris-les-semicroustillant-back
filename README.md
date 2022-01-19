@@ -12,6 +12,7 @@ They must match the exact following names.
 `2109-wns-paris-les-semicroustillant-front`
 
 ## Build images with docker-compose
+## In 2109-wns-paris-les-semicroustillant-back folder
 ```bash
 docker-compose -f docker-compose.dev.yml up --build
 ```
