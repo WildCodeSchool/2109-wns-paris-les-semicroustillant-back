@@ -3,9 +3,9 @@ import User from '../entities/Users';
 // import Filelink from '../entities/Filelinks';
 
 @InputType()
-export default class TicketInput {
+export default class TicketInputUpdate {
   @Field()
-  subject: string;
+  subject?: string;
 
   @Field()
   status?: string;
