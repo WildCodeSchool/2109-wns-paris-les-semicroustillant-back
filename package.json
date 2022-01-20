@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "ts-node-dev src/index.ts",
     "lint": "eslint . ",
-    "test": "jest --watch"
+    "test": "jest -u --watch"
   },
   "author": "",
   "license": "ISC",

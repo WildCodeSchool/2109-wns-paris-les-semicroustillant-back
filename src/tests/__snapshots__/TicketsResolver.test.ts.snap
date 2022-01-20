@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TicketsResolver getOneTicket() fails getting a specific ticket due to wrong ID 1`] = `
+Array [
+  [GraphQLError: Cannot return null for non-nullable field Query.getOneTicket.],
+]
+`;
