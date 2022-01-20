@@ -116,9 +116,6 @@ describe('TicketsResolver', () => {
 
   describe('addTicket()', () => {
     it('adds a new ticket', async () => {
-      const ticket1InDb = new TicketsModel(ticket1Data);
-      await ticket1InDb.save();
-
       const addTicketMutation = gql`
         mutation addTicket($ticketInput: TicketInput!) {
           addTicket(ticketInput: $ticketInput) {
@@ -143,12 +140,50 @@ describe('TicketsResolver', () => {
         variables,
       });
 
-      console.log(res);
-      console.log(ticket2Data);
-
       expect(res.data?.addTicket).toEqual(
         expect.objectContaining({ subject: 'Test tickets' })
       );
+    });
+    it.only('fails adding a new ticket due to missing data', async () => {
+      const addTicketMutation = gql`
+        mutation addTicket($ticketInput: TicketInput!) {
+          addTicket(ticketInput: $ticketInput) {
+            subject
+            status
+            deadline
+            description
+            initial_time_estimated
+            total_time_spent
+            advancement
+            users {
+              _id
+            }
+          }
+        }
+      `;
+
+      const variables = {
+        ticketInput: {
+          status: 'pending',
+          deadline: '2021-12-31T23:00:00.000Z',
+          description: 'Test users',
+          initial_time_estimated: 1,
+          total_time_spent: 0,
+          advancement: 0,
+          users: [
+            {
+              _id: '617ab251d5b75c2bff718b45',
+            },
+          ],
+        },
+      };
+
+      const res = await server.executeOperation({
+        query: addTicketMutation,
+        variables,
+      });
+
+      expect(res.errors).toMatchSnapshot();
     });
   });
 
@@ -218,6 +253,7 @@ describe('TicketsResolver', () => {
       expect(res.errors).toMatchSnapshot();
     });
   });
+
   describe('deleteTicket()', () => {
     it('deletes a specific ticket', async () => {
       const ticket1InDb = new TicketsModel(ticket1Data);
