@@ -51,7 +51,6 @@ class ProjectsResolver {
     }
   }
 
-  // @FIXME: inside projectInputUpdate, fields "name" and "projectOwner", at least, are mandatory and they should be optionnal
   @Mutation(() => Project)
   async updateProject(
     @Arg('projectInputUpdate')
@@ -75,11 +74,10 @@ class ProjectsResolver {
       const result = await ProjectModel.findByIdAndRemove(id);
 
       if (!result) {
-        // return 'This project does not exist';
         return new Error('This project does not exist');
       }
     } catch (err) {
-      console.log(err);
+      return console.log(err);
     }
 
     return 'Project successfully deleted';

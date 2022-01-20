@@ -233,6 +233,78 @@ describe('ProjectResolver', () => {
         })
       );
     });
+    it('updates a project with some empty fields', async () => {
+      const project1InDb = new ProjectModel(projectData1);
+      await project1InDb.save();
+
+      const updateProjectQuery = gql`
+        mutation updateProject($projectInputUpdate: ProjectInputUpdate!) {
+          updateProject(projectInputUpdate: $projectInputUpdate) {
+            _id
+            name
+            projectOwner
+            members {
+              _id
+            }
+          }
+        }
+      `;
+
+      const project1Id = project1InDb._id.toString();
+      const variables = {
+        projectInputUpdate: {
+          _id: project1Id,
+          name: 'super great project',
+        },
+      };
+      const res = await server.executeOperation({
+        query: updateProjectQuery,
+        variables,
+      });
+
+      expect(res.data?.updateProject).toEqual(
+        expect.objectContaining({
+          _id: project1Id,
+          name: 'super great project',
+          projectOwner: emptyObjectId,
+          members: [{ _id: fakeUserId }],
+        })
+      );
+    });
+    it('does not update a project with a wrong project id', async () => {
+      const project1InDb = new ProjectModel(projectData1);
+      await project1InDb.save();
+
+      const updateProjectQuery = gql`
+        mutation updateProject($projectInputUpdate: ProjectInputUpdate!) {
+          updateProject(projectInputUpdate: $projectInputUpdate) {
+            _id
+            name
+            projectOwner
+            members {
+              _id
+            }
+          }
+        }
+      `;
+
+      const wrongProjectId = '619e14d317fc7b24dca41e56';
+      const variables = {
+        projectInputUpdate: {
+          _id: wrongProjectId,
+          name: 'super great project',
+          projectOwner: '000000000000000000000001',
+          members: [{ _id: fakeUserId }],
+        },
+      };
+      const res = await server.executeOperation({
+        query: updateProjectQuery,
+        variables,
+      });
+
+      expect(res.data).toEqual(null);
+      expect(res.errors).toMatchSnapshot();
+    });
   });
 
   describe('deleteProject()', () => {
@@ -242,7 +314,6 @@ describe('ProjectResolver', () => {
       await project1InDb.save();
       await project2InDb.save();
 
-      // Delete a user by his ID
       const deleteProject = gql`
         mutation deleteProject($deleteProjectId: String!) {
           deleteProject(id: $deleteProjectId)
@@ -255,7 +326,6 @@ describe('ProjectResolver', () => {
         variables,
       });
 
-      // Get all projects to check that it has been successfully deleted
       const allProjects = await ProjectModel.find();
 
       expect(res.data?.deleteProject).toEqual('Project successfully deleted');
@@ -268,7 +338,6 @@ describe('ProjectResolver', () => {
       await project1InDb.save();
       await project2InDb.save();
 
-      // Delete a user by his ID
       const deleteProject = gql`
         mutation deleteProject($deleteProjectId: String!) {
           deleteProject(id: $deleteProjectId)
