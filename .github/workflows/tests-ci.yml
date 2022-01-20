@@ -1,0 +1,12 @@
+name: back-tests-workflow
+
+on: pull_request
+
+jobs:
+  back-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Go to client and run tests
+        run: npm install && npx jest
