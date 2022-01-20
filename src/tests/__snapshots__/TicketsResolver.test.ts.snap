@@ -6,6 +6,14 @@ Array [
 ]
 `;
 
+exports[`TicketsResolver addTicket() fails adding a new ticket due to wrong data 1`] = `
+Array [
+  [UserInputError: Variable "$ticketInput" got invalid value 123 at "ticketInput.subject"; String cannot represent a non string value: 123],
+]
+`;
+
+exports[`TicketsResolver deleteTicket() fails deleting a specific ticket due to wrong ID 1`] = `undefined`;
+
 exports[`TicketsResolver getOneTicket() fails getting a specific ticket due to wrong ID 1`] = `
 Array [
   [GraphQLError: Cannot return null for non-nullable field Query.getOneTicket.],

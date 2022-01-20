@@ -144,7 +144,7 @@ describe('TicketsResolver', () => {
         expect.objectContaining({ subject: 'Test tickets' })
       );
     });
-    it.only('fails adding a new ticket due to missing data', async () => {
+    it('fails adding a new ticket due to missing data', async () => {
       const addTicketMutation = gql`
         mutation addTicket($ticketInput: TicketInput!) {
           addTicket(ticketInput: $ticketInput) {
@@ -184,6 +184,90 @@ describe('TicketsResolver', () => {
       });
 
       expect(res.errors).toMatchSnapshot();
+    });
+
+    it('fails adding a new ticket due to wrong data', async () => {
+      const addTicketMutation = gql`
+        mutation addTicket($ticketInput: TicketInput!) {
+          addTicket(ticketInput: $ticketInput) {
+            subject
+            status
+            deadline
+            description
+            initial_time_estimated
+            total_time_spent
+            advancement
+            users {
+              _id
+            }
+          }
+        }
+      `;
+
+      const variables = {
+        ticketInput: {
+          subject: 123,
+          status: 'pending',
+          deadline: '2021-12-31T23:00:00.000Z',
+          description: 'Test users',
+          initial_time_estimated: 1,
+          total_time_spent: 0,
+          advancement: 0,
+          users: [
+            {
+              _id: '617ab251d5b75c2bff718b45',
+            },
+          ],
+        },
+      };
+
+      const res = await server.executeOperation({
+        query: addTicketMutation,
+        variables,
+      });
+
+      expect(res.errors).toMatchSnapshot();
+    });
+  });
+
+  describe('updateTicket()', () => {
+    it.only('updates a ticket', async () => {
+      const ticket1InDb = new TicketsModel(ticket1Data);
+      await ticket1InDb.save();
+
+      const updateTicketMutation = gql`
+        mutation updateTicket(
+          $ticketInputUpdate: TicketInputUpdate!
+          $updateTicketId: String!
+        ) {
+          updateTicket(
+            ticketInputUpdate: $ticketInputUpdate
+            id: $updateTicketId
+          ) {
+            subject
+          }
+        }
+      `;
+
+      const ticket1Id = ticket1InDb._id.toString();
+
+      const variables = {
+        ticketInputUpdate: {
+          subject: 'Test update',
+        },
+        updateTicketId: ticket1Id,
+      };
+
+      const res = await server.executeOperation({
+        query: updateTicketMutation,
+        variables,
+      });
+
+      console.log(res);
+
+      expect(res.data?.updateTicket).toEqual(
+        expect.objectContaining({ subject: 'Test update' })
+      );
     });
   });
 
@@ -262,7 +346,7 @@ describe('TicketsResolver', () => {
       await ticket2InDb.save();
 
       const deleteOneTicket = gql`
-        mutation DeleteTicketMutation($deleteTicketId: String!) {
+        mutation deleteTicket($deleteTicketId: String!) {
           deleteTicket(id: $deleteTicketId)
         }
       `;
@@ -279,32 +363,24 @@ describe('TicketsResolver', () => {
       expect(all.length).toEqual(1);
       expect(all).toEqual(expect.not.objectContaining(ticket1Data));
     });
-    /* it('fails deleting a specific ticket', async () => {
-        const ticket1InDb = new TicketsModel(ticket1Data);
-        const ticket2InDb = new TicketsModel(ticket2Data);
-        await ticket1InDb.save();
-        await ticket2InDb.save();
+    it('fails deleting a specific ticket due to wrong ID', async () => {
+      const ticket1InDb = new TicketsModel(ticket1Data);
+      const ticket2InDb = new TicketsModel(ticket2Data);
+      await ticket1InDb.save();
+      await ticket2InDb.save();
 
-        const deleteOneTicket = gql`
-          mutation DeleteTicketMutation($deleteTicketId: String!) {
-            deleteTicket(id: $deleteTicketId)
-          }
-        `;
-        const wrongId = '619fa6b902b538d856541718';
-        const variables = { deleteTicketId: wrongId };
-        const res = await server.executeOperation({
-          query: deleteOneTicket,
-          variables,
-        });
-
-        const all = await TicketsModel.find();
-
-        expect(res.data?.deleteTicket).toEqual('Ticket successfully deleted');
-        expect(all.length).toEqual(2);
-        expect(all).toEqual([
-          expect.objectContaining(ticket1Data),
-          expect.objectContaining(ticket2Data),
-        ]);
-      }); */
+      const deleteOneTicket = gql`
+        mutation deleteTicket($deleteTicketId: String!) {
+          deleteTicket(id: $deleteTicketId)
+        }
+      `;
+      const wrongId = '619fa6b902b538d856541718';
+      const variables = { deleteTicketId: wrongId };
+      const res = await server.executeOperation({
+        query: deleteOneTicket,
+        variables,
+      });
+      expect(res.errors).toMatchSnapshot();
+    });
   });
 });
