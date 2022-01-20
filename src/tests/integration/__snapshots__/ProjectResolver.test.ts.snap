@@ -17,3 +17,9 @@ Array [
   [GraphQLError: Cannot return null for non-nullable field Query.getOneProject.],
 ]
 `;
+
+exports[`ProjectResolver updateProject() does not update a project with a wrong project id 1`] = `
+Array [
+  [GraphQLError: Cannot return null for non-nullable field Mutation.updateProject.],
+]
+`;

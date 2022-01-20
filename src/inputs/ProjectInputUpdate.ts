@@ -1,19 +1,18 @@
 import { InputType, Field, ID } from "type-graphql";
 import IdInput from "./IdInput";
-// import ProjectInput from "./ProjectInput";
+import Users from "../entities/Users";
 
 @InputType()
-// export default class ProjectInputUpdate implements Partial<ProjectInput> {
 export default class ProjectInputUpdate {
   @Field(() => ID)
   _id!: string;
 
-  @Field()
-  name?: string;
+  @Field({ nullable: true })
+  name: string;
   
-  @Field()
-  projectOwner?: string;
+  @Field({ nullable: true })
+  projectOwner: string;
 
-  @Field(() => [IdInput])
-  members?: IdInput[];
+  @Field(() => [IdInput], { nullable: true })
+  members: Users[];
 }
