@@ -62,6 +62,9 @@ describe('TicketsResolver', () => {
             initial_time_estimated
             total_time_spent
             advancement
+            users {
+              _id
+            }
           }
         }
       `;
@@ -112,7 +115,7 @@ describe('TicketsResolver', () => {
   });
 
   describe('addTicket()', () => {
-    it.only('adds a new ticket', async () => {
+    it('adds a new ticket', async () => {
       const ticket1InDb = new TicketsModel(ticket1Data);
       await ticket1InDb.save();
 
@@ -167,6 +170,9 @@ describe('TicketsResolver', () => {
             initial_time_estimated
             total_time_spent
             advancement
+            users {
+              _id
+            }
           }
         }
       `;
@@ -196,6 +202,9 @@ describe('TicketsResolver', () => {
             initial_time_estimated
             total_time_spent
             advancement
+            users {
+              _id
+            }
           }
         }
       `;
