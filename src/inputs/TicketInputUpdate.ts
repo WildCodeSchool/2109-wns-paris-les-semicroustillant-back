@@ -1,6 +1,6 @@
 import { InputType, Field } from 'type-graphql';
 import IdInput from './IdInput';
-// import Filelink from '../entities/Filelinks';
+import Users from '../entities/Users';
 
 @InputType()
 export default class TicketInputUpdate {
@@ -25,11 +25,8 @@ export default class TicketInputUpdate {
   @Field({ nullable: true })
   advancement?: number;
 
-  /* @Field(() => [Filelink])
-  file_links?: Filelink[]; */
-
   @Field(() => [IdInput], { nullable: true })
-  users?: { id: IdInput };
+  users?: Users[];
 
   /* @Field()
   projectId?: string; */
