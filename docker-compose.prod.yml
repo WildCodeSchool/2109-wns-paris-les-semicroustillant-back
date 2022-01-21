@@ -27,5 +27,3 @@ services:
     image: mongo
     volumes:
       - ./data:/data/db
-
-# must target Dockerfile-prod
