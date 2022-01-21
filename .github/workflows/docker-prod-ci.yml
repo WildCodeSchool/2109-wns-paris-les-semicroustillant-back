@@ -2,7 +2,7 @@ name: Push docker image in prod
 
 on:
   push:
-    branches-ignore:
+    branches:
       - "main"
 
 jobs:
