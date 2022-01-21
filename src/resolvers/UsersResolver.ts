@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-/* eslint-disable class-methods-use-this */
 import { Arg, Query, Resolver, Mutation } from 'type-graphql';
 import User from '../entities/Users';
 import UsersModel from '../models/Users';

@@ -1,10 +1,10 @@
 import mongoose, { Schema, model } from 'mongoose';
 
 const projectSchema = new Schema({
+  id: mongoose.Types.ObjectId,
   name: String,
-  projectOwner: {type: mongoose.Types.ObjectId, unique: true},
-  members: Array
-  
+  projectOwner: mongoose.Types.ObjectId,
+  members: [mongoose.Types.ObjectId],
 });
 const projectModel = model('projects', projectSchema);
 

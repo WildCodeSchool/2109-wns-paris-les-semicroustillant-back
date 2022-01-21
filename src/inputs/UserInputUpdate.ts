@@ -4,7 +4,7 @@ import User from "../entities/Users";
 @InputType()
 export default class UserInputUpdate implements Partial<User>{
   @Field(() => ID)
-  id!: string;
+  _id!: string;
 
   @Field()
   firstname?: string;

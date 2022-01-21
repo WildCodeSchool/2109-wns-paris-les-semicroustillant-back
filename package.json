@@ -6,8 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "ts-node-dev src/index.ts",
-    "lint": "eslint . ",
-    "test": "jest -u --watch"
+    "lint": "eslint src/** --no-error-on-unmatched-pattern",
+    "test": "jest src/tests/**"
   },
   "author": "",
   "license": "ISC",

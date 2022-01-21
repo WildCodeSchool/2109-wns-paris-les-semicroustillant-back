@@ -14,7 +14,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'prettier'],
   rules: {
     'no-underscore-dangle': ['error', { allow: ['_id'] }],
-    'class-methods-use-this': 'off',
+    'class-methods-use-this': 'off'
   },
   ignorePatterns: ['.eslintrc.js'],
 };
