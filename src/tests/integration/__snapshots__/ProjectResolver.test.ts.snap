@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectResolver deleteProject() fails deleting a specific project 1`] = `
+Array [
+  [GraphQLError: This project does not exist],
+]
+`;
+
+exports[`ProjectResolver getAllProjects() console logs an error if data does not exist in query 1`] = `
+Array [
+  [ValidationError: Cannot query field "plop" on type "Project".],
+]
+`;
+
+exports[`ProjectResolver getOneProject() fails getting a specific project if wrong ID in query 1`] = `
+Array [
+  [GraphQLError: Cannot return null for non-nullable field Query.getOneProject.],
+]
+`;
+
+exports[`ProjectResolver updateProject() does not update a project with a wrong project id 1`] = `
+Array [
+  [GraphQLError: Cannot return null for non-nullable field Mutation.updateProject.],
+]
+`;
