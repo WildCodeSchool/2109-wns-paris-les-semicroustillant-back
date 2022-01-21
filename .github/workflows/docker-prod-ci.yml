@@ -3,7 +3,7 @@ name: Push docker image in prod
 on:
   push:
     branches:
-      - "main"
+      - main
 
 
 jobs:
