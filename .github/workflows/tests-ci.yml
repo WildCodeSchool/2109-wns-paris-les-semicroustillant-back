@@ -1,4 +1,4 @@
-name: back-tests-workflow
+name: Back test workflow
 
 on: pull_request
 
