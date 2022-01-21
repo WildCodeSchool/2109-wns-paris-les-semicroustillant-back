@@ -1,0 +1,24 @@
+services:
+  front:
+    build:
+      context: ../2109-wns-paris-les-semicroustillant-front
+      dockerfile: Dockerfile-dev
+    ports:
+      - 8080:3000
+    volumes:
+      - ../2109-wns-paris-les-semicroustillant-front/src:/app/src
+  back:
+    build:
+      context: ./
+      dockerfile: Dockerfile-dev
+    ports:
+      - 5050:4000
+    command: npm start
+    volumes:
+      - ./src/:/app/src
+  mongodb:
+    image: mongo
+    volumes:
+      - ./data:/data/db
+
+# must target Dockerfile-dev
