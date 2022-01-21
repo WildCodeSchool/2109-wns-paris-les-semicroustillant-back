@@ -1,10 +1,23 @@
-name: Back test workflow
+name: Back Tests
 
 on: pull_request
 
 jobs:
-  back-tests:
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Run lint
+        run: npm run lint
+
+  integration-tests:
+    name: Integration tests
+    runs-on: ubuntu-latest
+    needs: ['lint']
     steps:
       - name: Check out code
         uses: actions/checkout@v2
