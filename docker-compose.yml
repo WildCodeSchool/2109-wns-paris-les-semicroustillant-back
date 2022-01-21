@@ -6,6 +6,8 @@ services:
     # depends_on:
     #   back:
     #     condition: service_healthy
+    volumes:
+      - ../2109-wns-paris-les-semicroustillant-front/src:/app/src
   back:
     build: ./
     ports:
@@ -15,6 +17,8 @@ services:
     #   timeout: 10s
     #   interval: 10s
     #   retries: 10
+    volumes:
+      - ./src/:/app/src
   mongodb:
     image: mongo
     volumes:
