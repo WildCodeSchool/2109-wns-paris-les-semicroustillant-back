@@ -231,7 +231,7 @@ describe('TicketsResolver', () => {
   });
 
   describe('updateTicket()', () => {
-    it.only('updates a ticket', async () => {
+    it('updates a ticket even with partial data', async () => {
       const ticket1InDb = new TicketsModel(ticket1Data);
       await ticket1InDb.save();
 
@@ -245,6 +245,15 @@ describe('TicketsResolver', () => {
             id: $updateTicketId
           ) {
             subject
+            status
+            deadline
+            description
+            initial_time_estimated
+            total_time_spent
+            advancement
+            users {
+              _id
+            }
           }
         }
       `;
@@ -263,11 +272,93 @@ describe('TicketsResolver', () => {
         variables,
       });
 
-      console.log(res);
-
       expect(res.data?.updateTicket).toEqual(
         expect.objectContaining({ subject: 'Test update' })
       );
+    });
+    it('fails updating a ticket due to wrong ID', async () => {
+      const ticket1InDb = new TicketsModel(ticket1Data);
+      await ticket1InDb.save();
+
+      const updateTicketMutation = gql`
+        mutation updateTicket(
+          $ticketInputUpdate: TicketInputUpdate!
+          $updateTicketId: String!
+        ) {
+          updateTicket(
+            ticketInputUpdate: $ticketInputUpdate
+            id: $updateTicketId
+          ) {
+            subject
+            status
+            deadline
+            description
+            initial_time_estimated
+            total_time_spent
+            advancement
+            users {
+              _id
+            }
+          }
+        }
+      `;
+
+      const ticket1Id = '619e14d317fc7b24dca41e56';
+
+      const variables = {
+        ticketInputUpdate: {
+          subject: 'Test update fail',
+        },
+        updateTicketId: ticket1Id,
+      };
+
+      const res = await server.executeOperation({
+        query: updateTicketMutation,
+        variables,
+      });
+      expect(res.errors).toMatchSnapshot();
+    });
+    it('fails updating a ticket due to wrong data', async () => {
+      const ticket1InDb = new TicketsModel(ticket1Data);
+      await ticket1InDb.save();
+
+      const updateTicketMutation = gql`
+        mutation updateTicket(
+          $ticketInputUpdate: TicketInputUpdate!
+          $updateTicketId: String!
+        ) {
+          updateTicket(
+            ticketInputUpdate: $ticketInputUpdate
+            id: $updateTicketId
+          ) {
+            subject
+            status
+            deadline
+            description
+            initial_time_estimated
+            total_time_spent
+            advancement
+            users {
+              _id
+            }
+          }
+        }
+      `;
+
+      const ticket1Id = ticket1InDb._id.toString();
+
+      const variables = {
+        ticketInputUpdate: {
+          subject: 123,
+        },
+        updateTicketId: ticket1Id,
+      };
+
+      const res = await server.executeOperation({
+        query: updateTicketMutation,
+        variables,
+      });
+      expect(res.errors).toMatchSnapshot();
     });
   });
 
@@ -356,7 +447,6 @@ describe('TicketsResolver', () => {
         variables,
       });
 
-      // Get all tickets to check that he has been successfully deleted
       const all = await TicketsModel.find();
 
       expect(res.data?.deleteTicket).toEqual('Ticket successfully deleted');
