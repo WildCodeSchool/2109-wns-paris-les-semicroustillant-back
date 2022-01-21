@@ -1,11 +1,6 @@
 import { ApolloServer, gql } from 'apollo-server';
-import createServer from '../server';
-import UserModel from '../models/Users';
-
-// import UsersResolver from '../resolvers/UsersResolver';
-// success get all users
-// error in catch
-// error in finding users (USersModel.find())
+import createServer from '../../server';
+import UserModel from '../../models/Users';
 
 let server: ApolloServer;
 
