@@ -8,5 +8,5 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-      - name: Go to client and run tests
+      - name: Run tests
         run: npm install && npx jest
