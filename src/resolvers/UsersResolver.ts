@@ -4,7 +4,6 @@ import User from '../entities/Users';
 import UsersModel from '../models/Users';
 import UserInput from '../inputs/UserInput';
 import UserInputUpdate from '../inputs/UserInputUpdate';
-import IdInput from '../inputs/IdInput';
 
 @Resolver()
 class UsersResolver {
@@ -45,25 +44,24 @@ class UsersResolver {
 
   @Mutation(() => User)
   async updateUser(
-    @Arg('id', () => String) userId: IdInput,
     @Arg('userInputUpdate') userInputUpdate: UserInputUpdate
   ) {
     try {
-      await UsersModel.findByIdAndUpdate(userId, userInputUpdate, {
+      await UsersModel.findByIdAndUpdate(userInputUpdate._id, userInputUpdate, {
         new: true,
       });
     } catch (err) {
       console.log(err);
     }
 
-    return UsersModel.findById(userId);
+    return UsersModel.findById(userInputUpdate._id);
   }
 
   @Mutation(() => String)
-  async deleteUser(@Arg('id', () => String) id: IdInput) {
+  async deleteUser(@Arg('userInputUpdate') userInputUpdate: UserInputUpdate) {
     try {
       await UsersModel.init();
-      const del = await UsersModel.findByIdAndRemove(id);
+      const del = await UsersModel.findByIdAndRemove(userInputUpdate._id);
 
       if (!del) {
         return 'Error deleting';
