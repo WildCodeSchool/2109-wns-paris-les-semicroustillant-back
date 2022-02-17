@@ -5,7 +5,6 @@ import createConnection from './createConnection';
 import createServer from './server';
 
 async function start() {
-  
   try {
     const db = 'semidb';
 
