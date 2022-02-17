@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`UserResolver getOneUser() fails getting a specific user due to wrong ID 1`] = `
-Array [
-  [GraphQLError: Cannot return null for non-nullable field Query.getOneUser.],
-]
-`;
