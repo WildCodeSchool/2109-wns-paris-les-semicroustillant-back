@@ -1,6 +1,5 @@
 import { Field, ID, ObjectType } from 'type-graphql';
 import User from './Users';
-// import Filelink from './Filelinks';
 
 @ObjectType()
 class Ticket {
