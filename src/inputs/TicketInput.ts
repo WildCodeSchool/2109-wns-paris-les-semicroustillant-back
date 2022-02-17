@@ -1,29 +1,30 @@
 import { InputType, Field } from 'type-graphql';
 import Users from '../entities/Users';
+import IdInput from './IdInput';
 
 @InputType()
 export default class TicketInput {
   @Field()
   subject: string;
 
-  @Field()
+  @Field({ nullable: true })
   status?: string;
 
-  @Field()
+  @Field({ nullable: true })
   deadline?: Date;
 
-  @Field()
+  @Field({ nullable: true })
   description?: string;
 
-  @Field()
+  @Field({ nullable: true })
   initial_time_estimated?: number;
 
-  @Field()
+  @Field({ nullable: true })
   total_time_spent?: number;
 
-  @Field()
+  @Field({ nullable: true })
   advancement?: number;
 
-  @Field(() => [String])
+  @Field(() => [IdInput], { nullable: true })
   users?: Users[];
 }
