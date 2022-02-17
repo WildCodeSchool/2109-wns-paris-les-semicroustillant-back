@@ -19,7 +19,7 @@ class UsersResolver {
   }
 
   @Query(() => User)
-  async getOneUser(@Arg('id', () => String) userId: IdInput) {
+  async getOneUser(@Arg('userId', () => String) userId: UserInputUpdate["_id"]) {
     try {
       const getOneUser = await UsersModel.findById(userId);
 
@@ -58,10 +58,10 @@ class UsersResolver {
   }
 
   @Mutation(() => String)
-  async deleteUser(@Arg('userInputUpdate') userInputUpdate: UserInputUpdate) {
+  async deleteUser(@Arg('UserId', () => String) userId: UserInputUpdate["_id"]) {
     try {
       await UsersModel.init();
-      const del = await UsersModel.findByIdAndRemove(userInputUpdate._id);
+      const del = await UsersModel.findByIdAndRemove(userId);
 
       if (!del) {
         return 'Error deleting';
