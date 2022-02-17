@@ -27,7 +27,4 @@ export default class TicketInputUpdate {
 
   @Field(() => [IdInput], { nullable: true })
   users?: Users[];
-
-  /* @Field()
-  projectId?: string; */
 }

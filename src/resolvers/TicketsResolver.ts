@@ -5,7 +5,7 @@ import TicketsModel from '../models/Tickets';
 import TicketInput from '../inputs/TicketInput';
 import TicketInputUpdate from '../inputs/TicketInputUpdate';
 import IdInput from '../inputs/IdInput';
-import UsersModel from '../models/Users';
+// import UsersModel from '../models/Users';
 
 @Resolver()
 class TicketsResolver {
@@ -32,12 +32,12 @@ class TicketsResolver {
   @Mutation(() => Ticket)
   async addTicket(@Arg('ticketInput') ticketInput: TicketInput) {
     try {
-      const getAllUsers = await UsersModel.find();
+      // const getAllUsers = await UsersModel.find();
       await TicketsModel.init();
       const ticket = await TicketsModel.create(ticketInput);
       const createdTicket = await ticket.save();
 
-      return { createdTicket, getAllUsers };
+      return createdTicket;
     } catch (err) {
       return console.log(err);
     }

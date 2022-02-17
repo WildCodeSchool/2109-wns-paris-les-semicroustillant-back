@@ -140,9 +140,7 @@ describe('TicketsResolver', () => {
         variables,
       });
 
-      expect(res.data?.addTicket).toEqual(
-        expect.objectContaining({ subject: 'Test tickets' })
-      );
+      expect(res.data?.addTicket).toEqual(expect.objectContaining(ticket2Data));
     });
     it('fails adding a new ticket due to missing data', async () => {
       const addTicketMutation = gql`
