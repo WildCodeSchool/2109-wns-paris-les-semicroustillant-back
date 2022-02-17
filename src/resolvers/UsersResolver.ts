@@ -53,7 +53,6 @@ class UsersResolver {
     } catch (err) {
       console.log(err);
     }
-
     return UsersModel.findById(userInputUpdate._id);
   }
 
@@ -76,3 +75,6 @@ class UsersResolver {
 }
 
 export default UsersResolver;
+
+// @FREDY: check/update integration tests
+// replicate _id on porjectResolvers
