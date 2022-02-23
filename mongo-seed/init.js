@@ -9,7 +9,7 @@ const position = [
 ];
 
 const db = 'semidb';
-const collectionProject = 'projects';
+const collectionProjects = 'projects';
 const collectionUsers = 'users';
 const collectionComments = 'comments';
 const collectionTickets = 'tickets';
@@ -17,33 +17,6 @@ const numberOfUsers = 5;
 const numberOfTickets = 15;
 const numberOfComments = 3;
 const numberOfProjects = 6;
-
-const clearDatabase = async (mongoConnection) => {
-  try {
-    await mongoConnection.clear(
-      [
-        collectionProject,
-        collectionTickets,
-        collectionComments,
-        collectionUsers,
-      ],
-      function (err) {
-        console.log(
-          'collections: ',
-          collectionProject,
-          collectionUsers,
-          collectionTickets,
-          collectionComments,
-          'cleared'
-        );
-        return { cleared: true };
-      }
-    );
-    return { cleared: true };
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 const createCollections = async () => {
   var id = require('pow-mongodb-fixtures').createObjectId;
@@ -159,25 +132,23 @@ const mongo = async () => {
 
   console.log('passed in connection');
   // Clearing DB
-  const isCleared = await clearDatabase(fixtures);
 
-  if (isCleared?.cleared) {
-    // Seeding DB
-    const { users, projects, comments, tickets } = await createCollections();
-    await fixtures.load(
-      {
-        [collectionUsers]: users,
-        [collectionComments]: comments,
-        [collectionProject]: projects,
-        [collectionTickets]: tickets,
-      },
-      () => {
-        console.log('Database Seeded !');
-      }
-    );
-    console.log(loader);
-    process.exit();
-  }
+  // Seeding DB
+  const { users, projects, comments, tickets } = await createCollections();
+  await fixtures.clearAllAndLoad(
+    {
+      [collectionUsers]: users,
+      [collectionComments]: comments,
+      [collectionProjects]: projects,
+      [collectionTickets]: tickets,
+    },
+    () => {
+      console.log(
+        `Database cleared collections: ${collectionUsers}, ${collectionComments}, ${collectionProjects} ${collectionTickets}, and Seeded !`
+      );
+      process.exit();
+    }
+  );
   // Closing connection
 };
 mongo();
