@@ -19,10 +19,15 @@ const numberOfComments = 3;
 const numberOfProjects = 6;
 
 const clearDatabase = async (mongoConnection) => {
-  await mongoConnection.clear(
-    [collectionProject, collectionTickets, collectionComments, collectionUsers],
-    function (err) {
-      if (!err) {
+  try {
+    await mongoConnection.clear(
+      [
+        collectionProject,
+        collectionTickets,
+        collectionComments,
+        collectionUsers,
+      ],
+      function (err) {
         console.log(
           'collections: ',
           collectionProject,
@@ -31,16 +36,16 @@ const clearDatabase = async (mongoConnection) => {
           collectionComments,
           'cleared'
         );
+        return { cleared: true };
       }
-      if (err) {
-        console.log(err);
-      } else {
-      }
-    }
-  );
+    );
+    return { cleared: true };
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-const createCollections = () => {
+const createCollections = async () => {
   var id = require('pow-mongodb-fixtures').createObjectId;
 
   let users = [];
@@ -59,7 +64,7 @@ const createCollections = () => {
     users.push(user);
   }
   // Creating UsersIds Array that will be used in projects collection
-  const usersIdsArray = users.map((item, index) => {
+  const usersIdsArray = users.map((_, index) => {
     return users[index]._id;
   });
 
@@ -88,6 +93,7 @@ const createCollections = () => {
 
   for (let i = 0; i < numberOfComments; i++) {
     const comment = {
+      _id: id(),
       content: fakemeup.lorem.sentence(10, 15),
       user: usersIdsArray[Math.floor(Math.random() * usersIdsArray.length)],
       date: fakemeup.date.full('slash'),
@@ -97,16 +103,23 @@ const createCollections = () => {
   }
 
   // Creating total_time_spent data
+  const commentsIdsArray = comments.map((_, index) => {
+    return comments[index]._id;
+  });
   tickets.forEach((item) => {
     item.total_time_spent =
       item.initial_time_estimated - fakemeup.numbers.floatPrice(1, 3);
-    item.comments = comments;
+    item.comments = [
+      commentsIdsArray[0],
+      commentsIdsArray[1],
+      commentsIdsArray[2],
+    ];
   });
 
   //   Creating projects collection data
 
   let projects = [];
-  const ticketsIdsArray = tickets.map((item, index) => {
+  const ticketsIdsArray = tickets.map((_, index) => {
     return tickets[index]._id;
   });
   for (let i = 0; i < numberOfProjects; i++) {
@@ -146,20 +159,25 @@ const mongo = async () => {
 
   console.log('passed in connection');
   // Clearing DB
-  await clearDatabase(fixtures);
-  const { users, projects, comments, tickets } = await createCollections();
-  // Seeding DB
-  await fixtures.load(
-    {
-      [collectionUsers]: users,
-      [collectionComments]: comments,
-      [collectionProject]: projects,
-      [collectionTickets]: tickets,
-    },
-    () => console.log('Database Seeded !')
-  );
-};
+  const isCleared = await clearDatabase(fixtures);
 
-(async function () {
-  await mongo();
-})();
+  if (isCleared?.cleared) {
+    // Seeding DB
+    const { users, projects, comments, tickets } = await createCollections();
+    await fixtures.load(
+      {
+        [collectionUsers]: users,
+        [collectionComments]: comments,
+        [collectionProject]: projects,
+        [collectionTickets]: tickets,
+      },
+      () => {
+        console.log('Database Seeded !');
+      }
+    );
+    console.log(loader);
+    process.exit();
+  }
+  // Closing connection
+};
+mongo();
