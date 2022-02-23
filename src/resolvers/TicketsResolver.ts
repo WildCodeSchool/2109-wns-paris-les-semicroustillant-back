@@ -6,12 +6,21 @@ import TicketInput from '../inputs/TicketInput';
 import TicketInputUpdate from '../inputs/TicketInputUpdate';
 import IdInput from '../inputs/IdInput';
 
+const getAdvancement = (data: any) => {
+  const timeSpent = data.total_time_spent;
+  const estimatedTime = data.initial_time_estimated;
+  return (timeSpent / estimatedTime) * 100;
+};
 @Resolver()
 class TicketsResolver {
   @Query(() => [Ticket])
   async allTickets() {
     try {
       const getAllTickets = await TicketsModel.find();
+      for (let i = 0; i < getAllTickets.length; i += 1) {
+        getAllTickets[i].advancement = getAdvancement(getAllTickets[i]);
+      }
+      console.log(getAllTickets);
       return getAllTickets;
     } catch (err) {
       return console.log(err);
@@ -22,6 +31,8 @@ class TicketsResolver {
   async getOneTicket(@Arg('id', () => String) ticketId: IdInput) {
     try {
       const getOneTicket = await TicketsModel.findById(ticketId);
+      getOneTicket.advancement = getAdvancement(getOneTicket);
+      console.log(getOneTicket.advancement);
       return getOneTicket;
     } catch (err) {
       return console.log(err);
@@ -34,7 +45,6 @@ class TicketsResolver {
       await TicketsModel.init();
       const ticket = await TicketsModel.create(ticketInput);
       const createdTicket = await ticket.save();
-
       return createdTicket;
     } catch (err) {
       return console.log(err);
