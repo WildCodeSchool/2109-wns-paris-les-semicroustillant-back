@@ -10,6 +10,12 @@ class Project {
   name: string;
 
   @Field()
+  status: string;
+
+  @Field()
+  description: string;
+
+  @Field()
   projectOwner: string;
 
   @Field(() => [User])

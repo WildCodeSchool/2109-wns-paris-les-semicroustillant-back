@@ -1,12 +1,18 @@
-import { InputType, Field } from "type-graphql";
-import IdInput from "./IdInput";
-import Users from "../entities/Users";
+import { InputType, Field } from 'type-graphql';
+import IdInput from './IdInput';
+import Users from '../entities/Users';
 
 @InputType()
 export default class ProjectInput {
   @Field()
   name: string;
-  
+
+  @Field()
+  status: string;
+
+  @Field()
+  description: string;
+
   @Field()
   projectOwner: string;
 

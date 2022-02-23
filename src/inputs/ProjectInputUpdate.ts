@@ -1,6 +1,6 @@
-import { InputType, Field, ID } from "type-graphql";
-import IdInput from "./IdInput";
-import Users from "../entities/Users";
+import { InputType, Field, ID } from 'type-graphql';
+import IdInput from './IdInput';
+import Users from '../entities/Users';
 
 @InputType()
 export default class ProjectInputUpdate {
@@ -9,7 +9,13 @@ export default class ProjectInputUpdate {
 
   @Field({ nullable: true })
   name: string;
-  
+
+  @Field()
+  status: string;
+
+  @Field()
+  description: string;
+
   @Field({ nullable: true })
   projectOwner: string;
 
