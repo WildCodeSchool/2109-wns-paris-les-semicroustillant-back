@@ -2,6 +2,7 @@
 import { Arg, Query, Resolver, Mutation } from 'type-graphql';
 import Project from '../entities/Projects';
 import ProjectModel from '../models/ProjectModel';
+import TicketsModel from '../models/Tickets';
 import ProjectInput from '../inputs/ProjectInput';
 import ProjectInputUpdate from '../inputs/ProjectInputUpdate';
 import IdInput from '../inputs/IdInput';
@@ -27,6 +28,18 @@ class ProjectsResolver {
   async getOneProject(@Arg('projectId', () => String) projectId: IdInput) {
     try {
       const getOneProject = await ProjectModel.findById(projectId);
+
+      const getCorrespondingTickets = await TicketsModel.findOne(
+        { projectId: getOneProject._id },
+        'projectId'
+      );
+      /* 
+      const getCorrespondingTickets = await TicketsModel.$where(
+        projectId: getOneProject._id
+      );
+ */
+      console.log(projectId);
+      console.log(getCorrespondingTickets);
 
       if (!getOneProject) {
         throw new Error('Cannot find this project');
