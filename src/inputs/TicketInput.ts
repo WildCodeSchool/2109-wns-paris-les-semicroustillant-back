@@ -26,7 +26,7 @@ export default class TicketInput {
   advancement?: number;
 
   @Field({ nullable: true })
-  project?: string;
+  projectId?: string;
 
   @Field(() => [IdInput], { nullable: true })
   users?: Users[];
