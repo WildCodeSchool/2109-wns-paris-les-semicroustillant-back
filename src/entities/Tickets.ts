@@ -27,6 +27,9 @@ class Ticket {
   @Field()
   advancement?: number;
 
+  @Field()
+  projectId?: string;
+
   @Field(() => [User])
   users?: User[];
 }
