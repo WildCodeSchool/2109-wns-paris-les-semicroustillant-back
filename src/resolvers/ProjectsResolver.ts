@@ -53,8 +53,8 @@ class ProjectsResolver {
 
   @Mutation(() => Project)
   async updateProject(
-    @Arg('projectInputUpdate')
-    { _id: projectId, ...projectInputUpdate }: ProjectInputUpdate
+    @Arg('id', () => String) projectId: IdInput,
+    @Arg('projectInputUpdate') projectInputUpdate: ProjectInputUpdate
   ) {
     try {
       await ProjectModel.findByIdAndUpdate(projectId, projectInputUpdate, {
