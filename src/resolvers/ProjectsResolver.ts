@@ -29,15 +29,11 @@ class ProjectsResolver {
     try {
       const getOneProject = await ProjectModel.findById(projectId);
 
-      const getCorrespondingTickets = await TicketsModel.findOne(
+      const getCorrespondingTickets = await TicketsModel.find(
         { projectId: getOneProject._id },
         'projectId'
       );
-      /* 
-      const getCorrespondingTickets = await TicketsModel.$where(
-        projectId: getOneProject._id
-      );
- */
+
       console.log(projectId);
       console.log(getCorrespondingTickets);
 
