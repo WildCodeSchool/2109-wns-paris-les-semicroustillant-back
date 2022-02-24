@@ -65,7 +65,6 @@ class UsersResolver {
       if (!del) {
         return 'Error deleting';
       }
-      
     } catch (err) {
       console.log(err);
     }

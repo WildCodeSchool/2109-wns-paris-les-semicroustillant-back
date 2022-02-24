@@ -1,17 +1,17 @@
-import { Schema, model } from 'mongoose';
+import mongoose, { Schema, model } from 'mongoose';
 
-const ticketSchema = new Schema({
+const TicketSchema = new Schema({
+  id: mongoose.Types.ObjectId,
   subject: String,
   status: String,
-  users: Array,
   deadline: Date,
   description: String,
   initial_time_estimated: Number,
   total_time_spent: Number,
   advancement: Number,
-  file_links: Array
-   
+  projectId: String,
+  users: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
 });
-const ticketModel = model('tickets', ticketSchema);
+const TicketsModel = model('tickets', TicketSchema);
 
-export default ticketModel;
+export default TicketsModel;

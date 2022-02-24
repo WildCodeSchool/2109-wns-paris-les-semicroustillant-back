@@ -27,11 +27,11 @@ class ProjectsResolver {
   async getOneProject(@Arg('projectId', () => String) projectId: IdInput) {
     try {
       const getOneProject = await ProjectModel.findById(projectId);
-      
+
       if (!getOneProject) {
         throw new Error('Cannot find this project');
       }
-      
+
       return getOneProject;
     } catch (err) {
       return console.log(err);
@@ -53,8 +53,8 @@ class ProjectsResolver {
 
   @Mutation(() => Project)
   async updateProject(
-    @Arg('projectInputUpdate')
-    { _id: projectId, ...projectInputUpdate }: ProjectInputUpdate
+    @Arg('id', () => String) projectId: IdInput,
+    @Arg('projectInputUpdate') projectInputUpdate: ProjectInputUpdate
   ) {
     try {
       await ProjectModel.findByIdAndUpdate(projectId, projectInputUpdate, {
