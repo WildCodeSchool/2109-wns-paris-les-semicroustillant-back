@@ -20,7 +20,6 @@ class TicketsResolver {
       for (let i = 0; i < getAllTickets.length; i += 1) {
         getAllTickets[i].advancement = getAdvancement(getAllTickets[i]);
       }
-      console.log(getAllTickets);
       return getAllTickets;
     } catch (err) {
       return console.log(err);
@@ -32,7 +31,6 @@ class TicketsResolver {
     try {
       const getOneTicket = await TicketsModel.findById(ticketId);
       getOneTicket.advancement = getAdvancement(getOneTicket);
-      console.log(getOneTicket.advancement);
       return getOneTicket;
     } catch (err) {
       return console.log(err);
