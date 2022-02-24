@@ -18,4 +18,7 @@ export default class ProjectInput {
 
   @Field(() => [IdInput], { nullable: true })
   members: Users[];
+
+  @Field()
+  advancement?: number;
 }

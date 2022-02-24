@@ -7,6 +7,7 @@ const projectSchema = new Schema({
   description: String,
   projectOwner: mongoose.Types.ObjectId,
   members: [mongoose.Types.ObjectId],
+  advancement: Number,
 });
 const projectModel = model('projects', projectSchema);
 

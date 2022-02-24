@@ -21,4 +21,7 @@ export default class ProjectInputUpdate {
 
   @Field(() => [IdInput], { nullable: true })
   members: Users[];
+
+  @Field()
+  advancement?: number;
 }

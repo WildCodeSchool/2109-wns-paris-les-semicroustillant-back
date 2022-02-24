@@ -20,6 +20,9 @@ class Project {
 
   @Field(() => [User])
   members: User[];
+
+  @Field()
+  advancement?: number;
 }
 
 export default Project;
