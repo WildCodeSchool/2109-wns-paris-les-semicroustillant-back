@@ -1,5 +1,4 @@
 import { Field, ID, ObjectType } from 'type-graphql';
-import User from './Users';
 
 @ObjectType()
 class Project {
@@ -15,11 +14,11 @@ class Project {
   @Field()
   description: string;
 
-  @Field()
+  @Field(() => ID, { nullable: true })
   projectOwner: string;
 
-  @Field(() => [User])
-  members: User[];
+  @Field(() => [ID])
+  members?: string[];
 
   @Field()
   advancement?: number;
