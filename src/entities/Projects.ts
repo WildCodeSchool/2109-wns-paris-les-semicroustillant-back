@@ -17,7 +17,7 @@ class Project {
   @Field(() => ID, { nullable: true })
   projectOwner: string;
 
-  @Field(() => [ID])
+  @Field(() => [ID], { nullable: true })
   members?: string[];
 
   @Field()
