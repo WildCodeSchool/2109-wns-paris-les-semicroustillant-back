@@ -1,6 +1,5 @@
 import { InputType, Field } from 'type-graphql';
 import IdInput from './IdInput';
-import Users from '../entities/Users';
 
 @InputType()
 export default class ProjectInput {
@@ -13,11 +12,11 @@ export default class ProjectInput {
   @Field()
   description: string;
 
-  @Field()
-  projectOwner: string;
+  @Field({ nullable: true })
+  projectOwner?: string;
 
   @Field(() => [IdInput], { nullable: true })
-  members: Users[];
+  members?: string[];
 
   @Field({ nullable: true })
   advancement?: number;
