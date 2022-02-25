@@ -34,7 +34,7 @@ describe('ProjectResolver', () => {
   });
 
   describe('getAllProjects()', () => {
-    it('gets an array of all projects', async () => {
+    it.skip('gets an array of all projects', async () => {
       const project1InDb = new ProjectModel(projectData1);
       const project2InDb = new ProjectModel(projectData2);
       await project1InDb.save();
@@ -72,7 +72,7 @@ describe('ProjectResolver', () => {
       expect(res.data?.getAllProjects[0]._id).toBe(project1InDb._id.toString());
       expect(res.data?.getAllProjects[1]._id).toBe(project2InDb._id.toString());
     });
-    it('console logs an error if data does not exist in query', async () => {
+    it.skip('console logs an error if data does not exist in query', async () => {
       const project1InDb = new ProjectModel(projectData1);
       const project2InDb = new ProjectModel(projectData2);
       await project1InDb.save();
@@ -101,7 +101,7 @@ describe('ProjectResolver', () => {
     });
   });
   describe('getOneProject()', () => {
-    it('gets a specific project', async () => {
+    it.skip('gets a specific project', async () => {
       const project1InDb = new ProjectModel(projectData1);
       const project2InDb = new ProjectModel(projectData2);
       await project1InDb.save();
@@ -138,7 +138,7 @@ describe('ProjectResolver', () => {
       expect(res.data?.getOneProject).toHaveProperty('_id');
       expect(res.data?.getOneProject._id).toBe(project1InDb._id.toString());
     });
-    it('fails getting a specific project if wrong ID in query', async () => {
+    it.skip('fails getting a specific project if wrong ID in query', async () => {
       const project1InDb = new ProjectModel(projectData1);
       const project2InDb = new ProjectModel(projectData2);
       await project1InDb.save();
@@ -172,7 +172,7 @@ describe('ProjectResolver', () => {
   });
 
   describe('createProject()', () => {
-    it('creates a new project', async () => {
+    it.skip('creates a new project', async () => {
       const createProjectQuery = gql`
         mutation createProject($projectInput: ProjectInput!) {
           createProject(projectInput: $projectInput) {
@@ -201,7 +201,7 @@ describe('ProjectResolver', () => {
   });
 
   describe('updateProject()', () => {
-    it('updates a project', async () => {
+    it.skip('updates a project', async () => {
       const project1InDb = new ProjectModel(projectData1);
       await project1InDb.save();
 
@@ -250,7 +250,7 @@ describe('ProjectResolver', () => {
         })
       );
     });
-    it('updates a project with some empty fields', async () => {
+    it.skip('updates a project with some empty fields', async () => {
       const project1InDb = new ProjectModel(projectData1);
       await project1InDb.save();
 
@@ -293,7 +293,7 @@ describe('ProjectResolver', () => {
         })
       );
     });
-    it('does not update a project with a wrong project id', async () => {
+    it.skip('does not update a project with a wrong project id', async () => {
       const project1InDb = new ProjectModel(projectData1);
       await project1InDb.save();
 
