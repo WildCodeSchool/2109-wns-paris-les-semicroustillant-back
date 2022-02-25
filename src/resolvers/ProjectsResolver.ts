@@ -92,6 +92,21 @@ class ProjectsResolver {
     }
   }
 
+  // @Query(() => [Project])
+  // async getProjectsByUserId(@Arg('userId', () => String) userId: ProjectInputUpdate) {
+  //   try {
+  //     const getOneProject = await ProjectModel.findById(projectId);
+
+  //     if (!getOneProject) {
+  //       throw new Error('Cannot find this project');
+  //     }
+
+  //     return getOneProject;
+  //   } catch (err) {
+  //     return console.log(err);
+  //   }
+  // }
+
   @Mutation(() => Project)
   async createProject(@Arg('projectInput') projectInput: ProjectInput) {
     try {

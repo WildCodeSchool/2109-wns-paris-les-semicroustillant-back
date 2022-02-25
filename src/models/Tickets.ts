@@ -15,5 +15,3 @@ const TicketSchema = new Schema({
 const TicketsModel = model('tickets', TicketSchema);
 
 export default TicketsModel;
-
-// { type: mongoose.Types.ObjectId, ref: 'projects' }

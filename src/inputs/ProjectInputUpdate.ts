@@ -1,23 +1,22 @@
 import { InputType, Field } from 'type-graphql';
 import IdInput from './IdInput';
-import Users from '../entities/Users';
 
 @InputType()
 export default class ProjectInputUpdate {
   @Field({ nullable: true })
-  name: string;
+  name?: string;
 
   @Field({ nullable: true })
-  status: string;
+  status?: string;
 
   @Field({ nullable: true })
-  description: string;
+  description?: string;
 
   @Field({ nullable: true })
-  projectOwner: string;
+  projectOwner?: string;
 
   @Field(() => [IdInput], { nullable: true })
-  members: Users[];
+  members?: String[];
 
   @Field({ nullable: true })
   advancement?: number;

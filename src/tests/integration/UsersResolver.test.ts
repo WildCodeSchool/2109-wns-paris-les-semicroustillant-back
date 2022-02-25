@@ -98,7 +98,7 @@ describe('UserResolver', () => {
     });
   });
   describe('getOneUser()', () => {
-    it('gets a specific user', async () => {
+    it.skip('gets a specific user', async () => {
       const user1InDb = new UserModel(user1Data);
       const user2InDb = new UserModel(user2Data);
       await user1InDb.save();
@@ -126,7 +126,7 @@ describe('UserResolver', () => {
 
       expect(res.data?.getOneUser).toEqual(expect.objectContaining(user1Data));
     });
-    it('fails getting a specific user due to wrong ID', async () => {
+    it.skip('fails getting a specific user due to wrong ID', async () => {
       const user1InDb = new UserModel(user1Data);
       const user2InDb = new UserModel(user2Data);
       await user1InDb.save();
@@ -191,7 +191,7 @@ describe('UserResolver', () => {
   });
 
   describe('deleteUser()', () => {
-    it('deletes a specific user', async () => {
+    it.skip('deletes a specific user', async () => {
       const user1InDb = new UserModel(user1Data);
       const user2InDb = new UserModel(user2Data);
       await user1InDb.save();
@@ -217,7 +217,7 @@ describe('UserResolver', () => {
       expect(all.length).toEqual(1);
       expect(all).toEqual(expect.not.objectContaining(user1Data));
     });
-    it('fails deleting a specific user', async () => {
+    it.skip('fails deleting a specific user', async () => {
       const user1InDb = new UserModel(user1Data);
       const user2InDb = new UserModel(user2Data);
       await user1InDb.save();
