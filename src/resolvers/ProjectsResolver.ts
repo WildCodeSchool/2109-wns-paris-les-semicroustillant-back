@@ -17,41 +17,31 @@ class ProjectsResolver {
 
       const getAllTickets = await TicketsModel.find();
 
-      for (let i = 0; i < getAllTickets.length; i += 1) {
-        getAllTickets[i].advancement = getAdvancement(getAllTickets[i]);
+      for (let i = 0; i < getAllProjects.length; i += 1) {
+        const getCorrespondingTickets = getAllTickets.filter(
+          (ticket) => ticket.projectId === getAllProjects[i]._id.toString()
+        );
+
+        for (let j = 0; j < getCorrespondingTickets.length; j += 1) {
+          getCorrespondingTickets[j].advancement = getAdvancement(
+            getCorrespondingTickets[j]
+          );
+        }
+
+        const getTicketsAdvancements: number[] = [];
+
+        for (let k = 0; k < getCorrespondingTickets.length; k += 1) {
+          getTicketsAdvancements.push(getCorrespondingTickets[k].advancement);
+        }
+
+        const sumOfTicketsAdvancements = getTicketsAdvancements.reduce(
+          (a, b) => a + b,
+          0
+        );
+
+        getAllProjects[i].advancement =
+          sumOfTicketsAdvancements / getCorrespondingTickets.length;
       }
-
-      const getTicketsAdvancements: number[] = [];
-
-      /* for (let i = 0; i < getAllProjects.length; i += 1) {
-        for (let j = 0; j < getAllTickets.length; j += 1) {
-          console.log(getAllTickets[j].projectId)
-          if (getAllTickets[j].projectId === getAllProjects[i]._id) {
-            getTicketsAdvancements.push(1);
-
-             const sumOfTicketsAdvancements = getTicketsAdvancements.reduce(
-              (a, b) => a + b,
-              0
-            );
-
-            getAllTickets[i].advancement =
-              sumOfTicketsAdvancements / getTicketsAdvancements.length; 
-          }
-        } */
-      // const getTicketsAdvancements: number[] = [];
-      // if (getAllTickets[i].projectId === getAllProjects[i]._id) {
-      //   getTicketsAdvancements.push(getAllTickets[i].advancement);
-
-      //   const sumOfTicketsAdvancements = getTicketsAdvancements.reduce(
-      //     (a, b) => a + b,
-      //     0
-      //   );
-
-      //   getAllTickets[i].advancement =
-      //     sumOfTicketsAdvancements / getTicketsAdvancements.length;
-      // }
-      // }
-      console.log(getTicketsAdvancements);
 
       if (!getAllProjects) {
         throw new Error('Cannot find any project');
