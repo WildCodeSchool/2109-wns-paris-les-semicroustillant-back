@@ -8,6 +8,7 @@ Array [
 
 exports[`ProjectResolver getAllProjects() console logs an error if data does not exist in query 1`] = `
 Array [
+  [ValidationError: Field "members" must not have a selection since type "[ID!]" has no subfields.],
   [ValidationError: Cannot query field "plop" on type "Project".],
 ]
 `;

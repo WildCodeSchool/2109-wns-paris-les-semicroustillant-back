@@ -22,35 +22,31 @@ describe('ProjectResolver', () => {
       status: 'In progress',
       description: 'Blabla',
       projectOwner: emptyObjectId,
-      members: [{ _id: fakeUserId }],
+      members: [fakeUserId],
     };
     projectData2 = {
       name: 'project-2',
       status: 'Done',
       description: 'Blabla',
       projectOwner: emptyObjectId,
-      members: [{ _id: fakeUserId }],
+      members: [fakeUserId],
     };
   });
 
   describe('getAllProjects()', () => {
-    it.skip('gets an array of all projects', async () => {
+    it('gets an array of all projects', async () => {
       const project1InDb = new ProjectModel(projectData1);
       const project2InDb = new ProjectModel(projectData2);
       await project1InDb.save();
       await project2InDb.save();
 
       const getAllProjectsQuery = gql`
-        query getAllProjects {
+        query GetAllUsers {
           getAllProjects {
             _id
             name
-            status
-            description
             projectOwner
-            members {
-              _id
-            }
+            members
           }
         }
       `;
@@ -63,7 +59,7 @@ describe('ProjectResolver', () => {
         expect.objectContaining({
           name: 'project-1',
           projectOwner: emptyObjectId,
-          members: [{ _id: fakeUserId }],
+          members: [fakeUserId],
         })
       );
       expect(res.data?.getAllProjects[0]).toHaveProperty('_id');
@@ -72,7 +68,7 @@ describe('ProjectResolver', () => {
       expect(res.data?.getAllProjects[0]._id).toBe(project1InDb._id.toString());
       expect(res.data?.getAllProjects[1]._id).toBe(project2InDb._id.toString());
     });
-    it.skip('console logs an error if data does not exist in query', async () => {
+    it('console logs an error if data does not exist in query', async () => {
       const project1InDb = new ProjectModel(projectData1);
       const project2InDb = new ProjectModel(projectData2);
       await project1InDb.save();
@@ -101,7 +97,7 @@ describe('ProjectResolver', () => {
     });
   });
   describe('getOneProject()', () => {
-    it.skip('gets a specific project', async () => {
+    it('gets a specific project', async () => {
       const project1InDb = new ProjectModel(projectData1);
       const project2InDb = new ProjectModel(projectData2);
       await project1InDb.save();
@@ -112,12 +108,8 @@ describe('ProjectResolver', () => {
           getOneProject(projectId: $projectId) {
             _id
             name
-            status
-            description
             projectOwner
-            members {
-              _id
-            }
+            members
           }
         }
       `;
@@ -132,13 +124,13 @@ describe('ProjectResolver', () => {
         expect.objectContaining({
           name: 'project-1',
           projectOwner: emptyObjectId,
-          members: [{ _id: fakeUserId }],
+          members: [fakeUserId],
         })
       );
       expect(res.data?.getOneProject).toHaveProperty('_id');
       expect(res.data?.getOneProject._id).toBe(project1InDb._id.toString());
     });
-    it.skip('fails getting a specific project if wrong ID in query', async () => {
+    it('fails getting a specific project if wrong ID in query', async () => {
       const project1InDb = new ProjectModel(projectData1);
       const project2InDb = new ProjectModel(projectData2);
       await project1InDb.save();
@@ -149,12 +141,8 @@ describe('ProjectResolver', () => {
           getOneProject(projectId: $projectId) {
             _id
             name
-            status
-            description
             projectOwner
-            members {
-              _id
-            }
+            members
           }
         }
       `;
@@ -172,7 +160,15 @@ describe('ProjectResolver', () => {
   });
 
   describe('createProject()', () => {
-    it.skip('creates a new project', async () => {
+    it('creates a new project', async () => {
+      const createProjectData = {
+        name: 'project-2',
+        status: 'Done',
+        description: 'Blabla',
+        projectOwner: emptyObjectId,
+        members: [{ _id: fakeUserId }],
+      };
+
       const createProjectQuery = gql`
         mutation createProject($projectInput: ProjectInput!) {
           createProject(projectInput: $projectInput) {
@@ -181,14 +177,12 @@ describe('ProjectResolver', () => {
             status
             description
             projectOwner
-            members {
-              _id
-            }
+            members
           }
         }
       `;
 
-      const variables = { projectInput: projectData2 };
+      const variables = { projectInput: createProjectData };
       const res = await server.executeOperation({
         query: createProjectQuery,
         variables,
@@ -201,26 +195,25 @@ describe('ProjectResolver', () => {
   });
 
   describe('updateProject()', () => {
-    it.skip('updates a project', async () => {
+    it('updates a project', async () => {
       const project1InDb = new ProjectModel(projectData1);
       await project1InDb.save();
 
       const updateProjectQuery = gql`
-        mutation UpdateProject(
-          $projectInputUpdate: ProjectInputUpdate!
+        mutation UpdateProjectById(
           $updateProjectId: String!
+          $projectInputUpdate: ProjectInputUpdate!
         ) {
           updateProject(
-            projectInputUpdate: $projectInputUpdate
             id: $updateProjectId
+            projectInputUpdate: $projectInputUpdate
           ) {
+            _id
             name
             status
             description
             projectOwner
-            members {
-              _id
-            }
+            members
           }
         }
       `;
@@ -246,28 +239,29 @@ describe('ProjectResolver', () => {
           status: 'super status',
           description: 'super description',
           projectOwner: '61e7f93050acb74fc893e17e',
-          members: [{ _id: '61e7f93050acb74fc893e17d' }],
+          members: ['61e7f93050acb74fc893e17d'],
         })
       );
     });
-    it.skip('updates a project with some empty fields', async () => {
+    it('updates a project with some empty fields', async () => {
       const project1InDb = new ProjectModel(projectData1);
       await project1InDb.save();
 
       const updateProjectQuery = gql`
-        mutation UpdateProject(
-          $projectInputUpdate: ProjectInputUpdate!
+        mutation UpdateProjectById(
           $updateProjectId: String!
+          $projectInputUpdate: ProjectInputUpdate!
         ) {
           updateProject(
-            projectInputUpdate: $projectInputUpdate
             id: $updateProjectId
+            projectInputUpdate: $projectInputUpdate
           ) {
+            _id
             name
+            status
+            description
             projectOwner
-            members {
-              _id
-            }
+            members
           }
         }
       `;
@@ -289,28 +283,29 @@ describe('ProjectResolver', () => {
         expect.objectContaining({
           name: 'super great project',
           projectOwner: '61e7f93050acb74fc893e17e',
-          members: [{ _id: '61e7f93050acb74fc893e17d' }],
+          members: ['61e7f93050acb74fc893e17d'],
         })
       );
     });
-    it.skip('does not update a project with a wrong project id', async () => {
+    it('does not update a project with a wrong project id', async () => {
       const project1InDb = new ProjectModel(projectData1);
       await project1InDb.save();
 
       const updateProjectQuery = gql`
-        mutation UpdateProject(
-          $projectInputUpdate: ProjectInputUpdate!
+        mutation UpdateProjectById(
           $updateProjectId: String!
+          $projectInputUpdate: ProjectInputUpdate!
         ) {
           updateProject(
-            projectInputUpdate: $projectInputUpdate
             id: $updateProjectId
+            projectInputUpdate: $projectInputUpdate
           ) {
+            _id
             name
+            status
+            description
             projectOwner
-            members {
-              _id
-            }
+            members
           }
         }
       `;
