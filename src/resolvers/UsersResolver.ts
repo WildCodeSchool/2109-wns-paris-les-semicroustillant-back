@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { Arg, Query, Resolver, Mutation } from 'type-graphql';
-import User from '../entities/Users';
-import UsersModel from '../models/Users';
+import User from '../entities/UserEntity';
+import UsersModel from '../models/UserModel';
 import UserInput from '../inputs/UserInput';
 import UserInputUpdate from '../inputs/UserInputUpdate';
 
@@ -74,6 +74,3 @@ class UsersResolver {
 }
 
 export default UsersResolver;
-
-// @FREDY: check/update integration tests
-// replicate _id on porjectResolvers

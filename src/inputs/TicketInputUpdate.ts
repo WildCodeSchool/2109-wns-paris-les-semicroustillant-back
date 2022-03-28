@@ -1,6 +1,6 @@
 import { InputType, Field } from 'type-graphql';
 import IdInput from './IdInput';
-import Users from '../entities/Users';
+import Users from '../entities/UserEntity';
 
 @InputType()
 export default class TicketInputUpdate {

@@ -17,11 +17,11 @@ class Project {
   @Field(() => ID, { nullable: true })
   projectOwner: string;
 
-  @Field(() => [ID])
-  members?: string[];
+  @Field(() => [ID], { nullable: true })
+  members: string[];
 
   @Field()
-  advancement?: number;
+  advancement: number;
 }
 
 export default Project;

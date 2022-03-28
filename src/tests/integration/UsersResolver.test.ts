@@ -1,6 +1,6 @@
 import { ApolloServer, gql } from 'apollo-server';
 import createServer from '../../server';
-import UserModel from '../../models/Users';
+import UserModel from '../../models/UserModel';
 
 let server: ApolloServer;
 

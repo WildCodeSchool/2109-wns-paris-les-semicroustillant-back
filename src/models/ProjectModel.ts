@@ -1,6 +1,6 @@
 import mongoose, { Schema, model } from 'mongoose';
 
-const projectSchema = new Schema({
+const ProjectSchema = new Schema({
   id: mongoose.Types.ObjectId,
   name: String,
   status: String,
@@ -9,6 +9,6 @@ const projectSchema = new Schema({
   members: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
   advancement: Number,
 });
-const projectModel = model('projects', projectSchema);
+const ProjectModel = model('projects', ProjectSchema);
 
-export default projectModel;
+export default ProjectModel;

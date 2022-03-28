@@ -1,5 +1,5 @@
 import { InputType, Field, ID } from "type-graphql";
-import User from "../entities/Users";
+import User from "../entities/UserEntity";
 
 @InputType()
 export default class UserInputUpdate implements Partial<User>{
