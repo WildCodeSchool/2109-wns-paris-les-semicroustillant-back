@@ -6,7 +6,7 @@ import TicketInput from '../inputs/TicketInput';
 import TicketInputUpdate from '../inputs/TicketInputUpdate';
 import IdInput from '../inputs/IdInput';
 
-const getAdvancement = (data: any) => {
+export const getAdvancement = (data: any) => {
   const timeSpent = data.total_time_spent;
   const estimatedTime = data.initial_time_estimated;
   return (timeSpent / estimatedTime) * 100;

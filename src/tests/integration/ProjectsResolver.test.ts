@@ -43,7 +43,7 @@ describe('ProjectResolver', () => {
       await project2InDb.save();
 
       const getAllProjectsQuery = gql`
-        query getAllProjects {
+        query GetAllUsers {
           getAllProjects {
             _id
             name
@@ -106,8 +106,6 @@ describe('ProjectResolver', () => {
           getOneProject(projectId: $projectId) {
             _id
             name
-            status
-            description
             projectOwner
             members
           }
@@ -141,8 +139,6 @@ describe('ProjectResolver', () => {
           getOneProject(projectId: $projectId) {
             _id
             name
-            status
-            description
             projectOwner
             members
             advancement

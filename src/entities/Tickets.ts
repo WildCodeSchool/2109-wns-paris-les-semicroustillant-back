@@ -21,16 +21,16 @@ class Ticket {
   @Field()
   initial_time_estimated?: number;
 
-  @Field()
+  @Field({ nullable: true })
   total_time_spent?: number;
 
-  @Field()
+  @Field({ nullable: true })
   advancement?: number;
 
   @Field()
   projectId?: string;
 
-  @Field(() => [User])
+  @Field(() => [User], { nullable: true })
   users?: User[];
 }
 
