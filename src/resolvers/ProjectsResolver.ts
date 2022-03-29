@@ -50,7 +50,7 @@ class ProjectsResolver {
     }
   }
 
-  // @Authorized()
+  @Authorized()
   @Query(() => Project)
   async getOneProject(
     @Arg('projectId', () => String) projectId: ProjectInputUpdate['_id']
@@ -89,7 +89,7 @@ class ProjectsResolver {
     }
   }
 
-  // @Authorized()
+  @Authorized('ADMIN')
   @Mutation(() => Project)
   async createProject(@Arg('projectInput') projectInput: ProjectInput) {
     try {
@@ -103,7 +103,7 @@ class ProjectsResolver {
     }
   }
 
-  // @Authorized()
+  @Authorized()
   @Mutation(() => Project)
   async updateProject(
     @Arg('projectInputUpdate') projectInputUpdate: ProjectInputUpdate
@@ -121,7 +121,7 @@ class ProjectsResolver {
     return ProjectModel.findById(projectId);
   }
 
-  // @Authorized()
+  @Authorized('ADMIN')
   @Mutation(() => String)
   async deleteProject(
     @Arg('ProjectId', () => String) projectId: ProjectInputUpdate['_id']

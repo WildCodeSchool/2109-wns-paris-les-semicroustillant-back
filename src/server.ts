@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+// import jwt, { JwtPayload } from 'jsonwebtoken';
 import { ApolloServer } from 'apollo-server';
 import { buildSchema } from 'type-graphql';
 import UsersResolver from './resolvers/UsersResolver';

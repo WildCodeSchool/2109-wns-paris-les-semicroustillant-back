@@ -15,7 +15,10 @@ export const customAuthChecker: AuthChecker<ContextType> = (
 };
 */
 
-const customAuthChecker = async ({ root, args, context, info }: any) => {
+const customAuthChecker: AuthChecker<ContextType> = async (
+  { root, args, context, info },
+  roles: string[]
+) => {
   const userJwt = context.token;
   const secret = process.env.SECRET_JWT_KEY as Secret;
   console.log('JWT SECRET', process.env.SECRET_JWT_KEY);
