@@ -1,6 +1,6 @@
 import { ApolloServer, gql } from 'apollo-server';
 import createServer from '../../server';
-import UserModel from '../../models/Users';
+import UserModel from '../../models/UserModel';
 
 let server: ApolloServer;
 
@@ -98,62 +98,60 @@ describe('UserResolver', () => {
     });
   });
   describe('getOneUser()', () => {
-    it.skip('gets a specific user', async () => {
+    it('gets a specific user', async () => {
       const user1InDb = new UserModel(user1Data);
       const user2InDb = new UserModel(user2Data);
       await user1InDb.save();
       await user2InDb.save();
 
       const getOneUserQuery = gql`
-        query getOneUser($getOneUserId: String!) {
-          getOneUser(id: $getOneUserId) {
+        query getOneUser($userId: String!) {
+          getOneUser(userId: $userId) {
             _id
             firstname
             lastname
             email
-            hash
-            role
             position
           }
         }
       `;
 
-      const variables = { getOneUserId: user1InDb._id.toString() };
+      const variables = { userId: user1InDb._id.toString() };
       const res = await server.executeOperation({
         query: getOneUserQuery,
         variables,
       });
 
-      expect(res.data?.getOneUser).toEqual(expect.objectContaining(user1Data));
+      expect({
+        ...user1Data,
+        _id: user1InDb._id.toString()
+      }).toMatchObject(res.data?.getOneUser);
     });
-    it.skip('fails getting a specific user due to wrong ID', async () => {
+    it('fails getting a specific user due to wrong ID', async () => {
       const user1InDb = new UserModel(user1Data);
       const user2InDb = new UserModel(user2Data);
       await user1InDb.save();
       await user2InDb.save();
 
       const getOneUserQuery = gql`
-        query getOneUser($getOneUserId: String!) {
-          getOneUser(id: $getOneUserId) {
+        query getOneUser($userId: String!) {
+          getOneUser(userId: $userId) {
             _id
             firstname
             lastname
             email
-            hash
-            role
             position
           }
         }
       `;
 
       const wrongId = '619e14d317fc7b24dca41e56';
-      const variables = { getOneUserId: wrongId };
+      const variables = { userId: wrongId };
       const res = await server.executeOperation({
         query: getOneUserQuery,
         variables,
       });
 
-      // @FIXME: does not return the error message in !getOneUser condition in UsersResolver.ts
       expect(res.data).toEqual(null);
       expect(res.errors).toMatchSnapshot();
     });
@@ -191,7 +189,7 @@ describe('UserResolver', () => {
   });
 
   describe('deleteUser()', () => {
-    it.skip('deletes a specific user', async () => {
+    it('deletes a specific user', async () => {
       const user1InDb = new UserModel(user1Data);
       const user2InDb = new UserModel(user2Data);
       await user1InDb.save();
@@ -199,12 +197,12 @@ describe('UserResolver', () => {
 
       // Delete a user by his ID
       const deleteOneUser = gql`
-        mutation DeleteUserMutation($deleteUserId: String!) {
-          deleteUser(id: $deleteUserId)
+        mutation DeleteUserMutation($userId: String!) {
+          deleteUser(UserId: $userId)
         }
       `;
 
-      const variables = { deleteUserId: user1InDb._id.toString() };
+      const variables = { userId: user1InDb._id.toString() };
       const res = await server.executeOperation({
         query: deleteOneUser,
         variables,
@@ -217,7 +215,7 @@ describe('UserResolver', () => {
       expect(all.length).toEqual(1);
       expect(all).toEqual(expect.not.objectContaining(user1Data));
     });
-    it.skip('fails deleting a specific user', async () => {
+    it('fails deleting a specific user', async () => {
       const user1InDb = new UserModel(user1Data);
       const user2InDb = new UserModel(user2Data);
       await user1InDb.save();
@@ -225,13 +223,13 @@ describe('UserResolver', () => {
 
       // Delete a user by his ID
       const deleteOneUser = gql`
-        mutation DeleteUserMutation($deleteUserId: String!) {
-          deleteUser(id: $deleteUserId)
+        mutation DeleteUserMutation($userId: String!) {
+          deleteUser(UserId: $userId)
         }
       `;
 
       const wrongId = '619fa6b902b538d856541718';
-      const variables = { deleteUserId: wrongId };
+      const variables = { userId: wrongId };
       const res = await server.executeOperation({
         query: deleteOneUser,
         variables,

@@ -23,6 +23,7 @@ describe('ProjectResolver', () => {
       description: 'Blabla',
       projectOwner: emptyObjectId,
       members: [fakeUserId],
+      advancement: 10,
     };
     projectData2 = {
       name: 'project-2',
@@ -30,6 +31,7 @@ describe('ProjectResolver', () => {
       description: 'Blabla',
       projectOwner: emptyObjectId,
       members: [fakeUserId],
+      advancement: 20,
     };
   });
 
@@ -79,12 +81,8 @@ describe('ProjectResolver', () => {
           getAllProjects {
             _id
             name
-            status
-            description
             projectOwner
-            members {
-              _id
-            }
+            members
             plop
           }
         }
@@ -143,6 +141,7 @@ describe('ProjectResolver', () => {
             name
             projectOwner
             members
+            advancement
           }
         }
       `;
@@ -166,7 +165,8 @@ describe('ProjectResolver', () => {
         status: 'Done',
         description: 'Blabla',
         projectOwner: emptyObjectId,
-        members: [{ _id: fakeUserId }],
+        members: [fakeUserId],
+        advancement: 20,
       };
 
       const createProjectQuery = gql`
@@ -178,6 +178,7 @@ describe('ProjectResolver', () => {
             description
             projectOwner
             members
+            advancement
           }
         }
       `;
@@ -200,33 +201,29 @@ describe('ProjectResolver', () => {
       await project1InDb.save();
 
       const updateProjectQuery = gql`
-        mutation UpdateProjectById(
-          $updateProjectId: String!
-          $projectInputUpdate: ProjectInputUpdate!
-        ) {
-          updateProject(
-            id: $updateProjectId
-            projectInputUpdate: $projectInputUpdate
-          ) {
+        mutation UpdateProjectById($projectInputUpdate: ProjectInputUpdate!) {
+          updateProject(projectInputUpdate: $projectInputUpdate) {
             _id
             name
             status
             description
             projectOwner
             members
+            advancement
           }
         }
       `;
 
       const variables = {
         projectInputUpdate: {
+          _id: project1InDb._id.toString(),
           name: 'super great project',
           status: 'super status',
           description: 'super description',
           projectOwner: '61e7f93050acb74fc893e17e',
-          members: [{ _id: '61e7f93050acb74fc893e17d' }],
+          members: ['61e7f93050acb74fc893e17d'],
+          advancement: 10,
         },
-        updateProjectId: project1InDb._id.toString(),
       };
       const res = await server.executeOperation({
         query: updateProjectQuery,
@@ -240,6 +237,7 @@ describe('ProjectResolver', () => {
           description: 'super description',
           projectOwner: '61e7f93050acb74fc893e17e',
           members: ['61e7f93050acb74fc893e17d'],
+          advancement: 10,
         })
       );
     });
@@ -248,32 +246,31 @@ describe('ProjectResolver', () => {
       await project1InDb.save();
 
       const updateProjectQuery = gql`
-        mutation UpdateProjectById(
-          $updateProjectId: String!
-          $projectInputUpdate: ProjectInputUpdate!
-        ) {
-          updateProject(
-            id: $updateProjectId
-            projectInputUpdate: $projectInputUpdate
-          ) {
+        mutation UpdateProjectById($projectInputUpdate: ProjectInputUpdate!) {
+          updateProject(projectInputUpdate: $projectInputUpdate) {
             _id
             name
             status
             description
             projectOwner
             members
+            advancement
           }
         }
       `;
 
       const variables = {
         projectInputUpdate: {
+          _id: project1InDb._id.toString(),
           name: 'super great project',
+          status: 'super status',
+          description: 'super description',
           projectOwner: '61e7f93050acb74fc893e17e',
-          members: [{ _id: '61e7f93050acb74fc893e17d' }],
+          members: ['61e7f93050acb74fc893e17d'],
+          advancement: 10,
         },
-        updateProjectId: project1InDb._id.toString(),
       };
+
       const res = await server.executeOperation({
         query: updateProjectQuery,
         variables,
@@ -282,8 +279,11 @@ describe('ProjectResolver', () => {
       expect(res.data?.updateProject).toEqual(
         expect.objectContaining({
           name: 'super great project',
+          status: 'super status',
+          description: 'super description',
           projectOwner: '61e7f93050acb74fc893e17e',
           members: ['61e7f93050acb74fc893e17d'],
+          advancement: 10,
         })
       );
     });
@@ -292,32 +292,30 @@ describe('ProjectResolver', () => {
       await project1InDb.save();
 
       const updateProjectQuery = gql`
-        mutation UpdateProjectById(
-          $updateProjectId: String!
-          $projectInputUpdate: ProjectInputUpdate!
-        ) {
-          updateProject(
-            id: $updateProjectId
-            projectInputUpdate: $projectInputUpdate
-          ) {
+        mutation UpdateProjectById($projectInputUpdate: ProjectInputUpdate!) {
+          updateProject(projectInputUpdate: $projectInputUpdate) {
             _id
             name
             status
             description
             projectOwner
             members
+            advancement
           }
         }
       `;
 
       const wrongProjectId = '619e14d317fc7b24dca41e56';
+
       const variables = {
         projectInputUpdate: {
+          _id: wrongProjectId,
           name: 'super great project',
+          description: 'super description',
           projectOwner: '000000000000000000000001',
-          members: [{ _id: fakeUserId }],
+          members: [fakeUserId],
+          advancement: 10,
         },
-        updateProjectId: wrongProjectId,
       };
       const res = await server.executeOperation({
         query: updateProjectQuery,
@@ -337,12 +335,12 @@ describe('ProjectResolver', () => {
       await project2InDb.save();
 
       const deleteProject = gql`
-        mutation deleteProject($deleteProjectId: String!) {
-          deleteProject(id: $deleteProjectId)
+        mutation DeleteProjectMutation($projectId: String!) {
+          deleteProject(ProjectId: $projectId)
         }
       `;
 
-      const variables = { deleteProjectId: project1InDb._id.toString() };
+      const variables = { projectId: project1InDb._id.toString() };
       const res = await server.executeOperation({
         query: deleteProject,
         variables,
@@ -361,13 +359,13 @@ describe('ProjectResolver', () => {
       await project2InDb.save();
 
       const deleteProject = gql`
-        mutation deleteProject($deleteProjectId: String!) {
-          deleteProject(id: $deleteProjectId)
+        mutation DeleteProjectMutation($projectId: String!) {
+          deleteProject(ProjectId: $projectId)
         }
       `;
 
       const wrongId = '619fa6b902b538d856541718';
-      const variables = { deleteProjectId: wrongId };
+      const variables = { projectId: wrongId };
       const res = await server.executeOperation({
         query: deleteProject,
         variables,
