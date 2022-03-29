@@ -1,8 +1,11 @@
-import { InputType, Field } from 'type-graphql';
-import IdInput from './IdInput';
+import { InputType, Field, ID } from 'type-graphql';
+import Project from '../entities/ProjectEntity';
 
 @InputType()
-export default class ProjectInputUpdate {
+export default class ProjectInputUpdate implements Partial<Project> {
+  @Field(() => ID)
+  _id!: string;
+
   @Field({ nullable: true })
   name?: string;
 
@@ -15,8 +18,8 @@ export default class ProjectInputUpdate {
   @Field({ nullable: true })
   projectOwner?: string;
 
-  @Field(() => [IdInput], { nullable: true })
-  members?: String[];
+  @Field(() => [ID], { nullable: true })
+  members?: string[];
 
   @Field({ nullable: true })
   advancement?: number;

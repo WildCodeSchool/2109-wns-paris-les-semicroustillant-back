@@ -18,10 +18,10 @@ class Project {
   projectOwner: string;
 
   @Field(() => [ID], { nullable: true })
-  members?: string[];
+  members: string[];
 
   @Field()
-  advancement?: number;
+  advancement: number;
 }
 
 export default Project;

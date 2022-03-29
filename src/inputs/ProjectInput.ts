@@ -1,5 +1,4 @@
-import { InputType, Field } from 'type-graphql';
-import IdInput from './IdInput';
+import { InputType, Field, ID } from 'type-graphql';
 
 @InputType()
 export default class ProjectInput {
@@ -15,7 +14,7 @@ export default class ProjectInput {
   @Field({ nullable: true })
   projectOwner?: string;
 
-  @Field(() => [IdInput], { nullable: true })
+  @Field(() => [ID], { nullable: true })
   members?: string[];
 
   @Field({ nullable: true })
