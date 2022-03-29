@@ -1,10 +1,11 @@
 import bcrypt from 'bcrypt';
+import 'dotenv/config';
 import { Resolver, Query, Arg } from 'type-graphql';
 import { ApolloError } from 'apollo-server';
-import jwt from 'jsonwebtoken';
+import jwt, { Secret } from 'jsonwebtoken';
 import UserModel from '../models/UserModel';
 
-export const jwtKey = 'my_secret_key_that_must_be_very_long';
+const jwtKey = process.env.SECRET_JWT_KEY as Secret;
 
 @Resolver()
 export default class LoginResolver {
@@ -18,7 +19,7 @@ export default class LoginResolver {
     if (usersDB && bcrypt.compareSync(password, usersDB.hash)) {
       const token = jwt.sign(
         {
-          user: usersDB.email,
+          userEmail: usersDB.email,
         },
         jwtKey
       );
