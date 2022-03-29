@@ -12,7 +12,9 @@ import UserInputUpdate from '../inputs/UserInputUpdate';
 class UsersResolver {
   @Query(() => [User])
   async allUsers(@Ctx() ctx: JwtPayload) {
-    console.log(ctx);
+
+    // console.log('--- CTX ALL USERS ---', ctx);
+
     if (ctx && ctx.authenticatedUserEmail) {
       try {
         const getAllUsers = await UsersModel.find();
@@ -41,9 +43,11 @@ class UsersResolver {
   @Mutation(() => User)
   async addUser(@Arg('userInput') userInput: UserInput) {
     try {
-      const newHash = bcrypt.hashSync(userInput.hash, 10);
       await UsersModel.init();
-      const user = await UsersModel.create({ ...userInput, hash: newHash });
+      const user = await UsersModel.create({
+        ...userInput,
+        hash: bcrypt.hashSync(userInput.hash, 10),
+      });
       await user.save();
 
       return user;
