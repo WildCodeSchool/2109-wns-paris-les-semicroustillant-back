@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import 'dotenv/config';
 // import jwt, { JwtPayload } from 'jsonwebtoken';
 import { ApolloServer } from 'apollo-server';
 import { buildSchema } from 'type-graphql';

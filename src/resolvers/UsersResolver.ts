@@ -1,8 +1,9 @@
 /* eslint-disable no-console */
-import { Arg, Query, Resolver, Ctx, Mutation } from 'type-graphql';
+// import { Arg, Query, Resolver, Ctx, Mutation, Authorized } from 'type-graphql';
+import { Arg, Query, Resolver, Mutation, Authorized } from 'type-graphql';
 import bcrypt from 'bcrypt';
-import { ApolloError } from 'apollo-server';
-import { JwtPayload } from 'jsonwebtoken';
+// import { ApolloError } from 'apollo-server';
+// import { JwtPayload } from 'jsonwebtoken';
 import User from '../entities/UserEntity';
 import UsersModel from '../models/UserModel';
 import UserInput from '../inputs/UserInput';
@@ -10,21 +11,24 @@ import UserInputUpdate from '../inputs/UserInputUpdate';
 
 @Resolver()
 class UsersResolver {
+  @Authorized()
   @Query(() => [User])
-  async allUsers(@Ctx() ctx: JwtPayload) {
+  // async allUsers(@Ctx() ctx: JwtPayload) { // @FREDY: remove the Ctx since not used here
+  async allUsers() {
 
     // console.log('--- CTX ALL USERS ---', ctx);
 
-    if (ctx && ctx.authenticatedUserEmail) {
+    // @FREDY: is this condition really needed?
+    // if (ctx?.user) {
       try {
         const getAllUsers = await UsersModel.find();
         return getAllUsers;
       } catch (err) {
         return console.log(err);
       }
-    } else {
-      return new ApolloError('Not Authorized');
-    }
+    // } else {
+    //   return new ApolloError('Not Authorized');
+    // }
   }
 
   @Query(() => User)

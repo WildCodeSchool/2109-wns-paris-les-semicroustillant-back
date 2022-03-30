@@ -3,7 +3,6 @@ import { Resolver, Query, Arg } from 'type-graphql';
 import { ApolloError } from 'apollo-server';
 import jwt, { Secret } from 'jsonwebtoken';
 import UserModel from '../models/UserModel';
-import 'dotenv/config';
 
 const privateKey = process.env.SECRET_JWT_KEY as Secret;
 @Resolver()
@@ -24,7 +23,9 @@ export default class LoginResolver {
       const options = {
         expiresIn: '24h',
       };
-      const token = jwt.sign({ userId: userDB.id }, privateKey, options);
+
+      const userId = userDB._id.toString();
+      const token = jwt.sign({ userId }, privateKey, options);
 
       // const cookie = res.cookie('token', token, {
       //   httpOnly: true,
@@ -35,6 +36,7 @@ export default class LoginResolver {
 
       // console.log('----- PROCESS ENV NODE_ENV -----', process.env.NODE_ENV);
       // console.log('----- COOKIE -----', cookie);
+      // console.log('----- TOKEN -----', token);
 
       // return cookie;
 

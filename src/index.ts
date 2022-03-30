@@ -5,7 +5,7 @@ import createServer from './server';
 
 async function start() {
   try {
-    const db = 'semidb';
+    const db = process.env.DB_NAME;
 
     console.log('awaiting for database connection');
     // If running the server locally, use :

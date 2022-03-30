@@ -1,7 +1,6 @@
 import { AuthChecker } from 'type-graphql';
 import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
 import UserModel from './models/UserModel';
-import 'dotenv/config';
 
 // type RemoveIndex<T> = {
 // 	[P in keyof T as string extends P
@@ -30,6 +29,7 @@ const customAuthChecker: AuthChecker<JwtPayload> = async (
   // console.log('--- ROLES ---', roles);
   try {
     const payload = <JwtPayload>jwt.verify(userJwt, secret);
+    // console.log('--- PAYLOAD ---', payload);
 
     // console.log('--- PAYLOAD ---', payload);
 
@@ -37,7 +37,9 @@ const customAuthChecker: AuthChecker<JwtPayload> = async (
       return false;
     }
 
-    const user = await UserModel.findOne({ email: payload.userId }, 'email');
+    const user = await UserModel.findOne({ _id: payload.userId }, 'email');
+    // console.log('--- USER ---', user);
+
     if (!user) {
       return false;
     }
