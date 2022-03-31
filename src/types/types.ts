@@ -1,4 +1,4 @@
-import { MergeInfo } from 'apollo-server';
+// import { MergeInfo } from 'apollo-server';
 import { GraphQLResolveInfo } from 'graphql';
 
 export declare type IFieldResolver<
