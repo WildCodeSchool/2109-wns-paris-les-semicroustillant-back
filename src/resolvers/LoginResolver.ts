@@ -11,11 +11,7 @@ export default class LoginResolver {
   async login(
     @Arg('email') email: string,
     @Arg('password') password: string,
-    // { res },
   ): Promise<string> {
-
-    // console.log('----- RES -----', res);
-    // console.log('----- PVKEY -----', privateKey);
 
     const userDB = await UserModel.findOne({ email }, 'email hash');
 
@@ -26,19 +22,6 @@ export default class LoginResolver {
 
       const userId = userDB._id.toString();
       const token = jwt.sign({ userId }, privateKey, options);
-
-      // const cookie = res.cookie('token', token, {
-      //   httpOnly: true,
-      //   maxAge: 86400000,
-      //   // sameSite: 'none',
-      //   secure: process.env.NODE_ENV === "production",
-      // });
-
-      // console.log('----- PROCESS ENV NODE_ENV -----', process.env.NODE_ENV);
-      // console.log('----- COOKIE -----', cookie);
-      // console.log('----- TOKEN -----', token);
-
-      // return cookie;
 
       return token;
     }
