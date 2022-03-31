@@ -89,7 +89,7 @@ class ProjectsResolver {
     }
   }
 
-  @Authorized('ADMIN')
+  @Authorized()
   @Mutation(() => Project)
   async createProject(@Arg('projectInput') projectInput: ProjectInput) {
     try {
@@ -121,7 +121,7 @@ class ProjectsResolver {
     return ProjectModel.findById(projectId);
   }
 
-  @Authorized('ADMIN')
+  @Authorized()
   @Mutation(() => String)
   async deleteProject(
     @Arg('ProjectId', () => String) projectId: ProjectInputUpdate['_id']
