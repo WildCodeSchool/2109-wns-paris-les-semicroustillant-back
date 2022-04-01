@@ -8,7 +8,6 @@ import ProjectsResolver from './resolvers/ProjectsResolver';
 import LoginResolver from './resolvers/LoginResolver';
 import customAuthChecker from './auth/customAuthChecker';
 
-export const jwtKey = 'my_secret_key_that_must_be_very_long';
 async function createServer() {
   const schema = await buildSchema({
     resolvers: [

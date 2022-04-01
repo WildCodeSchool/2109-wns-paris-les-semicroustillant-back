@@ -23,18 +23,13 @@ const customAuthChecker: AuthChecker<JwtPayload> = async (
       return false;
     }
 
-    // @FIX: check cases when user !== undefined
-    if (roles.length === 0) {
-      return user !== undefined;
-    }
-
-    if (!roles.includes(user.role)) {
-      return false;
-    }
-
     context.user = user;
 
-    return true;
+    if (roles.length === 0 || roles.includes(user.role)) {
+      return true;
+    }
+
+    return false;
   } catch (err) {
     console.log(err);
     return false;
