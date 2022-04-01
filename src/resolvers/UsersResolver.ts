@@ -43,7 +43,7 @@ class UsersResolver {
       await UsersModel.init();
       const user = await UsersModel.create({
         ...userInput,
-        hash: bcrypt.hashSync(userInput.hash, 10),
+        hash: bcrypt.hashSync(userInput.hash, 10), // @FIXME: check right round of salt
       });
       await user.save();
 

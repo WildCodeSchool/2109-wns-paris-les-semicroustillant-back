@@ -91,6 +91,8 @@ describe('UserResolver', () => {
           query: allUsersQuery,
         });
       } catch (err: any) {
+      // } catch (err: unknown) {
+        // expect(err instanceof Error).toBe(true);
         expect(err.errors.message).toEqual(
           'Cannot query field "plop" on type "User".'
         );

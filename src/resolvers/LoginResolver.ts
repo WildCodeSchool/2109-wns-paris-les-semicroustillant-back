@@ -16,6 +16,8 @@ export default class LoginResolver {
     const userDB = await UserModel.findOne({ email }, 'email hash');
 
     if (userDB && bcrypt.compareSync(password, userDB.hash)) {
+
+      // @FIX: other options to be added?
       const options = {
         expiresIn: '24h',
       };
