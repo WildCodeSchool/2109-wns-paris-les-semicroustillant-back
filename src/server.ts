@@ -20,6 +20,7 @@ async function createServer() {
     authChecker: customAuthChecker,
   });
 
+  // Create the GraphQL server
   const server = new ApolloServer({
     schema,
     context: ({ req }) => ({
