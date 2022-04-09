@@ -7,6 +7,18 @@ import ProjectInput from '../inputs/ProjectInput';
 import ProjectInputUpdate from '../inputs/ProjectInputUpdate';
 import { getAdvancement } from './TicketsResolver';
 
+// @TODO: refacto + move into a dedicated file
+const countTicketsById = async ({
+  projectId,
+  status,
+}: {
+  projectId: string;
+  status?: string | null; // or undefined?
+}) => {
+  const queryFilter = status ? { projectId, status } : { projectId };
+  return TicketsModel.countDocuments(queryFilter);
+};
+
 @Resolver()
 class ProjectsResolver {
   @Authorized()
@@ -58,30 +70,14 @@ class ProjectsResolver {
     try {
       const getOneProject = await ProjectModel.findById(projectId);
 
-      // @SophieTopart: Same here
-      const getCorrespondingTickets = await TicketsModel.find({
-        projectId: getOneProject._id,
+      getOneProject.totalTickets = await countTicketsById({
+        projectId: getOneProject._id.toString(),
       });
 
-      for (let i = 0; i < getCorrespondingTickets.length; i += 1) {
-        getCorrespondingTickets[i].advancement = getAdvancement(
-          getCorrespondingTickets[i]
-        );
-      }
-
-      const getTicketsAdvancements: number[] = [];
-
-      for (let i = 0; i < getCorrespondingTickets.length; i += 1) {
-        getTicketsAdvancements.push(getCorrespondingTickets[i].advancement);
-      }
-
-      const sumOfTicketsAdvancements = getTicketsAdvancements.reduce(
-        (a, b) => a + b,
-        0
-      );
-
-      getOneProject.advancement =
-        sumOfTicketsAdvancements / getCorrespondingTickets.length;
+      getOneProject.completedTickets = await countTicketsById({
+        projectId: getOneProject._id.toString(),
+        status: 'Done',
+      });
 
       return getOneProject;
     } catch (err) {
