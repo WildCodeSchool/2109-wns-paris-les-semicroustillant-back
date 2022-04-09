@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { Arg, Query, Resolver, Mutation, Authorized } from 'type-graphql';
-import Ticket from '../entities/Tickets';
+import Ticket from '../entities/TicketsEntity';
 import TicketsModel from '../models/Tickets';
 import TicketInput from '../inputs/TicketInput';
 import TicketInputUpdate from '../inputs/TicketInputUpdate';
@@ -45,8 +45,9 @@ class TicketsResolver {
     try {
       await TicketsModel.init();
       const ticket = await TicketsModel.create(ticketInput);
-      const createdTicket = await ticket.save();
-      return createdTicket;
+      await ticket.save();
+
+      return ticket;
     } catch (err) {
       return console.log(err);
     }
