@@ -7,7 +7,10 @@ const ProjectSchema = new Schema({
   description: String,
   projectOwner: { type: mongoose.Types.ObjectId, default: null, ref: 'users' },
   members: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
-  advancement: Number,
+  
+  // NOT IN DATABASE MODEL IF NOT PERSISTED
+  // completedTickets: { type: Number, default: null },
+  // totalTickets: { type: Number, default: null },
 });
 const ProjectModel = model('projects', ProjectSchema);
 

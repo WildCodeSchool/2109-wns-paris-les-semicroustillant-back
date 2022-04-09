@@ -20,8 +20,12 @@ class Project {
   @Field(() => [ID], { nullable: true })
   members: string[];
 
-  @Field()
-  advancement: number;
+  // These two fields will be computed in resolver by querying the right data from Tickets
+  @Field({ nullable: true })
+  completedTickets: number;
+
+  @Field({ nullable: true })
+  totalTickets: number;
 }
 
 export default Project;

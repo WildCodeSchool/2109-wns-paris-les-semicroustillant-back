@@ -17,6 +17,10 @@ export default class ProjectInput {
   @Field(() => [ID], { nullable: true })
   members?: string[];
 
-  @Field({ nullable: true })
-  advancement?: number;
+  // These two fields will be computed in resolver by querying the right data from Ticketsgit pull
+  // @Field({ nullable: true })
+  // completedTickets: number;
+
+  // @Field({ nullable: true })
+  // totalTickets: number;
 }
