@@ -1,6 +1,8 @@
 import { ApolloServer, gql } from 'apollo-server';
 import createServer from '../../server';
 import ProjectModel from '../../models/ProjectModel';
+import TicketModel from '../../models/TicketModel';
+// import LoginResolver from '../../resolvers/LoginResolver';
 
 let server: ApolloServer;
 
@@ -17,13 +19,13 @@ describe('ProjectResolver', () => {
   beforeEach(() => {
     emptyObjectId = '000000000000000000000000';
     fakeUserId = '619e14d317fc7b24dca41e56';
+
     projectData1 = {
       name: 'project-1',
       status: 'In progress',
       description: 'Blabla',
       projectOwner: emptyObjectId,
       members: [fakeUserId],
-      advancement: 10,
     };
     projectData2 = {
       name: 'project-2',
@@ -31,7 +33,6 @@ describe('ProjectResolver', () => {
       description: 'Blabla',
       projectOwner: emptyObjectId,
       members: [fakeUserId],
-      advancement: 20,
     };
   });
 
@@ -39,8 +40,19 @@ describe('ProjectResolver', () => {
     it('gets an array of all projects', async () => {
       const project1InDb = new ProjectModel(projectData1);
       const project2InDb = new ProjectModel(projectData2);
+      const ticketsData1 = new TicketModel({
+        projectId: project1InDb._id,
+        status: 'In progress',
+      });
+      const ticketsData2 = new TicketModel({
+        projectId: project2InDb._id,
+        status: 'Done',
+      });
+
       await project1InDb.save();
       await project2InDb.save();
+      await ticketsData1.save();
+      await ticketsData2.save();
 
       const getAllProjectsQuery = gql`
         query GetAllUsers {
@@ -73,8 +85,19 @@ describe('ProjectResolver', () => {
     it('console logs an error if data does not exist in query', async () => {
       const project1InDb = new ProjectModel(projectData1);
       const project2InDb = new ProjectModel(projectData2);
+      const ticketsData1 = new TicketModel({
+        projectId: project1InDb._id,
+        status: 'In progress',
+      });
+      const ticketsData2 = new TicketModel({
+        projectId: project2InDb._id,
+        status: 'Done',
+      });
+
       await project1InDb.save();
       await project2InDb.save();
+      await ticketsData1.save();
+      await ticketsData2.save();
 
       const getAllProjectsQuery = gql`
         query getAllProjects {
@@ -98,8 +121,19 @@ describe('ProjectResolver', () => {
     it('gets a specific project', async () => {
       const project1InDb = new ProjectModel(projectData1);
       const project2InDb = new ProjectModel(projectData2);
+      const ticketsData1 = new TicketModel({
+        projectId: project1InDb._id,
+        status: 'In progress',
+      });
+      const ticketsData2 = new TicketModel({
+        projectId: project2InDb._id,
+        status: 'Done',
+      });
+
       await project1InDb.save();
       await project2InDb.save();
+      await ticketsData1.save();
+      await ticketsData2.save();
 
       const getOneProjectQuery = gql`
         query getOneProject($projectId: String!) {
@@ -141,7 +175,8 @@ describe('ProjectResolver', () => {
             name
             projectOwner
             members
-            advancement
+            totalTickets
+            completedTickets
           }
         }
       `;
@@ -166,7 +201,6 @@ describe('ProjectResolver', () => {
         description: 'Blabla',
         projectOwner: emptyObjectId,
         members: [fakeUserId],
-        advancement: 20,
       };
 
       const createProjectQuery = gql`
@@ -178,7 +212,6 @@ describe('ProjectResolver', () => {
             description
             projectOwner
             members
-            advancement
           }
         }
       `;
@@ -209,7 +242,8 @@ describe('ProjectResolver', () => {
             description
             projectOwner
             members
-            advancement
+            totalTickets
+            completedTickets
           }
         }
       `;
@@ -222,7 +256,6 @@ describe('ProjectResolver', () => {
           description: 'super description',
           projectOwner: '61e7f93050acb74fc893e17e',
           members: ['61e7f93050acb74fc893e17d'],
-          advancement: 10,
         },
       };
       const res = await server.executeOperation({
@@ -237,7 +270,6 @@ describe('ProjectResolver', () => {
           description: 'super description',
           projectOwner: '61e7f93050acb74fc893e17e',
           members: ['61e7f93050acb74fc893e17d'],
-          advancement: 10,
         })
       );
     });
@@ -254,7 +286,6 @@ describe('ProjectResolver', () => {
             description
             projectOwner
             members
-            advancement
           }
         }
       `;
@@ -267,7 +298,6 @@ describe('ProjectResolver', () => {
           description: 'super description',
           projectOwner: '61e7f93050acb74fc893e17e',
           members: ['61e7f93050acb74fc893e17d'],
-          advancement: 10,
         },
       };
 
@@ -283,7 +313,6 @@ describe('ProjectResolver', () => {
           description: 'super description',
           projectOwner: '61e7f93050acb74fc893e17e',
           members: ['61e7f93050acb74fc893e17d'],
-          advancement: 10,
         })
       );
     });
@@ -300,7 +329,6 @@ describe('ProjectResolver', () => {
             description
             projectOwner
             members
-            advancement
           }
         }
       `;
@@ -314,7 +342,6 @@ describe('ProjectResolver', () => {
           description: 'super description',
           projectOwner: '000000000000000000000001',
           members: [fakeUserId],
-          advancement: 10,
         },
       };
       const res = await server.executeOperation({
