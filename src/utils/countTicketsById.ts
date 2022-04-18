@@ -1,6 +1,5 @@
 import TicketModel from '../models/TicketModel';
 
-//  @TODO: add  unit test
 const countTicketsById = async ({
   projectId,
   status,
