@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
-import { Arg, Query, Resolver, Mutation, Authorized } from 'type-graphql';
+// import { Arg, Query, Resolver, Mutation, Authorized } from 'type-graphql';
+import { Arg, Query, Resolver, Mutation } from 'type-graphql';
 import Ticket from '../entities/TicketEntity';
-import TicketsModel from '../models/Tickets';
+import TicketsModel from '../models/TicketModel';
 import TicketInput from '../inputs/TicketInput';
 import TicketInputUpdate from '../inputs/TicketInputUpdate';
 import IdInput from '../inputs/IdInput';
@@ -13,7 +14,7 @@ export const getAdvancement = (data: any) => {
 };
 @Resolver()
 class TicketsResolver {
-  @Authorized()
+  // @Authorized()
   @Query(() => [Ticket])
   async allTickets() {
     try {
@@ -27,7 +28,7 @@ class TicketsResolver {
     }
   }
 
-  @Authorized()
+  // @Authorized()
   @Query(() => Ticket)
   async getOneTicket(@Arg('id', () => String) ticketId: IdInput) {
     try {
@@ -39,7 +40,7 @@ class TicketsResolver {
     }
   }
 
-  @Authorized()
+  // @Authorized()
   @Mutation(() => Ticket)
   async addTicket(@Arg('ticketInput') ticketInput: TicketInput) {
     try {
@@ -53,7 +54,7 @@ class TicketsResolver {
     }
   }
 
-  @Authorized()
+  // @Authorized()
   @Mutation(() => Ticket)
   async updateTicket(
     @Arg('id', () => String) ticketId: IdInput,
@@ -69,7 +70,7 @@ class TicketsResolver {
     return TicketsModel.findById(ticketId);
   }
 
-  @Authorized()
+  // @Authorized()
   @Mutation(() => String)
   async deleteTicket(@Arg('id', () => String) ticketId: IdInput) {
     try {
