@@ -8,6 +8,16 @@ let db: typeof mongoose;
 
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
+
+  // @TODO: WIP - Trying to mock authentication in mongoose connection
+  // mongoServer = await MongoMemoryServer.create({
+  //   auth: { disable: true },
+  //   instance: {
+  //     auth: true,
+  //     storageEngine: 'wiredTiger',
+  //   },
+  // });
+
   const mongoUri = mongoServer.getUri();
   db = await createConnection(mongoUri);
 });
