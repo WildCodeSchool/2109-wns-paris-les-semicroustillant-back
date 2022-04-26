@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
-// import { Arg, Query, Resolver, Mutation, Authorized } from 'type-graphql';
-import { Arg, Query, Resolver, Mutation } from 'type-graphql';
+import { Arg, Query, Resolver, Mutation, Authorized } from 'type-graphql';
 import Project from '../entities/ProjectEntity';
 import ProjectModel from '../models/ProjectModel';
 import ProjectInput from '../inputs/ProjectInput';
@@ -9,7 +8,7 @@ import countTicketsById from '../utils/countTicketsById';
 
 @Resolver()
 class ProjectsResolver {
-  // @Authorized()
+  @Authorized()
   @Query(() => [Project])
   async getAllProjects() {
     try {
@@ -36,7 +35,7 @@ class ProjectsResolver {
     }
   }
 
-  // @Authorized()
+  @Authorized()
   @Query(() => Project)
   async getOneProject(
     @Arg('projectId', () => String) projectId: ProjectInputUpdate['_id']
@@ -59,7 +58,7 @@ class ProjectsResolver {
     }
   }
 
-  // @Authorized()
+  @Authorized()
   @Mutation(() => Project)
   async createProject(@Arg('projectInput') projectInput: ProjectInput) {
     try {
@@ -73,7 +72,7 @@ class ProjectsResolver {
     }
   }
 
-  // @Authorized()
+  @Authorized()
   @Mutation(() => Project)
   async updateProject(
     @Arg('projectInputUpdate') projectInputUpdate: ProjectInputUpdate
@@ -92,7 +91,7 @@ class ProjectsResolver {
     return ProjectModel.findById(projectId);
   }
 
-  // @Authorized()
+  @Authorized()
   @Mutation(() => String)
   async deleteProject(
     @Arg('ProjectId', () => String) projectId: ProjectInputUpdate['_id']

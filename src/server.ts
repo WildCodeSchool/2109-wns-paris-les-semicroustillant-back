@@ -22,12 +22,10 @@ async function createServer() {
   // Create the GraphQL server
   const server = new ApolloServer({
     schema,
-
-    // @TODO: WIP - temporary disabling authentication to make integration tests work
-    // context: ({ req }) => ({
-    //   token: req.headers.authorization,
-    //   user: null,
-    // }),
+    context: ({ req }) => ({
+      token: req?.headers.authorization,
+      user: null,
+    }),
   });
 
   return server;

@@ -1,18 +1,17 @@
 /* eslint-disable no-console */
-// import { Arg, Query, Resolver, Mutation, Authorized } from 'type-graphql';
-import { Arg, Query, Resolver, Mutation } from 'type-graphql';
+import { Arg, Query, Resolver, Mutation, Authorized } from 'type-graphql';
 import bcrypt from 'bcrypt';
 import User from '../entities/UserEntity';
 import UsersModel from '../models/UserModel';
 import UserInput from '../inputs/UserInput';
 import UserInputUpdate from '../inputs/UserInputUpdate';
-// import { adminsOnly } from '../auth/usersRole';
+import { adminsOnly } from '../auth/usersRole';
 // Available authhorized:
 // roles adminsOnly = ['admin', 'super admin'] and superAdmin = ['super admin']
 
 @Resolver()
 class UsersResolver {
-  // @Authorized()
+  @Authorized()
   @Query(() => [User])
   async allUsers() {
     try {
@@ -23,7 +22,7 @@ class UsersResolver {
     }
   }
 
-  // @Authorized()
+  @Authorized()
   @Query(() => User)
   async getOneUser(
     @Arg('userId', () => String) userId: UserInputUpdate['_id']
@@ -37,7 +36,7 @@ class UsersResolver {
     }
   }
 
-  // @Authorized(adminsOnly)
+  @Authorized(adminsOnly)
   @Mutation(() => User)
   async addUser(@Arg('userInput') userInput: UserInput) {
     try {
@@ -55,7 +54,7 @@ class UsersResolver {
   }
 
   // @TODO: missing mutation for updating a user's own profile
-  // @Authorized(adminsOnly)
+  @Authorized(adminsOnly)
   @Mutation(() => User)
   async updateUser(@Arg('userInputUpdate') userInputUpdate: UserInputUpdate) {
     try {
@@ -68,7 +67,7 @@ class UsersResolver {
     return UsersModel.findById(userInputUpdate._id);
   }
 
-  // @Authorized(adminsOnly)
+  @Authorized(adminsOnly)
   @Mutation(() => String)
   async deleteUser(
     @Arg('UserId', () => String) userId: UserInputUpdate['_id']

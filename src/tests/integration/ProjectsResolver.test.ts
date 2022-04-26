@@ -2,7 +2,7 @@ import { ApolloServer, gql } from 'apollo-server';
 import createServer from '../../server';
 import ProjectModel from '../../models/ProjectModel';
 import TicketModel from '../../models/TicketModel';
-// import LoginResolver from '../../resolvers/LoginResolver';
+import authHeaderMock from '../authHeaderMock';
 
 let server: ApolloServer;
 
@@ -16,7 +16,9 @@ describe('ProjectResolver', () => {
   let fakeUserId: String;
   let emptyObjectId: String;
 
-  beforeEach(() => {
+  let userJWT: string;
+
+  beforeEach(async () => {
     emptyObjectId = '000000000000000000000000';
     fakeUserId = '619e14d317fc7b24dca41e56';
 
@@ -34,6 +36,8 @@ describe('ProjectResolver', () => {
       projectOwner: emptyObjectId,
       members: [fakeUserId],
     };
+
+    userJWT = await authHeaderMock(server);
   });
 
   describe('getAllProjects()', () => {
@@ -65,9 +69,14 @@ describe('ProjectResolver', () => {
         }
       `;
 
-      const res = await server.executeOperation({
-        query: getAllProjectsQuery,
-      });
+      const res = await server.executeOperation(
+        {
+          query: getAllProjectsQuery,
+        },
+        {
+          req: { headers: { authorization: userJWT } },
+        } as any
+      );
 
       expect(res.data?.getAllProjects[0]).toEqual(
         expect.objectContaining({
@@ -111,9 +120,14 @@ describe('ProjectResolver', () => {
         }
       `;
 
-      const res = await server.executeOperation({
-        query: getAllProjectsQuery,
-      });
+      const res = await server.executeOperation(
+        {
+          query: getAllProjectsQuery,
+        },
+        {
+          req: { headers: { authorization: userJWT } },
+        } as any
+      );
       expect(res.errors).toMatchSnapshot();
     });
   });
@@ -147,10 +161,15 @@ describe('ProjectResolver', () => {
       `;
 
       const variables = { projectId: project1InDb._id.toString() };
-      const res = await server.executeOperation({
-        query: getOneProjectQuery,
-        variables,
-      });
+      const res = await server.executeOperation(
+        {
+          query: getOneProjectQuery,
+          variables,
+        },
+        {
+          req: { headers: { authorization: userJWT } },
+        } as any
+      );
 
       expect(res.data?.getOneProject).toEqual(
         expect.objectContaining({
@@ -183,10 +202,15 @@ describe('ProjectResolver', () => {
 
       const wrongId = '619e14d317fc7b24dca41e56';
       const variables = { projectId: wrongId };
-      const res = await server.executeOperation({
-        query: getOneProjectQuery,
-        variables,
-      });
+      const res = await server.executeOperation(
+        {
+          query: getOneProjectQuery,
+          variables,
+        },
+        {
+          req: { headers: { authorization: userJWT } },
+        } as any
+      );
 
       expect(res.data).toEqual(null);
       expect(res.errors).toMatchSnapshot();
@@ -217,10 +241,15 @@ describe('ProjectResolver', () => {
       `;
 
       const variables = { projectInput: createProjectData };
-      const res = await server.executeOperation({
-        query: createProjectQuery,
-        variables,
-      });
+      const res = await server.executeOperation(
+        {
+          query: createProjectQuery,
+          variables,
+        },
+        {
+          req: { headers: { authorization: userJWT } },
+        } as any
+      );
 
       expect(res.data?.createProject).toEqual(
         expect.objectContaining(projectData2)
@@ -258,10 +287,15 @@ describe('ProjectResolver', () => {
           members: ['61e7f93050acb74fc893e17d'],
         },
       };
-      const res = await server.executeOperation({
-        query: updateProjectQuery,
-        variables,
-      });
+      const res = await server.executeOperation(
+        {
+          query: updateProjectQuery,
+          variables,
+        },
+        {
+          req: { headers: { authorization: userJWT } },
+        } as any
+      );
 
       expect(res.data?.updateProject).toEqual(
         expect.objectContaining({
@@ -301,10 +335,15 @@ describe('ProjectResolver', () => {
         },
       };
 
-      const res = await server.executeOperation({
-        query: updateProjectQuery,
-        variables,
-      });
+      const res = await server.executeOperation(
+        {
+          query: updateProjectQuery,
+          variables,
+        },
+        {
+          req: { headers: { authorization: userJWT } },
+        } as any
+      );
 
       expect(res.data?.updateProject).toEqual(
         expect.objectContaining({
@@ -344,10 +383,15 @@ describe('ProjectResolver', () => {
           members: [fakeUserId],
         },
       };
-      const res = await server.executeOperation({
-        query: updateProjectQuery,
-        variables,
-      });
+      const res = await server.executeOperation(
+        {
+          query: updateProjectQuery,
+          variables,
+        },
+        {
+          req: { headers: { authorization: userJWT } },
+        } as any
+      );
 
       expect(res.data).toEqual(null);
       expect(res.errors).toMatchSnapshot();
@@ -368,10 +412,15 @@ describe('ProjectResolver', () => {
       `;
 
       const variables = { projectId: project1InDb._id.toString() };
-      const res = await server.executeOperation({
-        query: deleteProject,
-        variables,
-      });
+      const res = await server.executeOperation(
+        {
+          query: deleteProject,
+          variables,
+        },
+        {
+          req: { headers: { authorization: userJWT } },
+        } as any
+      );
 
       const allProjects = await ProjectModel.find();
 
@@ -393,10 +442,15 @@ describe('ProjectResolver', () => {
 
       const wrongId = '619fa6b902b538d856541718';
       const variables = { projectId: wrongId };
-      const res = await server.executeOperation({
-        query: deleteProject,
-        variables,
-      });
+      const res = await server.executeOperation(
+        {
+          query: deleteProject,
+          variables,
+        },
+        {
+          req: { headers: { authorization: userJWT } },
+        } as any
+      );
 
       const allProjects = await ProjectModel.find();
 
