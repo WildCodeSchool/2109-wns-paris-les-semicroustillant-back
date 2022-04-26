@@ -30,6 +30,6 @@ services:
     volumes:
       - ./src/:/app/src
   mongodb:
-    image: mongo
+    image: mongo:4.4
     volumes:
       - ./data:/data/db
