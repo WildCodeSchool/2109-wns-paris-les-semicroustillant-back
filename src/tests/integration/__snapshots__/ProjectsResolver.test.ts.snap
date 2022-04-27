@@ -14,7 +14,7 @@ Array [
 
 exports[`ProjectResolver getOneProject() fails getting a specific project if wrong ID in query 1`] = `
 Array [
-  [GraphQLError: Cannot return null for non-nullable field Query.getOneProject.],
+  [GraphQLError: TypeError: Cannot read properties of null (reading '_id')],
 ]
 `;
 

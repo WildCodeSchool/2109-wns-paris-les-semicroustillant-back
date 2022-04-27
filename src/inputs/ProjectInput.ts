@@ -1,6 +1,4 @@
-import { InputType, Field } from 'type-graphql';
-import IdInput from './IdInput';
-import Users from '../entities/Users';
+import { InputType, Field, ID } from 'type-graphql';
 
 @InputType()
 export default class ProjectInput {
@@ -13,12 +11,16 @@ export default class ProjectInput {
   @Field()
   description: string;
 
-  @Field()
-  projectOwner: string;
-
-  @Field(() => [IdInput], { nullable: true })
-  members: Users[];
-
   @Field({ nullable: true })
-  advancement?: number;
+  projectOwner?: string;
+
+  @Field(() => [ID], { nullable: true })
+  members?: string[];
+
+  // These two fields will be computed in resolver by querying the right data from Ticketsgit pull
+  // @Field({ nullable: true })
+  // completedTickets: number;
+
+  // @Field({ nullable: true })
+  // totalTickets: number;
 }

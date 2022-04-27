@@ -5,9 +5,12 @@ services:
       dockerfile: Dockerfile-prod
     ports:
       - 8080:3000
-    depends_on:
-      back:
-        condition: service_healthy
+
+    ## @TODO: Healtcheck issue
+    ## MUST BE FIXED
+    # depends_on:
+    #   back:
+    #     condition: service_healthy
     volumes:
       - ../2109-wns-paris-les-semicroustillant-front/src:/app/src
   back:
@@ -16,14 +19,17 @@ services:
       dockerfile: Dockerfile-prod
     ports:
       - 5050:4000
-    healthcheck:
-      test: ['CMD-SHELL', 'curl -f http://localhost:5050 || exit 1']
-      timeout: 10s
-      interval: 10s
-      retries: 10
+
+    ## @TODO: Healtcheck prevents the container from starting with Docker
+    ## MUST BE FIXED
+    # healthcheck:
+    #   test: ['CMD-SHELL', 'curl -f http://localhost:5050 || exit 1']
+    #   timeout: 10s
+    #   interval: 10s
+    #   retries: 10
     volumes:
       - ./src/:/app/src
   mongodb:
-    image: mongo
+    image: mongo:4.4
     volumes:
       - ./data:/data/db

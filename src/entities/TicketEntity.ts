@@ -1,5 +1,4 @@
 import { Field, ID, ObjectType } from 'type-graphql';
-import User from './Users';
 
 @ObjectType()
 class Ticket {
@@ -18,20 +17,20 @@ class Ticket {
   @Field()
   description?: string;
 
-  @Field()
+  @Field({ nullable: true })
   initial_time_estimated?: number;
 
-  @Field()
+  @Field({ nullable: true })
   total_time_spent?: number;
 
-  @Field()
+  @Field({ nullable: true })
   advancement?: number;
 
-  @Field()
+  @Field({ nullable: true })
   projectId?: string;
 
-  @Field(() => [User])
-  users?: User[];
+  @Field(() => [ID], { nullable: true })
+  users?: string[];
 }
 
 export default Ticket;

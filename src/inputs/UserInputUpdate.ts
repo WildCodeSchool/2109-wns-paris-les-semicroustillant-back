@@ -1,26 +1,26 @@
 import { InputType, Field, ID } from "type-graphql";
-import User from "../entities/Users";
+import User from "../entities/UserEntity";
 
 @InputType()
 export default class UserInputUpdate implements Partial<User>{
   @Field(() => ID)
   _id!: string;
 
-  @Field()
+  @Field({ nullable: true })
   firstname?: string;
 
-  @Field()
+  @Field({ nullable: true })
   lastname?: string;
 
-  @Field()
+  @Field({ nullable: true })
   email?: string;
 
-  @Field()
+  @Field({ nullable: true })
   hash?: string;
 
-  @Field()
+  @Field({ nullable: true })
   role?: string;
 
-  @Field()
+  @Field({ nullable: true })
   position?: string;
 }

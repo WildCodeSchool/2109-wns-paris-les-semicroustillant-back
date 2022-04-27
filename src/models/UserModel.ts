@@ -1,6 +1,6 @@
 import mongoose, { Schema, model } from 'mongoose';
 
-const UsersSchema = new Schema({
+const UserSchema = new Schema({
   id: mongoose.Types.ObjectId,
   firstname: String,
   lastname: String ,
@@ -9,5 +9,5 @@ const UsersSchema = new Schema({
   role: String,
   position: String,
 });
-const UsersModel = model('users', UsersSchema);
-export default UsersModel;
+const UserModel = model('users', UserSchema);
+export default UserModel;

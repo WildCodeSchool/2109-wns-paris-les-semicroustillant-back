@@ -1,18 +1,19 @@
 /* eslint-disable no-console */
-import { Arg, Query, Resolver, Mutation } from 'type-graphql';
-import Ticket from '../entities/Tickets';
-import TicketsModel from '../models/Tickets';
+import { Arg, Query, Resolver, Mutation, Authorized } from 'type-graphql';
+import Ticket from '../entities/TicketEntity';
+import TicketsModel from '../models/TicketModel';
 import TicketInput from '../inputs/TicketInput';
 import TicketInputUpdate from '../inputs/TicketInputUpdate';
 import IdInput from '../inputs/IdInput';
 
-const getAdvancement = (data: any) => {
+export const getAdvancement = (data: any) => {
   const timeSpent = data.total_time_spent;
   const estimatedTime = data.initial_time_estimated;
   return (timeSpent / estimatedTime) * 100;
 };
 @Resolver()
 class TicketsResolver {
+  @Authorized()
   @Query(() => [Ticket])
   async allTickets() {
     try {
@@ -26,6 +27,7 @@ class TicketsResolver {
     }
   }
 
+  @Authorized()
   @Query(() => Ticket)
   async getOneTicket(@Arg('id', () => String) ticketId: IdInput) {
     try {
@@ -37,18 +39,21 @@ class TicketsResolver {
     }
   }
 
+  @Authorized()
   @Mutation(() => Ticket)
   async addTicket(@Arg('ticketInput') ticketInput: TicketInput) {
     try {
       await TicketsModel.init();
       const ticket = await TicketsModel.create(ticketInput);
-      const createdTicket = await ticket.save();
-      return createdTicket;
+      await ticket.save();
+
+      return ticket;
     } catch (err) {
       return console.log(err);
     }
   }
 
+  @Authorized()
   @Mutation(() => Ticket)
   async updateTicket(
     @Arg('id', () => String) ticketId: IdInput,
@@ -64,6 +69,7 @@ class TicketsResolver {
     return TicketsModel.findById(ticketId);
   }
 
+  @Authorized()
   @Mutation(() => String)
   async deleteTicket(@Arg('id', () => String) ticketId: IdInput) {
     try {
