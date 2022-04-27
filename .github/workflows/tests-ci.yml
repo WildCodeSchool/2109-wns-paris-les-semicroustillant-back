@@ -21,8 +21,6 @@ jobs:
     env:
       SECRET_JWT_KEY: ${{ secrets.SECRET_JWT_KEY }}
     steps:
-      - name: ECHO
-        run: echo $SECRET_JWT_KEY
       - name: Check out code
         uses: actions/checkout@v2
       - name: Install dependencies
