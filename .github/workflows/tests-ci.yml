@@ -6,6 +6,8 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
+    env:
+      SECRET_JWT_KEY: ${{ secrets.SECRET_JWT_KEY }}
     steps:
       - name: Check out code
         uses: actions/checkout@v2

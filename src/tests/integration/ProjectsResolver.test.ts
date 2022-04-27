@@ -6,7 +6,6 @@ import TicketModel from '../../models/TicketModel';
 import authHeaderMock from '../authHeaderMock';
 
 let server: ApolloServer;
-// let userJWT: string;
 
 beforeAll(async () => {
   server = await createServer();

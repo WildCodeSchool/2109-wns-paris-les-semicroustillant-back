@@ -8,14 +8,9 @@ let db: typeof mongoose;
 
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
-  const mongoUri = mongoServer.getUri();
-  
-  db = await createConnection(mongoUri);
 
-  // mongoServer.once('open', async () => {
-  //   // log.info('Connected to database');
-  //   await createConnection(mongoUri);
-  // });
+  const mongoUri = mongoServer.getUri();
+  db = await createConnection(mongoUri);
 });
 
 beforeEach(async () => {
