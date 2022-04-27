@@ -11,9 +11,9 @@ const authHeaderMock = async (server: ApolloServer) => {
       position: 'Product Owner',
     };
 
-    const test = await new UserModel(userAdmin).save();
+    const userCreated = await new UserModel(userAdmin).save();
 
-    console.log('test', test);
+    console.log('userCreated', userCreated);
 
     const loginUnitTest = gql`
       query Login($hash: String!, $email: String!) {
@@ -21,17 +21,21 @@ const authHeaderMock = async (server: ApolloServer) => {
       }
     `;
 
-    const res = await server.executeOperation({
-      query: loginUnitTest,
-      variables: {
-        hash: 'admin-hash',
-        email: 'admin@email.com',
-      },
-    });
+    if (userCreated) {
+      const res = await server.executeOperation({
+        query: loginUnitTest,
+        variables: {
+          hash: 'admin-hash',
+          email: 'admin@email.com',
+        },
+      });
+      console.log('LOGIN', res);
+      
+      return res.data?.login;
+    }
 
-    console.log('LOGIN', res);
+    // THROW ERROR
 
-    return res.data?.login;
   };
 
   export default authHeaderMock;
