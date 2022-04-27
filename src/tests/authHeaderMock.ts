@@ -34,6 +34,8 @@ const authHeaderMock = async (server: ApolloServer) => {
       return res.data?.login;
     }
 
+    return 'error patate';
+
     // THROW ERROR
 
   };
