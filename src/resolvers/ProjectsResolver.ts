@@ -2,22 +2,9 @@
 import { Arg, Query, Resolver, Mutation, Authorized } from 'type-graphql';
 import Project from '../entities/ProjectEntity';
 import ProjectModel from '../models/ProjectModel';
-import TicketsModel from '../models/Tickets';
 import ProjectInput from '../inputs/ProjectInput';
 import ProjectInputUpdate from '../inputs/ProjectInputUpdate';
-import { getAdvancement } from './TicketsResolver';
-
-// @TODO: refacto + move into a dedicated file
-const countTicketsById = async ({
-  projectId,
-  status,
-}: {
-  projectId: string;
-  status?: string | null; // or undefined?
-}) => {
-  const queryFilter = status ? { projectId, status } : { projectId };
-  return TicketsModel.countDocuments(queryFilter);
-};
+import countTicketsById from '../utils/countTicketsById';
 
 @Resolver()
 class ProjectsResolver {
@@ -27,38 +14,24 @@ class ProjectsResolver {
     try {
       const getAllProjects = await ProjectModel.find();
 
-      // @SophieTopart: Refacto to be done (IMO, makes the code complex to read and test), duplicate code with getOneProject query, maybe should be function in a dedicated file?
-      const getAllTickets = await TicketsModel.find();
+      return await Promise.all(
+        getAllProjects.map(async (project) => {
+          const projectModel = project.toJSON();
 
-      for (let i = 0; i < getAllProjects.length; i += 1) {
-        const getCorrespondingTickets = getAllTickets.filter(
-          (ticket) => ticket.projectId === getAllProjects[i]._id.toString()
-        );
+          projectModel.totalTickets = await countTicketsById({
+            projectId: project._id.toString(),
+          });
 
-        for (let j = 0; j < getCorrespondingTickets.length; j += 1) {
-          getCorrespondingTickets[j].advancement = getAdvancement(
-            getCorrespondingTickets[j]
-          );
-        }
+          projectModel.completedTickets = await countTicketsById({
+            projectId: project._id.toString(),
+            status: 'Done',
+          });
 
-        const getTicketsAdvancements: number[] = [];
-
-        for (let k = 0; k < getCorrespondingTickets.length; k += 1) {
-          getTicketsAdvancements.push(getCorrespondingTickets[k].advancement);
-        }
-
-        const sumOfTicketsAdvancements = getTicketsAdvancements.reduce(
-          (a, b) => a + b,
-          0
-        );
-
-        getAllProjects[i].advancement =
-          sumOfTicketsAdvancements / getCorrespondingTickets.length;
-      }
-
-      return getAllProjects;
-    } catch (err) {
-      return console.log(err);
+          return projectModel;
+        })
+      );
+    } catch (err: any) {
+      throw new Error(err);
     }
   }
 
@@ -80,8 +53,8 @@ class ProjectsResolver {
       });
 
       return getOneProject;
-    } catch (err) {
-      return console.log(err);
+    } catch (err: any) {
+      throw new Error(err);
     }
   }
 
@@ -94,8 +67,8 @@ class ProjectsResolver {
       await project.save();
 
       return project;
-    } catch (err) {
-      return console.log(err);
+    } catch (err: any) {
+      throw new Error(err);
     }
   }
 
@@ -110,10 +83,11 @@ class ProjectsResolver {
       await ProjectModel.findByIdAndUpdate(projectId, projectInputUpdate, {
         new: true,
       });
-    } catch (err) {
-      return console.log(err);
+    } catch (err: any) {
+      throw new Error(err);
     }
 
+    // This mutation does not return totalTickets and completedTickets
     return ProjectModel.findById(projectId);
   }
 
@@ -124,13 +98,15 @@ class ProjectsResolver {
   ) {
     try {
       await ProjectModel.init();
+      // only delete a project, not the tickets
+      // @TODO: should we delete the ticket or the ID as well?
       const result = await ProjectModel.findByIdAndRemove(projectId);
 
       if (!result) {
         return new Error('This project does not exist');
       }
-    } catch (err) {
-      return console.log(err);
+    } catch (err: any) {
+      throw new Error(err);
     }
 
     return 'Project successfully deleted';

@@ -23,7 +23,7 @@ async function createServer() {
   const server = new ApolloServer({
     schema,
     context: ({ req }) => ({
-      token: req.headers.authorization,
+      token: req?.headers.authorization,
       user: null,
     }),
   });

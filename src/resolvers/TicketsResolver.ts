@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { Arg, Query, Resolver, Mutation, Authorized } from 'type-graphql';
 import Ticket from '../entities/TicketEntity';
-import TicketsModel from '../models/Tickets';
+import TicketsModel from '../models/TicketModel';
 import TicketInput from '../inputs/TicketInput';
 import TicketInputUpdate from '../inputs/TicketInputUpdate';
 import IdInput from '../inputs/IdInput';

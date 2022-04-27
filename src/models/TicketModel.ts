@@ -12,6 +12,6 @@ const TicketSchema = new Schema({
   projectId: { type: String, default: null },
   users: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
 });
-const TicketsModel = model('tickets', TicketSchema);
+const TicketModel = model('tickets', TicketSchema);
 
-export default TicketsModel;
+export default TicketModel;

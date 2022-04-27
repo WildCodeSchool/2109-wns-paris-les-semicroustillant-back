@@ -18,6 +18,8 @@ jobs:
     name: Integration tests
     runs-on: ubuntu-latest
     needs: ['lint']
+    env:
+      SECRET_JWT_KEY: ${{ secrets.SECRET_JWT_KEY }}
     steps:
       - name: Check out code
         uses: actions/checkout@v2
