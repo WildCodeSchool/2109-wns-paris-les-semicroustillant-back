@@ -5,7 +5,7 @@ import UserModel from '../models/UserModel';
 
 const customAuthChecker: AuthChecker<JwtPayload> = async (
   { context },
-  roles: string[],
+  roles: string[]
 ) => {
   const userJwt = context.token;
   const secret = process.env.SECRET_JWT_KEY as Secret;
@@ -35,5 +35,5 @@ const customAuthChecker: AuthChecker<JwtPayload> = async (
     return false;
   }
 };
-
+//
 export default customAuthChecker;
