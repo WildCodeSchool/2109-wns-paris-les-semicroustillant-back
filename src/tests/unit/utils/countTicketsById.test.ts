@@ -1,5 +1,5 @@
-import countTicketsById from '../../utils/countTicketsById';
-import TicketModel from '../../models/TicketModel';
+import countTicketsById from '../../../utils/countTicketsById';
+import TicketModel from '../../../models/TicketModel';
 
 describe('countTicketsById', () => {
   const projectId: string = '5e9f8f9f8f9f8f9f8f9f9f9';
