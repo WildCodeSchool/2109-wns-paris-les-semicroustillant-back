@@ -2,7 +2,7 @@ services:
   front:
     build:
       context: ../2109-wns-paris-les-semicroustillant-front
-      dockerfile: Dockerfile-prod
+      dockerfile: Dockerfile-staging
     ports:
       - 8080:3000
 
@@ -16,7 +16,7 @@ services:
   back:
     build:
       context: ./
-      dockerfile: Dockerfile-prod
+      dockerfile: Dockerfile-staging
     ports:
       - 5050:4000
 
