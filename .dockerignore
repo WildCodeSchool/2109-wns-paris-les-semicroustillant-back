@@ -1,0 +1,6 @@
+data
+node_modules
+.gitignore
+docker-compose*
+Dockerfile
+coverage

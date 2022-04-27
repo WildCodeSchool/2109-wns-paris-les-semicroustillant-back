@@ -1,33 +1,34 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import cors from 'cors';
+import 'reflect-metadata';
+import 'dotenv/config';
+import { ApolloServer } from 'apollo-server';
+import { buildSchema } from 'type-graphql';
+import UsersResolver from './resolvers/UsersResolver';
+import TicketsResolver from './resolvers/TicketsResolver';
+import ProjectsResolver from './resolvers/ProjectsResolver';
+import LoginResolver from './resolvers/LoginResolver';
+import customAuthChecker from './auth/customAuthChecker';
 
-import wilderController from './controllers/wilder';
+async function createServer() {
+  const schema = await buildSchema({
+    resolvers: [
+      UsersResolver,
+      TicketsResolver,
+      ProjectsResolver,
+      LoginResolver,
+    ],
+    authChecker: customAuthChecker,
+  });
 
-const app = express();
+  // Create the GraphQL server
+  const server = new ApolloServer({
+    schema,
+    context: ({ req }) => ({
+      token: req?.headers.authorization,
+      user: null,
+    }),
+  });
 
-// Database
-mongoose
-  .connect('mongodb://127.0.0.1:27017/wilderdb', {
-    autoIndex: true,
-  })
-  .then(() => console.log('Connected to database')) // eslint-disable-line no-console
-  .catch((err) => console.log(err)); // eslint-disable-line no-console
+  return server;
+}
 
-// Middleware
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(cors());
-
-// Routes
-app.get('/', (req, res) => {
-  res.send('Hello World');
-});
-
-app.post('/api/wilders', wilderController.create);
-app.get('/api/wilders', wilderController.read);
-app.put('/api/wilders', wilderController.update);
-app.delete('/api/wilders', wilderController.delete);
-
-// Start Server
-app.listen(5000, () => console.log('Server started on 5000')); // eslint-disable-line no-console
+export default createServer;
