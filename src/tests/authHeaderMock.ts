@@ -29,6 +29,8 @@ const authHeaderMock = async (server: ApolloServer) => {
       },
     });
 
+    console.log('LOGIN', res);
+
     return res.data?.login;
   };
 
