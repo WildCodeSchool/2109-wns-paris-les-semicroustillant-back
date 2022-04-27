@@ -2,8 +2,6 @@ import { ApolloServer, gql } from 'apollo-server';
 import UserModel from '../models/UserModel';
 
 const authHeaderMock = async (server: ApolloServer) => {
-  console.log('SERVER', server);
-
     const userAdmin = {
       firstname: 'admin-fn',
       lastname: 'admin-ln',
@@ -13,7 +11,9 @@ const authHeaderMock = async (server: ApolloServer) => {
       position: 'Product Owner',
     };
 
-    await new UserModel(userAdmin).save();
+    const test = await new UserModel(userAdmin).save();
+
+    console.log('test', test);
 
     const loginUnitTest = gql`
       query Login($hash: String!, $email: String!) {
