@@ -21,7 +21,7 @@ In `2109-wns-paris-les-semicroustillant-back` folder, run the following command:
 docker-compose -f docker-compose.dev.yml up --build
 ```
 
-## Build images with docker-compose on production environment
+## Build images with docker-compose on staging environment
 
 In `2109-wns-paris-les-semicroustillant-back` folder, run the following command:
 

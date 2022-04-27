@@ -29,6 +29,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./Dockerfile-prod
+          file: ./Dockerfile-staging
           push: true
           tags: semiwcs/2109-wns-paris-les-semicroustillant-back:latest
