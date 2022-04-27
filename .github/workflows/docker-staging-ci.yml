@@ -3,7 +3,7 @@ name: Push docker image in prod
 on:
   push:
     branches:
-      - 'test-staging'
+      - 'new-staging'
 
 jobs:
   docker:
