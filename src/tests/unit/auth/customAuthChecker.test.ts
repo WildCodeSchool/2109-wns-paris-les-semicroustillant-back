@@ -1,23 +1,24 @@
-import { AuthChecker } from 'type-graphql';
-import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
+// import { AuthChecker } from 'type-graphql';
+import jwt from 'jsonwebtoken';
+// import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
 import UserModel from '../../../models/UserModel';
 import customAuthChecker from '../../../auth/customAuthChecker';
 
 describe('customAuthChecker', () => {
   let context: { token: string } | null = null;
   let roles: string[] | null = null;
-  let process: { env: { SECRET_JWT_KEY: Secret } } | null = null;
+  // let process: { env: { SECRET_JWT_KEY: Secret } } | null = null;
 
   beforeEach(() => {
     context = {
       token: 'fake-token',
     };
     roles = ['admin'];
-    process = {
-      env: {
-        SECRET_JWT_KEY: 'fake-secret',
-      },
-    };
+    // process = {
+    //   env: {
+    //     SECRET_JWT_KEY: 'fake-secret',
+    //   },
+    // };
   });
 
   it('should successfully check the user', async () => {
