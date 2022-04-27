@@ -41,7 +41,7 @@ describe('ProjectResolver', () => {
     userJWT = await authHeaderMock(server);
   });
 
-  describe.only('getAllProjects()', () => {
+  describe('getAllProjects()', () => {
     it('gets an array of all projects', async () => {
       const project1InDb = new ProjectModel(projectData1);
       const project2InDb = new ProjectModel(projectData2);
