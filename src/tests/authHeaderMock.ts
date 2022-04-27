@@ -2,6 +2,8 @@ import { ApolloServer, gql } from 'apollo-server';
 import UserModel from '../models/UserModel';
 
 const authHeaderMock = async (server: ApolloServer) => {
+  console.log('SERVER', server);
+
     const userAdmin = {
       firstname: 'admin-fn',
       lastname: 'admin-ln',
@@ -31,3 +33,4 @@ const authHeaderMock = async (server: ApolloServer) => {
   };
 
   export default authHeaderMock;
+  

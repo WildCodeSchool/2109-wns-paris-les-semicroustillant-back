@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { ApolloServer, gql } from 'apollo-server';
 import createServer from '../../server';
 import ProjectModel from '../../models/ProjectModel';
@@ -5,6 +6,7 @@ import TicketModel from '../../models/TicketModel';
 import authHeaderMock from '../authHeaderMock';
 
 let server: ApolloServer;
+// let userJWT: string;
 
 beforeAll(async () => {
   server = await createServer();
