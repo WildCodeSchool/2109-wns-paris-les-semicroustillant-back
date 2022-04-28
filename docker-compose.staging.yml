@@ -1,18 +1,7 @@
 services:
-  front:
-    image: semiwcs/2109-wns-paris-les-semicroustillant-front:latest
-    command: sh -c "npm run build"
-
-    ## @TODO: Healtcheck issue
-    ## MUST BE FIXED
-    # depends_on:
-    #   back:
-    #     condition: service_healthy
-    volumes:
-      - ../2109-wns-paris-les-semicroustillant-front/src:/app/src
-  back:
+  server:
     image: semiwcs/2109-wns-paris-les-semicroustillant-back:latest
-    command: sh -c "npm run build && npm run prod"
+    command: sh -c "npm run start:prod"
     expose:
       - 4000
     depends_on:
@@ -27,19 +16,36 @@ services:
     #   retries: 10
     volumes:
       - ./src/:/app/src
-  mongodb:
-    image: mongo:4.4
+  front:
+    image: semiwcs/2109-wns-paris-les-semicroustillant-front:latest
+    command: sh -c "npm run build"
+
+    ## @TODO: Healtcheck issue
+    ## MUST BE FIXED
+    # depends_on:
+    #   back:
+    #     condition: service_healthy
     volumes:
-      - ./data:/data/db
+      - front-build:/app/build
+    depends_on:
+      - server
+
+  mongodb:
+    image: mongo:4.4.9
+    #volumes:
+    #- ./data:/data/db
   nginx:
     image: nginx:1.21.3
     depends_on:
       - front
-      - back
+      - server
     restart: always
     ports:
-      - ${GATEWAY_PORT}:80
+      - ${GATEWAY_PORT:-8000}:80
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - ../2109-wns-paris-les-semicroustillant-front/src:/2109-wns-paris-les-semicroustillant-front/src
+      - ./nginx.conf:/app/etc/nginx/nginx.conf
+      - front-build:/front-build
       - ./logs:/var/log/nginx
+
+volumes:
+  front-build:

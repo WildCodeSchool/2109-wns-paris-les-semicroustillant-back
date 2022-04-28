@@ -8,8 +8,7 @@
     "start": "ts-node-dev src/index.ts",
     "start:prod": "node build/index.js",
     "lint": "eslint src/** --no-error-on-unmatched-pattern",
-    "test": "jest src/tests/**",
-    "prod": "node build/index.js"
+    "test": "jest src/tests/**"
   },
   "author": "",
   "license": "ISC",
