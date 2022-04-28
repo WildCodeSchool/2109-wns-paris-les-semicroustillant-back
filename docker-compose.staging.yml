@@ -1,10 +1,7 @@
 services:
   front:
-    build:
-      context: ../2109-wns-paris-les-semicroustillant-front
-      dockerfile: Dockerfile-staging
-    ports:
-      - 8080:3000
+    image: semiwcs/2109-wns-paris-les-semicroustillant-front:latest
+    command: sh -c "npm run build"
 
     ## @TODO: Healtcheck issue
     ## MUST BE FIXED
@@ -14,11 +11,12 @@ services:
     volumes:
       - ../2109-wns-paris-les-semicroustillant-front/src:/app/src
   back:
-    build:
-      context: ./
-      dockerfile: Dockerfile-staging
-    ports:
-      - 5050:4000
+    image: semiwcs/2109-wns-paris-les-semicroustillant-back:latest
+    command: sh -c "npm run build && npm run prod"
+    expose:
+      - 4000
+    depends_on:
+      - mongodb
 
     ## @TODO: Healtcheck prevents the container from starting with Docker
     ## MUST BE FIXED
@@ -33,3 +31,15 @@ services:
     image: mongo:4.4
     volumes:
       - ./data:/data/db
+  nginx:
+    image: nginx:1.21.3
+    depends_on:
+      - front
+      - back
+    restart: always
+    ports:
+      - ${GATEWAY_PORT}:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ../2109-wns-paris-les-semicroustillant-front/src:/2109-wns-paris-les-semicroustillant-front/src
+      - ./logs:/var/log/nginx
