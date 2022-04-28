@@ -2,8 +2,8 @@ services:
   server:
     image: semiwcs/2109-wns-paris-les-semicroustillant-back:latest
     command: sh -c "npm run start:prod"
-    expose:
-      - 4000
+    ports:
+      - 5050:4000
     depends_on:
       - mongodb
 
@@ -19,6 +19,8 @@ services:
   front:
     image: semiwcs/2109-wns-paris-les-semicroustillant-front:latest
     command: sh -c "npm run build"
+    ports:
+      - 8080:3000
 
     ## @TODO: Healtcheck issue
     ## MUST BE FIXED
