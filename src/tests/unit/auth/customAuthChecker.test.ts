@@ -5,6 +5,7 @@ import UserModel from '../../../models/UserModel';
 import customAuthChecker from '../../../auth/customAuthChecker';
 
 describe('customAuthChecker', () => {
+  // @SophieTopart: how to correctly type context and process?
   let context: { token: string } | null = null;
   let roles: string[] | null = null;
   // let process: { env: { SECRET_JWT_KEY: Secret } } | null = null;
@@ -29,6 +30,7 @@ describe('customAuthChecker', () => {
       .fn()
       .mockResolvedValue({ email: 'user@email.com', role: 'admin' });
 
+    // @SophieTopart: typing issue with customAuthChecker
     // @ts-ignore
     const result = await customAuthChecker({ context }, roles);
 
