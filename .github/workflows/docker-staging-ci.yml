@@ -25,6 +25,13 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
+      - name: Create a .env file
+        run: |
+          touch .env
+          echo SECRET_JWT_KEY=${{ secrets.SECRET_JWT_KEY }} >> .env
+          echo DB_NAME=${{ secrets.DB_NAME }} >> .env
+          cat .env
+
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
