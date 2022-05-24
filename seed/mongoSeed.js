@@ -11,11 +11,11 @@ const position = [
 const db = 'semidb';
 const collectionProjects = 'projects';
 const collectionUsers = 'users';
-const collectionComments = 'comments';
+// const collectionComments = 'comments';
 const collectionTickets = 'tickets';
 const numberOfUsers = 6;
 const numberOfTickets = 15;
-const numberOfComments = 3;
+// const numberOfComments = 3;
 const numberOfProjects = 6;
 
 const createCollections = async () => {
@@ -120,7 +120,12 @@ const createCollections = async () => {
 
     projects.push(project);
   }
-  return { users, projects, tickets, comments };
+  return {
+    users,
+    projects,
+    tickets,
+    // , comments
+  };
 };
 
 const mongo = async () => {
@@ -134,17 +139,25 @@ const mongo = async () => {
   // Clearing DB
 
   // Seeding DB
-  const { users, projects, comments, tickets } = await createCollections();
+  const {
+    users,
+    projects,
+    // , comments
+    tickets,
+  } = await createCollections();
   await fixtures.clearAllAndLoad(
     {
       [collectionUsers]: users,
-      [collectionComments]: comments,
+      // [collectionComments]: comments,
       [collectionProjects]: projects,
       [collectionTickets]: tickets,
     },
     () => {
+      // add // ${collectionComments},
       console.log(
-        `Database cleared collections: ${collectionUsers}, ${collectionComments}, ${collectionProjects} ${collectionTickets}, and Seeded !`
+        `Database cleared collections: ${collectionUsers}, 
+        
+         ${collectionProjects} ${collectionTickets}, and Seeded !`
       );
       process.exit();
     }
