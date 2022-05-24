@@ -8,12 +8,14 @@ let db: typeof mongoose;
 
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
+
   const mongoUri = mongoServer.getUri();
   db = await createConnection(mongoUri);
 });
 
 beforeEach(async () => {
   await db.connection.collection('users').deleteMany({});
+  await db.connection.collection('tickets').deleteMany({});
   await db.connection.collection('projects').deleteMany({});
 });
 
