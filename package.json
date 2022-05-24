@@ -9,12 +9,9 @@
     "start:prod": "node build/index.js",
     "lint": "eslint src/** --no-error-on-unmatched-pattern",
     "test": "jest src/tests/**",
-<<<<<<< HEAD
-    "mongoseed": "node seed/mongoSeed.js"
-=======
     "int-test": "jest src/tests/integration/**",
-    "unit-test": "jest src/tests/unit/**"
->>>>>>> 054734a5b9ab1d3773a5f5bc95a873f700d599f6
+    "unit-test": "jest src/tests/unit/**",
+    "mongoseed": "node seed/mongoSeed.js"
   },
   "author": "",
   "license": "ISC",

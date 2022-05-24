@@ -13,7 +13,7 @@ const collectionProjects = 'projects';
 const collectionUsers = 'users';
 const collectionComments = 'comments';
 const collectionTickets = 'tickets';
-const numberOfUsers = 5;
+const numberOfUsers = 6;
 const numberOfTickets = 15;
 const numberOfComments = 3;
 const numberOfProjects = 6;
@@ -61,33 +61,34 @@ const createCollections = async () => {
     tickets.push(ticket);
   }
 
+  // Have to update these with DB schema (remove comments collection and include it's content in tickets collection)
   // Creating comments data
-  let comments = [];
+  // let comments = [];
 
-  for (let i = 0; i < numberOfComments; i++) {
-    const comment = {
-      _id: id(),
-      content: fakemeup.lorem.sentence(10, 15),
-      user: usersIdsArray[Math.floor(Math.random() * usersIdsArray.length)],
-      date: fakemeup.date.full('slash'),
-    };
+  // for (let i = 0; i < numberOfComments; i++) {
+  //   const comment = {
+  //     _id: id(),
+  //     content: fakemeup.lorem.sentence(10, 15),
+  //     user: usersIdsArray[Math.floor(Math.random() * usersIdsArray.length)],
+  //     date: fakemeup.date.full('slash'),
+  //   };
 
-    comments.push(comment);
-  }
+  //   comments.push(comment);
+  // }
 
   // Creating total_time_spent data
-  const commentsIdsArray = comments.map((_, index) => {
-    return comments[index]._id;
-  });
-  tickets.forEach((item) => {
-    item.total_time_spent =
-      item.initial_time_estimated - fakemeup.numbers.floatPrice(1, 3);
-    item.comments = [
-      commentsIdsArray[0],
-      commentsIdsArray[1],
-      commentsIdsArray[2],
-    ];
-  });
+  // const commentsIdsArray = comments.map((_, index) => {
+  //   return comments[index]._id;
+  // });
+  // tickets.forEach((item) => {
+  //   item.total_time_spent =
+  //     item.initial_time_estimated - fakemeup.numbers.floatPrice(1, 3);
+  //   item.comments = [
+  //     commentsIdsArray[0],
+  //     commentsIdsArray[1],
+  //     commentsIdsArray[2],
+  //   ];
+  // });
 
   //   Creating projects collection data
 
@@ -98,14 +99,13 @@ const createCollections = async () => {
   for (let i = 0; i < numberOfProjects; i++) {
     const project = {
       name: fakemeup.user.fullName() + "'s project",
-      projectOwner: 'lol',
+      projectOwner: users[1]._id,
       members: [
-        ticketsIdsArray[0],
-        ticketsIdsArray[1],
-        ticketsIdsArray[2],
-        ticketsIdsArray[3],
-        ticketsIdsArray[4],
-        ticketsIdsArray[5],
+        users[1]._id,
+        users[2]._id,
+        users[3]._id,
+        users[4]._id,
+        users[5]._id,
       ],
       description: fakemeup.lorem.sentence(10, 15),
       ticketsIds: [
