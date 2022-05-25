@@ -6,6 +6,9 @@ export default class ProjectInputUpdate implements Partial<Project> {
   @Field(() => ID)
   _id!: string;
 
+  @Field(() => ID,  { nullable: true })
+  created_by: string;
+
   @Field({ nullable: true })
   name?: string;
 
@@ -16,7 +19,7 @@ export default class ProjectInputUpdate implements Partial<Project> {
   description?: string;
 
   @Field({ nullable: true })
-  projectOwner?: string;
+  project_owner?: string;
 
   @Field(() => [ID], { nullable: true })
   members?: string[];

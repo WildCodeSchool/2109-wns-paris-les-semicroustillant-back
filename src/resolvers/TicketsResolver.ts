@@ -6,6 +6,7 @@ import TicketInput from '../inputs/TicketInput';
 import TicketInputUpdate from '../inputs/TicketInputUpdate';
 import IdInput from '../inputs/IdInput';
 
+// @TODO: put this function in utils folder + change ts type
 export const getAdvancement = (data: any) => {
   const timeSpent = data.total_time_spent;
   const estimatedTime = data.initial_time_estimated;

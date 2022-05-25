@@ -5,6 +5,9 @@ class Ticket {
   @Field(() => ID)
   _id: string;
 
+  @Field(() => ID)
+  created_by: string;
+
   @Field()
   subject?: string;
 
@@ -26,8 +29,8 @@ class Ticket {
   @Field({ nullable: true })
   advancement?: number;
 
-  @Field({ nullable: true })
-  projectId?: string;
+  @Field()
+  project_id: string;
 
   @Field(() => [ID], { nullable: true })
   users?: string[];

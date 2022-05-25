@@ -7,7 +7,7 @@ const countTicketsById = async ({
   projectId: string;
   status?: string | null;
 }) => {
-  const queryFilter = status ? { projectId, status } : { projectId };
+  const queryFilter = status ? { project_id: projectId, status } : { project_id:projectId };
 
   return TicketModel.countDocuments(queryFilter);
 };
