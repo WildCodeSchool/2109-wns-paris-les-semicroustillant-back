@@ -1,8 +1,11 @@
-import { InputType, Field } from 'type-graphql';
+import { InputType, Field, ID } from 'type-graphql';
 import IdInput from './IdInput';
 
 @InputType()
 export default class TicketInputUpdate {
+  @Field(() => ID,  { nullable: true })
+  created_by: string;
+
   @Field({ nullable: true })
   subject?: string;
 

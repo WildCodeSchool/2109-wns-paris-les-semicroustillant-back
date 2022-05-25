@@ -25,6 +25,7 @@ describe('ProjectResolver', () => {
 
     projectData1 = {
       name: 'project-1',
+      created_by: fakeUserId,
       status: 'In progress',
       description: 'Blabla',
       project_owner: emptyObjectId,
@@ -32,6 +33,7 @@ describe('ProjectResolver', () => {
     };
     projectData2 = {
       name: 'project-2',
+      created_by: fakeUserId,
       status: 'Done',
       description: 'Blabla',
       project_owner: emptyObjectId,
@@ -221,6 +223,7 @@ describe('ProjectResolver', () => {
   describe('createProject()', () => {
     it('creates a new project', async () => {
       const createProjectData = {
+        created_by: fakeUserId,
         name: 'project-2',
         status: 'Done',
         description: 'Blabla',
@@ -232,6 +235,7 @@ describe('ProjectResolver', () => {
         mutation createProject($projectInput: ProjectInput!) {
           createProject(projectInput: $projectInput) {
             _id
+            created_by
             name
             status
             description

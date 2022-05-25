@@ -6,6 +6,9 @@ export default class ProjectInputUpdate implements Partial<Project> {
   @Field(() => ID)
   _id!: string;
 
+  @Field(() => ID,  { nullable: true })
+  created_by: string;
+
   @Field({ nullable: true })
   name?: string;
 
