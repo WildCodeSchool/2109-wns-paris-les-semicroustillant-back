@@ -2,6 +2,9 @@ import { InputType, Field, ID } from 'type-graphql';
 
 @InputType()
 export default class ProjectInput {
+  @Field(() => ID)
+  created_by: string;
+
   @Field()
   name: string;
 
@@ -12,7 +15,7 @@ export default class ProjectInput {
   description: string;
 
   @Field({ nullable: true })
-  projectOwner?: string;
+  project_owner?: string;
 
   @Field(() => [ID], { nullable: true })
   members?: string[];

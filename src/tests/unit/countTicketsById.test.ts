@@ -14,7 +14,7 @@ describe('countTicketsById', () => {
 
     expect(res).toBe(10);
     expect(TicketModel.countDocuments).toHaveBeenCalledWith({
-      projectId: '5e9f8f9f8f9f8f9f8f9f9f9',
+      project_id: '5e9f8f9f8f9f8f9f8f9f9f9',
     });
   });
 
@@ -27,7 +27,7 @@ describe('countTicketsById', () => {
 
     expect(res).toBe(5);
     expect(TicketModel.countDocuments).toHaveBeenCalledWith({
-      projectId: '5e9f8f9f8f9f8f9f8f9f9f9',
+      project_id: '5e9f8f9f8f9f8f9f8f9f9f9',
       status: 'Done',
     });
   });

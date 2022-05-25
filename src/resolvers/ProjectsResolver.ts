@@ -18,11 +18,11 @@ class ProjectsResolver {
         getAllProjects.map(async (project) => {
           const projectModel = project.toJSON();
 
-          projectModel.totalTickets = await countTicketsById({
+          projectModel.total_tickets = await countTicketsById({
             projectId: project._id.toString(),
           });
 
-          projectModel.completedTickets = await countTicketsById({
+          projectModel.completed_tickets = await countTicketsById({
             projectId: project._id.toString(),
             status: 'Done',
           });
@@ -43,11 +43,11 @@ class ProjectsResolver {
     try {
       const getOneProject = await ProjectModel.findById(projectId);
 
-      getOneProject.totalTickets = await countTicketsById({
+      getOneProject.total_tickets = await countTicketsById({
         projectId: getOneProject._id.toString(),
       });
 
-      getOneProject.completedTickets = await countTicketsById({
+      getOneProject.completed_tickets = await countTicketsById({
         projectId: getOneProject._id.toString(),
         status: 'Done',
       });
@@ -99,7 +99,7 @@ class ProjectsResolver {
     try {
       await ProjectModel.init();
       // only delete a project, not the tickets
-      // @TODO: should we delete the ticket or the ID as well?
+      // @TODO: should we delete the ticket or the ID as well? check delete on cascade
       const result = await ProjectModel.findByIdAndRemove(projectId);
 
       if (!result) {
