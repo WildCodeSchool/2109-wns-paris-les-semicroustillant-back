@@ -12,7 +12,7 @@ export default class ProjectInput {
   description: string;
 
   @Field({ nullable: true })
-  projectOwner?: string;
+  project_owner?: string;
 
   @Field(() => [ID], { nullable: true })
   members?: string[];

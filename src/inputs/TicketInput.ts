@@ -1,9 +1,11 @@
-import { InputType, Field } from 'type-graphql';
-import Users from '../entities/UserEntity';
+import { InputType, Field, ID } from 'type-graphql';
 import IdInput from './IdInput';
 
 @InputType()
 export default class TicketInput {
+  @Field(() => ID)
+  created_by: string;
+
   @Field()
   subject: string;
 
@@ -26,8 +28,8 @@ export default class TicketInput {
   advancement?: number;
 
   @Field({ nullable: true })
-  projectId?: string;
+  project_id?: string;
 
   @Field(() => [IdInput], { nullable: true })
-  users?: Users[];
+  users?: string[];
 }

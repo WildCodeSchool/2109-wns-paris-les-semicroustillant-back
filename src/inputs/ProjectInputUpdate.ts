@@ -16,7 +16,7 @@ export default class ProjectInputUpdate implements Partial<Project> {
   description?: string;
 
   @Field({ nullable: true })
-  projectOwner?: string;
+  project_owner?: string;
 
   @Field(() => [ID], { nullable: true })
   members?: string[];

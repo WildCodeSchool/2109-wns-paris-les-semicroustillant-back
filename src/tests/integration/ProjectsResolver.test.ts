@@ -27,14 +27,14 @@ describe('ProjectResolver', () => {
       name: 'project-1',
       status: 'In progress',
       description: 'Blabla',
-      projectOwner: emptyObjectId,
+      project_owner: emptyObjectId,
       members: [fakeUserId],
     };
     projectData2 = {
       name: 'project-2',
       status: 'Done',
       description: 'Blabla',
-      projectOwner: emptyObjectId,
+      project_owner: emptyObjectId,
       members: [fakeUserId],
     };
 
@@ -46,11 +46,11 @@ describe('ProjectResolver', () => {
       const project1InDb = new ProjectModel(projectData1);
       const project2InDb = new ProjectModel(projectData2);
       const ticketsData1 = new TicketModel({
-        projectId: project1InDb._id,
+        project_id: project1InDb._id,
         status: 'In progress',
       });
       const ticketsData2 = new TicketModel({
-        projectId: project2InDb._id,
+        project_id: project2InDb._id,
         status: 'Done',
       });
 
@@ -64,7 +64,7 @@ describe('ProjectResolver', () => {
           getAllProjects {
             _id
             name
-            projectOwner
+            project_owner
             members
           }
         }
@@ -82,7 +82,7 @@ describe('ProjectResolver', () => {
       expect(res.data?.getAllProjects[0]).toEqual(
         expect.objectContaining({
           name: 'project-1',
-          projectOwner: emptyObjectId,
+          project_owner: emptyObjectId,
           members: [fakeUserId],
         })
       );
@@ -96,11 +96,11 @@ describe('ProjectResolver', () => {
       const project1InDb = new ProjectModel(projectData1);
       const project2InDb = new ProjectModel(projectData2);
       const ticketsData1 = new TicketModel({
-        projectId: project1InDb._id,
+        project_id: project1InDb._id,
         status: 'In progress',
       });
       const ticketsData2 = new TicketModel({
-        projectId: project2InDb._id,
+        project_id: project2InDb._id,
         status: 'Done',
       });
 
@@ -114,7 +114,7 @@ describe('ProjectResolver', () => {
           getAllProjects {
             _id
             name
-            projectOwner
+            project_owner
             members
             plop
           }
@@ -137,11 +137,11 @@ describe('ProjectResolver', () => {
       const project1InDb = new ProjectModel(projectData1);
       const project2InDb = new ProjectModel(projectData2);
       const ticketsData1 = new TicketModel({
-        projectId: project1InDb._id,
+        project_id: project1InDb._id,
         status: 'In progress',
       });
       const ticketsData2 = new TicketModel({
-        projectId: project2InDb._id,
+        project_id: project2InDb._id,
         status: 'Done',
       });
 
@@ -155,7 +155,7 @@ describe('ProjectResolver', () => {
           getOneProject(projectId: $projectId) {
             _id
             name
-            projectOwner
+            project_owner
             members
           }
         }
@@ -175,7 +175,7 @@ describe('ProjectResolver', () => {
       expect(res.data?.getOneProject).toEqual(
         expect.objectContaining({
           name: 'project-1',
-          projectOwner: emptyObjectId,
+          project_owner: emptyObjectId,
           members: [fakeUserId],
         })
       );
@@ -193,10 +193,10 @@ describe('ProjectResolver', () => {
           getOneProject(projectId: $projectId) {
             _id
             name
-            projectOwner
+            project_owner
             members
-            totalTickets
-            completedTickets
+            total_tickets
+            completed_tickets
           }
         }
       `;
@@ -224,7 +224,7 @@ describe('ProjectResolver', () => {
         name: 'project-2',
         status: 'Done',
         description: 'Blabla',
-        projectOwner: emptyObjectId,
+        project_owner: emptyObjectId,
         members: [fakeUserId],
       };
 
@@ -235,7 +235,7 @@ describe('ProjectResolver', () => {
             name
             status
             description
-            projectOwner
+            project_owner
             members
           }
         }
@@ -270,10 +270,10 @@ describe('ProjectResolver', () => {
             name
             status
             description
-            projectOwner
+            project_owner
             members
-            totalTickets
-            completedTickets
+            total_tickets
+            completed_tickets
           }
         }
       `;
@@ -284,7 +284,7 @@ describe('ProjectResolver', () => {
           name: 'super great project',
           status: 'super status',
           description: 'super description',
-          projectOwner: '61e7f93050acb74fc893e17e',
+          project_owner: '61e7f93050acb74fc893e17e',
           members: ['61e7f93050acb74fc893e17d'],
         },
       };
@@ -303,7 +303,7 @@ describe('ProjectResolver', () => {
           name: 'super great project',
           status: 'super status',
           description: 'super description',
-          projectOwner: '61e7f93050acb74fc893e17e',
+          project_owner: '61e7f93050acb74fc893e17e',
           members: ['61e7f93050acb74fc893e17d'],
         })
       );
@@ -319,7 +319,7 @@ describe('ProjectResolver', () => {
             name
             status
             description
-            projectOwner
+            project_owner
             members
           }
         }
@@ -331,7 +331,7 @@ describe('ProjectResolver', () => {
           name: 'super great project',
           status: 'super status',
           description: 'super description',
-          projectOwner: '61e7f93050acb74fc893e17e',
+          project_owner: '61e7f93050acb74fc893e17e',
           members: ['61e7f93050acb74fc893e17d'],
         },
       };
@@ -351,7 +351,7 @@ describe('ProjectResolver', () => {
           name: 'super great project',
           status: 'super status',
           description: 'super description',
-          projectOwner: '61e7f93050acb74fc893e17e',
+          project_owner: '61e7f93050acb74fc893e17e',
           members: ['61e7f93050acb74fc893e17d'],
         })
       );
@@ -367,7 +367,7 @@ describe('ProjectResolver', () => {
             name
             status
             description
-            projectOwner
+            project_owner
             members
           }
         }
@@ -380,7 +380,7 @@ describe('ProjectResolver', () => {
           _id: wrongProjectId,
           name: 'super great project',
           description: 'super description',
-          projectOwner: '000000000000000000000001',
+          project_owner: '000000000000000000000001',
           members: [fakeUserId],
         },
       };
