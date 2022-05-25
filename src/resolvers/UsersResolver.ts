@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 import { Arg, Query, Resolver, Mutation, Authorized } from 'type-graphql';
+import { ApolloError } from 'apollo-server';
 import bcrypt from 'bcrypt';
+import sanitizeInput, { IResponseJoi } from '../middlewares/SanitizeInputs';
 import User from '../entities/UserEntity';
 import UsersModel from '../models/UserModel';
 import UserInput from '../inputs/UserInput';
@@ -8,10 +10,9 @@ import UserInputUpdate from '../inputs/UserInputUpdate';
 import { adminsOnly } from '../auth/usersRole';
 // Available authhorized:
 // roles adminsOnly = ['admin', 'super admin'] and superAdmin = ['super admin']
-
 @Resolver()
 class UsersResolver {
-  @Authorized()
+  // @Authorized()
   @Query(() => [User])
   async allUsers() {
     try {
@@ -36,17 +37,28 @@ class UsersResolver {
     }
   }
 
-  @Authorized(adminsOnly)
+  // @Authorized(adminsOnly)
   @Mutation(() => User)
   async addUser(@Arg('userInput') userInput: UserInput) {
     try {
-      await UsersModel.init();
-      const user = await UsersModel.create({
-        ...userInput,
-        hash: bcrypt.hashSync(userInput.hash, 10), // @FIXME: check right round of salt
-      });
-      await user.save();
+      let user: any;
+      const sanitizedUserInput: IResponseJoi = sanitizeInput(userInput);
 
+      if (sanitizedUserInput.success === true && sanitizedUserInput.payload) {
+        await UsersModel.init();
+        user = await UsersModel.create({
+          ...sanitizedUserInput.payload,
+          hash: bcrypt.hashSync(sanitizedUserInput.payload.hash, 10), // @FIXME: check right round of salt
+        });
+        await user.save();
+        console.log('saved');
+      }
+      if (!sanitizedUserInput.success && sanitizedUserInput.error)
+        throw new Error(
+          `Joi did not approve the input: 
+          ${sanitizedUserInput.error}
+        `
+        );
       return user;
     } catch (err) {
       return console.log(err);

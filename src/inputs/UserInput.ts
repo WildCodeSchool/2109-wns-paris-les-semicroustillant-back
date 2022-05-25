@@ -1,4 +1,5 @@
-import { InputType, Field } from "type-graphql";
+// eslint-disable-next-line max-classes-per-file
+import { Field, InputType } from 'type-graphql';
 
 @InputType()
 export default class UserInput {
