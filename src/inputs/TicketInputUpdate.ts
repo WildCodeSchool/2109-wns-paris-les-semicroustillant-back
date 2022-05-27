@@ -40,7 +40,7 @@ export default class TicketInputUpdate {
 
   @Field({ nullable: true })
   @MinLength(5, {
-    message: 'Project description must be at least 1 character',
+    message: 'Project description must be at least 5 characters',
   })
   description?: string;
 
