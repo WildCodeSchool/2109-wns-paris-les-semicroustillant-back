@@ -24,6 +24,7 @@
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
     "graphql": "^15.7.2",
+    "joiful": "^3.0.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.0",
     "reflect-metadata": "^0.1.13",

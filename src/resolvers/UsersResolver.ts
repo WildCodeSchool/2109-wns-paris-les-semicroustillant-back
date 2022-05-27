@@ -8,7 +8,6 @@ import UserInputUpdate from '../inputs/UserInputUpdate';
 import { adminsOnly } from '../auth/usersRole';
 // Available authhorized:
 // roles adminsOnly = ['admin', 'super admin'] and superAdmin = ['super admin']
-
 @Resolver()
 class UsersResolver {
   @Authorized()
@@ -46,6 +45,7 @@ class UsersResolver {
         hash: bcrypt.hashSync(userInput.hash, 10), // @FIXME: check right round of salt
       });
       await user.save();
+      console.log('saved');
 
       return user;
     } catch (err) {
