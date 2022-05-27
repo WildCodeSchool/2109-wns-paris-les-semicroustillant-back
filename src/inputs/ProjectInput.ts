@@ -1,16 +1,9 @@
 import { InputType, Field, ID } from 'type-graphql';
-import {
-  MaxLength,
-  IsNotEmpty,
-  IsString,
-  IsMongoId,
-  IsIn,
-} from 'class-validator';
+import { MaxLength, IsNotEmpty, IsString, IsMongoId } from 'class-validator';
 
 @InputType()
 export default class ProjectInput {
   @Field(() => ID)
-  // @jf.string().required()
   @IsNotEmpty()
   created_by: string;
 
@@ -32,6 +25,7 @@ export default class ProjectInput {
   status: string;
 
   @Field()
+  @IsNotEmpty()
   @IsString()
   description: string;
 
