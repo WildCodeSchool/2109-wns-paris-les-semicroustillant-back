@@ -5,3 +5,4 @@ yarn.lock
 coverage
 .env
 logs
+yarn-error.log
