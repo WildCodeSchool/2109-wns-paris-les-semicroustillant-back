@@ -10,7 +10,7 @@ import { adminsOnly } from '../auth/usersRole';
 // roles adminsOnly = ['admin', 'super admin'] and superAdmin = ['super admin']
 @Resolver()
 class UsersResolver {
-  // @Authorized()
+  @Authorized()
   @Query(() => [User])
   async allUsers() {
     try {
@@ -35,7 +35,7 @@ class UsersResolver {
     }
   }
 
-  // @Authorized(adminsOnly)
+  @Authorized(adminsOnly)
   @Mutation(() => User)
   async addUser(@Arg('userInput') userInput: UserInput) {
     try {

@@ -57,7 +57,7 @@ export default class TicketInputUpdate {
   advancement?: number;
 
   @Field()
-  @IsNumber()
+  @IsMongoId()
   project_id: string;
 
   @Field(() => [ID], { nullable: true })
