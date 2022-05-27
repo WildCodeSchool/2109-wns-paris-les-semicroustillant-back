@@ -58,7 +58,7 @@ class ProjectsResolver {
     }
   }
 
-  @Authorized()
+  // @Authorized()
   @Mutation(() => Project)
   async createProject(@Arg('projectInput') projectInput: ProjectInput) {
     try {

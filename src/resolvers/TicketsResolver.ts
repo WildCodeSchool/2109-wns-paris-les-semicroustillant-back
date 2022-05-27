@@ -30,7 +30,9 @@ class TicketsResolver {
 
   @Authorized()
   @Query(() => Ticket)
-  async getOneTicket(@Arg('id', () => String) ticketId: IdInput) {
+  async getOneTicket(
+    @Arg('id', () => String) ticketId: TicketInputUpdate['_id']
+  ) {
     try {
       const getOneTicket = await TicketsModel.findById(ticketId);
       getOneTicket.advancement = getAdvancement(getOneTicket);
@@ -40,7 +42,7 @@ class TicketsResolver {
     }
   }
 
-  @Authorized()
+  // @Authorized()
   @Mutation(() => Ticket)
   async addTicket(@Arg('ticketInput') ticketInput: TicketInput) {
     try {
@@ -57,22 +59,27 @@ class TicketsResolver {
   @Authorized()
   @Mutation(() => Ticket)
   async updateTicket(
-    @Arg('id', () => String) ticketId: IdInput,
     @Arg('ticketInputUpdate') ticketInputUpdate: TicketInputUpdate
   ) {
     try {
-      await TicketsModel.findByIdAndUpdate(ticketId, ticketInputUpdate, {
-        new: true,
-      });
+      await TicketsModel.findByIdAndUpdate(
+        ticketInputUpdate._id,
+        ticketInputUpdate,
+        {
+          new: true,
+        }
+      );
     } catch (err) {
       console.log(err);
     }
-    return TicketsModel.findById(ticketId);
+    return TicketsModel.findById(ticketInputUpdate._id);
   }
 
   @Authorized()
   @Mutation(() => String)
-  async deleteTicket(@Arg('id', () => String) ticketId: IdInput) {
+  async deleteTicket(
+    @Arg('id', () => String) ticketId: TicketInputUpdate['_id']
+  ) {
     try {
       await TicketsModel.init();
       await TicketsModel.findByIdAndRemove(ticketId);

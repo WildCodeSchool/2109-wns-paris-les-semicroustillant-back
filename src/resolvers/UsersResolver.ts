@@ -1,8 +1,6 @@
 /* eslint-disable no-console */
 import { Arg, Query, Resolver, Mutation, Authorized } from 'type-graphql';
-import { ApolloError } from 'apollo-server';
 import bcrypt from 'bcrypt';
-import sanitizeInput, { IResponseJoi } from '../middlewares/SanitizeInputs';
 import User from '../entities/UserEntity';
 import UsersModel from '../models/UserModel';
 import UserInput from '../inputs/UserInput';
@@ -41,24 +39,14 @@ class UsersResolver {
   @Mutation(() => User)
   async addUser(@Arg('userInput') userInput: UserInput) {
     try {
-      let user: any;
-      const sanitizedUserInput: IResponseJoi = sanitizeInput(userInput);
+      await UsersModel.init();
+      const user = await UsersModel.create({
+        ...userInput,
+        hash: bcrypt.hashSync(userInput.hash, 10), // @FIXME: check right round of salt
+      });
+      await user.save();
+      console.log('saved');
 
-      if (sanitizedUserInput.success === true && sanitizedUserInput.payload) {
-        await UsersModel.init();
-        user = await UsersModel.create({
-          ...sanitizedUserInput.payload,
-          hash: bcrypt.hashSync(sanitizedUserInput.payload.hash, 10), // @FIXME: check right round of salt
-        });
-        await user.save();
-        console.log('saved');
-      }
-      if (!sanitizedUserInput.success && sanitizedUserInput.error)
-        throw new Error(
-          `Joi did not approve the input: 
-          ${sanitizedUserInput.error}
-        `
-        );
       return user;
     } catch (err) {
       return console.log(err);
