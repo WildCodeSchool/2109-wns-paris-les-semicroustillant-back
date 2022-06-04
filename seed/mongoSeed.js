@@ -1,4 +1,5 @@
 const fakemeup = require('fakemeup/dist').default;
+const bcrypt = require('bcrypt');
 
 const position = [
   'Developer',
@@ -25,14 +26,21 @@ const createCollections = async () => {
 
   //   Creating Users collection data
   for (let i = 0; i < numberOfUsers; i++) {
+    let dynamicHash = '';
+    if (i <= 1) {
+      dynamicHash = bcrypt.hashSync('semi', 10);
+    } else dynamicHash = Math.random().toString(36).substring(7);
+
+    const dynamicRole = i === 0 ? 'super admin' : i === 1 ? 'admin' : 'users';
+
     const user = {
       _id: id(),
       email: fakemeup.user.email(),
-      hash: Math.random().toString(36).substring(7),
+      hash: dynamicHash,
       firstname: fakemeup.user.firstName(),
       lastname: fakemeup.user.lastName(),
       position: position[i],
-      role: 'admin',
+      role: dynamicRole,
     };
     users.push(user);
   }
@@ -131,8 +139,7 @@ const createCollections = async () => {
 const mongo = async () => {
   // Connecting to DB
   const fixtures = require('pow-mongodb-fixtures').connect(db, {
-    host: 'localhost',
-    port: 27017,
+    host: `mongodb://mongodb:27017/${db}`,
   });
 
   console.log('passed in connection');
