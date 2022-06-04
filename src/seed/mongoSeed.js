@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable global-require */
 const fakemeup = require('fakemeup/dist').default;
 const bcrypt = require('bcrypt');
 
@@ -20,18 +22,26 @@ const numberOfTickets = 15;
 const numberOfProjects = 6;
 
 const createCollections = async () => {
-  var id = require('pow-mongodb-fixtures').createObjectId;
+  const id = require('pow-mongodb-fixtures').createObjectId;
 
-  let users = [];
+  const users = [];
 
   //   Creating Users collection data
-  for (let i = 0; i < numberOfUsers; i++) {
+  for (let i = 0; i < numberOfUsers; i += 1) {
     let dynamicHash = '';
-    if (i <= 1) {
+    let dynamicRole = '';
+    if (i === 0) {
       dynamicHash = bcrypt.hashSync('semi', 10);
-    } else dynamicHash = Math.random().toString(36).substring(7);
-
-    const dynamicRole = i === 0 ? 'super admin' : i === 1 ? 'admin' : 'users';
+      dynamicRole = 'super admin';
+    }
+    if (i === 1) {
+      dynamicHash = bcrypt.hashSync('semi', 10);
+      dynamicRole = 'admin';
+    }
+    if (i > 1) {
+      dynamicHash = Math.random().toString(36).substring(7);
+      dynamicRole = 'users';
+    }
 
     const user = {
       _id: id(),
@@ -45,14 +55,12 @@ const createCollections = async () => {
     users.push(user);
   }
   // Creating UsersIds Array that will be used in projects collection
-  const usersIdsArray = users.map((_, index) => {
-    return users[index]._id;
-  });
+  const usersIdsArray = users.map((_, index) => users[index]._id);
 
   //   Creating Tickets collection data
-  let tickets = [];
+  const tickets = [];
 
-  for (let i = 0; i < numberOfTickets; i++) {
+  for (let i = 0; i < numberOfTickets; i += 1) {
     const ticket = {
       _id: id(),
       subject: fakemeup.lorem.sentence(2, 3),
@@ -100,13 +108,11 @@ const createCollections = async () => {
 
   //   Creating projects collection data
 
-  let projects = [];
-  const ticketsIdsArray = tickets.map((_, index) => {
-    return tickets[index]._id;
-  });
-  for (let i = 0; i < numberOfProjects; i++) {
+  const projects = [];
+  const ticketsIdsArray = tickets.map((_, index) => tickets[index]._id);
+  for (let i = 0; i < numberOfProjects; i += 1) {
     const project = {
-      name: fakemeup.user.fullName() + "'s project",
+      name: `${fakemeup.user.fullName()}'s project`,
       projectOwner: users[1]._id,
       members: [
         users[1]._id,
@@ -138,6 +144,7 @@ const createCollections = async () => {
 
 const mongo = async () => {
   // Connecting to DB
+
   const fixtures = require('pow-mongodb-fixtures').connect(db, {
     host: `mongodb://mongodb:27017/${db}`,
   });
