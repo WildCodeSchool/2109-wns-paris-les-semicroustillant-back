@@ -146,7 +146,7 @@ const mongo = async () => {
   // Connecting to DB
 
   const fixtures = require('pow-mongodb-fixtures').connect(db, {
-    host: `mongodb://mongodb:27017/${db}`,
+    host: `mongodb://mongodb:27018/${db}`,
   });
 
   console.log('passed in connection');
