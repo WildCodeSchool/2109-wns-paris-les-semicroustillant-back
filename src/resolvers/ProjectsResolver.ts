@@ -6,6 +6,8 @@ import ProjectInput from '../inputs/ProjectInput';
 import ProjectInputUpdate from '../inputs/ProjectInputUpdate';
 import countTicketsById from '../utils/countTicketsById';
 
+import { IProject } from '../types/types';
+
 @Resolver()
 class ProjectsResolver {
   @Authorized()
@@ -16,7 +18,9 @@ class ProjectsResolver {
 
       return await Promise.all(
         getAllProjects.map(async (project) => {
-          const projectModel = project.toJSON();
+          const projectModel: IProject = project.toJSON();
+
+          project._id.toString();
 
           projectModel.totalTickets = await countTicketsById({
             projectId: project._id.toString(),
@@ -41,16 +45,21 @@ class ProjectsResolver {
     @Arg('projectId', () => String) projectId: ProjectInputUpdate['_id']
   ) {
     try {
-      const getOneProject = await ProjectModel.findById(projectId);
+      const getOneProject: IProject | null = await ProjectModel.findById(
+        projectId
+      );
+      if (getOneProject && getOneProject.totalTickets)
+        getOneProject.totalTickets = await countTicketsById({
+          projectId: getOneProject._id.toString(),
+        });
 
-      getOneProject.totalTickets = await countTicketsById({
-        projectId: getOneProject._id.toString(),
-      });
+      if (getOneProject && getOneProject.completedTickets)
+        getOneProject.completedTickets = await countTicketsById({
+          projectId: getOneProject._id.toString(),
+          status: 'Done',
+        });
 
-      getOneProject.completedTickets = await countTicketsById({
-        projectId: getOneProject._id.toString(),
-        status: 'Done',
-      });
+      if (!getOneProject) throw new Error('Project not found');
 
       return getOneProject;
     } catch (err: any) {

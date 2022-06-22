@@ -5,7 +5,7 @@ import UserModel from '../models/UserModel';
 
 const customAuthChecker: AuthChecker<JwtPayload> = async (
   { context },
-  roles: string[],
+  roles: string[]
 ) => {
   const userJwt = context.token;
   const secret = process.env.SECRET_JWT_KEY as Secret;
@@ -25,7 +25,7 @@ const customAuthChecker: AuthChecker<JwtPayload> = async (
 
     context.user = user;
 
-    if (roles.length === 0 || roles.includes(user.role)) {
+    if (roles.length === 0 || roles.includes(context.user.role)) {
       return true;
     }
 

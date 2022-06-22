@@ -32,7 +32,9 @@ class TicketsResolver {
   async getOneTicket(@Arg('id', () => String) ticketId: IdInput) {
     try {
       const getOneTicket = await TicketsModel.findById(ticketId);
-      getOneTicket.advancement = getAdvancement(getOneTicket);
+      if (getOneTicket && getOneTicket.advancement)
+        getOneTicket.advancement = getAdvancement(getOneTicket);
+      else throw new Error('This ticket does not exist');
       return getOneTicket;
     } catch (err) {
       return console.log(err);
