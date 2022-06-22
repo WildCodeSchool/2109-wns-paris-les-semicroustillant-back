@@ -22,12 +22,12 @@ class ProjectsResolver {
 
           projectToJson.totalTickets = await countTicketsByProjectId({
             projectId: project._id.toString(),
-          }) || 0;
+          });
 
           projectToJson.completedTickets = await countTicketsByProjectId({
             projectId: project._id.toString(),
             status: 'Done',
-          }) || 0;
+          });
 
           return projectToJson;
         })
