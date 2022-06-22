@@ -1,4 +1,4 @@
-import countTicketsById from '../../../utils/countTicketsById';
+import countTicketsByProjectId from '../../../utils/countTicketsByProjectId';
 import TicketModel from '../../../models/TicketModel';
 
 describe('countTicketsById', () => {
@@ -10,7 +10,7 @@ describe('countTicketsById', () => {
 
     TicketModel.countDocuments = jest.fn().mockResolvedValue(10);
 
-    const res = await countTicketsById({ projectId, status });
+    const res = await countTicketsByProjectId({ projectId, status });
 
     expect(res).toBe(10);
     expect(TicketModel.countDocuments).toHaveBeenCalledWith({
@@ -23,7 +23,7 @@ describe('countTicketsById', () => {
 
     TicketModel.countDocuments = jest.fn().mockResolvedValue(5);
 
-    const res = await countTicketsById({ projectId, status });
+    const res = await countTicketsByProjectId({ projectId, status });
 
     expect(res).toBe(5);
     expect(TicketModel.countDocuments).toHaveBeenCalledWith({

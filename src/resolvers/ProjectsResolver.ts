@@ -4,7 +4,7 @@ import Project from '../entities/ProjectEntity';
 import ProjectModel from '../models/ProjectModel';
 import ProjectInput from '../inputs/ProjectInput';
 import ProjectInputUpdate from '../inputs/ProjectInputUpdate';
-import countTicketsById from '../utils/countTicketsById';
+import countTicketsByProjectId from '../utils/countTicketsByProjectId';
 
 import { IProject } from '../types/types';
 
@@ -18,18 +18,18 @@ class ProjectsResolver {
 
       return await Promise.all(
         getAllProjects.map(async (project) => {
-          const projectModel: IProject = project.toJSON();
+          const projectToJson: IProject = project.toJSON();
 
-          projectModel.totalTickets = await countTicketsById({
+          projectToJson.totalTickets = await countTicketsByProjectId({
             projectId: project._id.toString(),
           }) || 0;
 
-          projectModel.completedTickets = await countTicketsById({
+          projectToJson.completedTickets = await countTicketsByProjectId({
             projectId: project._id.toString(),
             status: 'Done',
           }) || 0;
 
-          return projectModel;
+          return projectToJson;
         })
       );
     } catch (err: any) {
@@ -47,12 +47,12 @@ class ProjectsResolver {
         projectId
       );
       if (getOneProject && getOneProject.totalTickets)
-        getOneProject.totalTickets = await countTicketsById({
+        getOneProject.totalTickets = await countTicketsByProjectId({
           projectId: getOneProject._id.toString(),
         });
 
       if (getOneProject && getOneProject.completedTickets)
-        getOneProject.completedTickets = await countTicketsById({
+        getOneProject.completedTickets = await countTicketsByProjectId({
           projectId: getOneProject._id.toString(),
           status: 'Done',
         });
