@@ -10,10 +10,10 @@ async function start() {
     console.log('awaiting for database connection');
 
     /* ---- If running the server locally, use : ---- */
-    // await createConnection(`mongodb://127.0.0.1:27017/${db}`);
+    await createConnection(`mongodb://127.0.0.1:27017/${db}`);
 
     /* ---- If running with Docker, use : ---- */
-    await createConnection(`mongodb://mongodb:27017/${db}`);
+    // await createConnection(`mongodb://mongodb:27017/${db}`);
 
     console.log('connected to database');
     const server = await createServer();
@@ -27,3 +27,13 @@ async function start() {
 }
 
 start();
+
+/*
+@TODO: 
+  - add input sanitizer middleware, remove special characters
+  - add cookie management / session management
+  - add csurf in cookie management to prevent csrf attacks
+  - only return necessary data in queries/mutation
+  - create reusable method to remove `hash` for data
+  - user profile picture to be handled with a File System.
+*/
