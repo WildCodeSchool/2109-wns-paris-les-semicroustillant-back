@@ -16,6 +16,11 @@ class ProjectsResolver {
     try {
       const getAllProjects = await ProjectModel.find();
 
+      // @FIX: add test for !getAllProjects
+      if (getAllProjects.length === 0) {
+        throw new Error('No projects found');
+      }
+
       return await Promise.all(
         getAllProjects.map(async (project) => {
           const projectToJson: IProject = project.toJSON();
@@ -46,18 +51,20 @@ class ProjectsResolver {
       const getOneProject: IProject | null = await ProjectModel.findById(
         projectId
       );
-      if (getOneProject && getOneProject.totalTickets)
-        getOneProject.totalTickets = await countTicketsByProjectId({
-          projectId: getOneProject._id.toString(),
-        });
+      
+      // @FIX: add test for !getOneProject
+      if (!getOneProject) {
+        throw new Error('Project not found');
+      }
 
-      if (getOneProject && getOneProject.completedTickets)
-        getOneProject.completedTickets = await countTicketsByProjectId({
-          projectId: getOneProject._id.toString(),
-          status: 'Done',
-        });
+      getOneProject.totalTickets = await countTicketsByProjectId({
+        projectId: getOneProject._id.toString(),
+      });
 
-      if (!getOneProject) throw new Error('Project not found');
+      getOneProject.completedTickets = await countTicketsByProjectId({
+        projectId: getOneProject._id.toString(),
+        status: 'Done',
+      });
 
       return getOneProject;
     } catch (err: any) {
