@@ -38,3 +38,20 @@ export interface IProjectInput {
   projectOwner: string;
   members: string;
 }
+export interface IProject {
+  [x: string]: any;
+  _id: string;
+  name: string;
+  status: string;
+  description: string;
+  projectOwner: string;
+  members: string[];
+  totalTickets?: number;
+  completedTickets?: number;
+}
+
+export interface IUserDB {
+  email: string;
+  hash: string;
+  _id: string;
+}
