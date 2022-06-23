@@ -20,7 +20,7 @@ class TicketsResolver {
       const getAllTickets = await TicketsModel.find();
       
       // @FIX: add test for !getAllProjects
-      if (getAllTickets.length === 0) {
+      if (!getAllTickets || getAllTickets.length === 0) {
         throw new Error('No projects found');
       }
 

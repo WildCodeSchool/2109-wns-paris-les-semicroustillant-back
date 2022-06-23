@@ -17,7 +17,7 @@ class ProjectsResolver {
       const getAllProjects = await ProjectModel.find();
 
       // @FIX: add test for !getAllProjects
-      if (getAllProjects.length === 0) {
+      if (!getAllProjects || getAllProjects.length === 0) {
         throw new Error('No projects found');
       }
 
