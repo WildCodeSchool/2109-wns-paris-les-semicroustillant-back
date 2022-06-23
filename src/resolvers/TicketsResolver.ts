@@ -18,6 +18,12 @@ class TicketsResolver {
   async allTickets() {
     try {
       const getAllTickets = await TicketsModel.find();
+      
+      // @FIX: add test for !getAllProjects
+      if (!getAllTickets || getAllTickets.length === 0) {
+        throw new Error('No projects found');
+      }
+
       for (let i = 0; i < getAllTickets.length; i += 1) {
         getAllTickets[i].advancement = getAdvancement(getAllTickets[i]);
       }
@@ -32,7 +38,13 @@ class TicketsResolver {
   async getOneTicket(@Arg('id', () => String) ticketId: IdInput) {
     try {
       const getOneTicket = await TicketsModel.findById(ticketId);
+
+      // @FIX: add test for !getOneTicket
+      if (!getOneTicket) {
+        throw new Error('This ticket does not exist');
+      }
       getOneTicket.advancement = getAdvancement(getOneTicket);
+
       return getOneTicket;
     } catch (err) {
       return console.log(err);

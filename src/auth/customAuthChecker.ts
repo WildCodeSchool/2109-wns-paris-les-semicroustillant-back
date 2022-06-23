@@ -25,7 +25,7 @@ const customAuthChecker: AuthChecker<JwtPayload> = async (
 
     context.user = user;
 
-    if (roles.length === 0 || roles.includes(user.role)) {
+    if (roles.length === 0 || roles.includes(context.user.role)) {
       return true;
     }
 
