@@ -2,8 +2,11 @@ FROM node:lts-alpine
 
 RUN mkdir /app
 WORKDIR /app
+
 COPY ./ ./
+
 RUN apk add g++ make py3-pip
+RUN apk --no-cache add curl
 RUN npm i
 
 CMD npm start

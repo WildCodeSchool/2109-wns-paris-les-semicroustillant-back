@@ -1,3 +1,5 @@
+version: '3.4'
+
 services:
   front:
     build:
@@ -5,32 +7,42 @@ services:
       dockerfile: Dockerfile-dev
     ports:
       - 8080:3000
-
-    ## @TODO: Healtcheck issue
-    ## MUST BE FIXED
-    # depends_on:
-    #   back:
-    #     condition: service_healthy
+    depends_on:
+      back:
+        condition: service_healthy
     volumes:
       - ../2109-wns-paris-les-semicroustillant-front/src:/app/src
+    healthcheck:
+      test: curl -X GET http://localhost:3000 || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
   back:
     build:
       context: ./
       dockerfile: Dockerfile-dev
     ports:
       - 5050:4000
+    depends_on:
+      mongodb:
+        condition: service_healthy
     command: npm start
-
-    ## @TODO: Healtcheck prevents the container from starting with Docker
-    ## MUST BE FIXED
-    # healthcheck:
-    #   test: ['CMD-SHELL', 'curl -f http://localhost:5050 || exit 1']
-    #   timeout: 10s
-    #   interval: 10s
-    #   retries: 10
     volumes:
       - ./src/:/app/src
+    healthcheck:
+      test: curl -X GET http://localhost:4000/.well-known/apollo/server-health || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
   mongodb:
     image: mongo
     volumes:
       - ./data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok'
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
