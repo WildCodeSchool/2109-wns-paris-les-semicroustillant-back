@@ -8,6 +8,7 @@ import UserInputUpdate from '../inputs/UserInputUpdate';
 import { adminsOnly } from '../auth/usersRole';
 // Available authhorized:
 // roles adminsOnly = ['admin', 'super admin'] and superAdmin = ['super admin']
+import { IUser } from '../types/types';
 
 @Resolver()
 class UsersResolver {
@@ -16,7 +17,7 @@ class UsersResolver {
   async allUsers() {
     try {
       // @FIX: add -hash inside tests
-      const getAllUsers = await UsersModel.find().select('-hash');
+      const getAllUsers: IUser[] = await UsersModel.find().select('-hash');
 
       // @FIX: add test for !getAllUsers
       if (!getAllUsers || getAllUsers.length === 0) {
@@ -36,7 +37,7 @@ class UsersResolver {
   ) {
     try {
       // @FIX: add -hash inside tests
-      const getOneUser = await UsersModel.findById(userId).select('-hash');
+      const getOneUser: IUser = await UsersModel.findById(userId).select('-hash');
 
       // @FIX: add test for !getOneUser
       if (!getOneUser) {
@@ -54,7 +55,7 @@ class UsersResolver {
   async addUser(@Arg('userInput') userInput: UserInput) {
     try {
       await UsersModel.init();
-      let user = await UsersModel.create({
+      let user: IUser = await UsersModel.create({
         ...userInput,
         hash: bcrypt.hashSync(userInput.hash, 10), // @FIXME: check right round of salt
       });

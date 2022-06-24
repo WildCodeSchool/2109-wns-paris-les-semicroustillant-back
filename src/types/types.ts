@@ -55,3 +55,14 @@ export interface IUserDB {
   hash: string;
   _id: string;
 }
+
+export interface IUser {
+  [x: string]: any;
+  _id: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  hash?: string;
+  role: string;
+  position: string;
+}
