@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
-import { Arg, Query, Resolver, Mutation, Authorized, Ctx } from 'type-graphql';
-import { JwtPayload } from 'jsonwebtoken';
+import { Arg, Query, Resolver, Mutation, Authorized } from 'type-graphql';
 import Ticket from '../entities/TicketEntity';
 import TicketsModel from '../models/TicketModel';
 import TicketInput from '../inputs/TicketInput';
@@ -70,13 +69,11 @@ class TicketsResolver {
   @Authorized()
   @Mutation(() => Ticket)
   async updateTicket(
-    @Ctx() ctx: JwtPayload,
     @Arg('ticketInputUpdate') ticketInputUpdate: TicketInputUpdate
   ) {
     // @TODO: Add verification that userId === created_by of the project OR Admin/super admin to allow update
     // Or maybe check that the user belongs to the project>ticket to update anything
     // This will be different for commentaries (only a user can modify his comments)
-    console.log('--- USER ---', ctx)
     try {
       await TicketsModel.findByIdAndUpdate(
         ticketInputUpdate._id,
