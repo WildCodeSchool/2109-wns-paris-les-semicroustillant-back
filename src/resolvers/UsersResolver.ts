@@ -17,7 +17,7 @@ class UsersResolver {
   async allUsers() {
     try {
       // @FIX: add -hash inside tests
-      const getAllUsers: IUser[] = await UsersModel.find().select('-hash');
+      const getAllUsers = await UsersModel.find().select('-hash');
 
       // @FIX: add test for !getAllUsers
       if (!getAllUsers || getAllUsers.length === 0) {
@@ -37,7 +37,7 @@ class UsersResolver {
   ) {
     try {
       // @FIX: add -hash inside tests
-      const getOneUser: IUser = await UsersModel.findById(userId).select('-hash');
+      const getOneUser = await UsersModel.findById(userId).select('-hash');
 
       // @FIX: add test for !getOneUser
       if (!getOneUser) {

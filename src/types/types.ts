@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { Types } from 'mongoose';
 
 export declare type IFieldResolver<
   TSource,
@@ -58,7 +59,7 @@ export interface IUserDB {
 
 export interface IUser {
   [x: string]: any;
-  _id: string;
+  _id: Types.ObjectId;
   firstname: string;
   lastname: string;
   email: string;
