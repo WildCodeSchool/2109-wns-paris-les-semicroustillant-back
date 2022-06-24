@@ -16,9 +16,6 @@ export default class UserInputUpdate implements Partial<User>{
   email?: string;
 
   @Field({ nullable: true })
-  hash?: string;
-
-  @Field({ nullable: true })
   role?: string;
 
   @Field({ nullable: true })

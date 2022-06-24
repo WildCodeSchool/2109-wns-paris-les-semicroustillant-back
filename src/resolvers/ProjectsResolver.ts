@@ -78,7 +78,6 @@ class ProjectsResolver {
     try {
       await ProjectModel.init();
       const project = await ProjectModel.create(projectInput);
-      await project.save();
 
       return project;
     } catch (err: any) {

@@ -60,7 +60,6 @@ class TicketsResolver {
     try {
       await TicketsModel.init();
       const ticket = await TicketsModel.create(ticketInput);
-      await ticket.save();
 
       return ticket;
     } catch (err) {

@@ -22,9 +22,7 @@ export default class TicketInput {
   @Field()
   @IsString()
   @IsNotEmpty()
-  @MaxLength(30, {
-    message: 'Project subject must be between 1 and 30 characters',
-  })
+  @MaxLength(30, { message: 'Project subject must be between 1 and 30 characters' })
   subject: string;
 
   @Field({ nullable: true })
@@ -37,9 +35,7 @@ export default class TicketInput {
 
   @Field({ nullable: true })
   @IsString()
-  @MinLength(5, {
-    message: 'Project description must be at least 5 characters',
-  })
+  @MinLength(5, { message: 'Project description must be at least 5 characters' })
   description?: string;
 
   @Field({ nullable: true })

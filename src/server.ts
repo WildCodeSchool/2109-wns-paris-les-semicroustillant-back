@@ -31,7 +31,8 @@ async function createServer() {
     csrfPrevention: true,
     // TO BE ENABLED LATER + ADD ORIGIN FOR PROD AND STAGING
     // cors: {
-    //   origin: [/http:\/\/localhost:/, 'https://studio.apollographql.com']
+    //   origin: [/http:\/\/localhost:/, 'https://studio.apollographql.com'],
+    //   credentials: true,
     // },
   });
 
