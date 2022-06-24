@@ -30,10 +30,12 @@ start();
 
 /*
 @TODO: 
-  - add input sanitizer middleware, remove special characters
-  - add cookie management / session management
-  - add csurf in cookie management to prevent csrf attacks
-  - only return necessary data in queries/mutation
-  - create reusable method to remove `hash` for data
-  - user profile picture to be handled with a File System.
+  [x] add input sanitizer middleware, remove $
+  [] add cookie management / session management
+  [] add csurf in cookie management to prevent csrf attacks
+  [] only return necessary data in queries/mutation
+  [] create reusable method to remove `hash` for data
+  [] user profile picture to be handled with a File System.
+
+  [] Remove cors since already in Apollo server
 */

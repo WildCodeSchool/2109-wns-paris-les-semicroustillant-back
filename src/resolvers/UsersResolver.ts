@@ -8,6 +8,7 @@ import UserInputUpdate from '../inputs/UserInputUpdate';
 import { adminsOnly } from '../auth/usersRole';
 // Available authhorized:
 // roles adminsOnly = ['admin', 'super admin'] and superAdmin = ['super admin']
+
 @Resolver()
 class UsersResolver {
   @Authorized()
@@ -24,7 +25,7 @@ class UsersResolver {
   @Authorized()
   @Query(() => User)
   async getOneUser(
-    @Arg('userId', () => String) userId: UserInputUpdate['_id']
+    @Arg('userId', () => String) userId: UserInputUpdate['_id'],
   ) {
     try {
       const getOneUser = await UsersModel.findById(userId);
