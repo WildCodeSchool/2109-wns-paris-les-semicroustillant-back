@@ -146,8 +146,6 @@ const seed = async () => {
     tickets,
   } = await createCollections();
 
-  console.log('USERS: ', users, 'PROJECTS: ', projects, 'TICKETS: ', tickets);
-
   try {
     fs.writeFile(
       'src/seed/usersSeed.json',
