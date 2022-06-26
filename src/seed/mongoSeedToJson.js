@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable global-require */
 const fs = require('fs');
 const fakemeup = require('fakemeup/dist').default;
@@ -77,37 +76,7 @@ const createCollections = async () => {
     tickets.push(ticket);
   }
 
-  // Have to update these with DB schema (remove comments collection and include it's content in tickets collection)
-  // Creating comments data
-  // let comments = [];
-
-  // for (let i = 0; i < numberOfComments; i++) {
-  //   const comment = {
-  //     _id: id(),
-  //     content: fakemeup.lorem.sentence(10, 15),
-  //     user: usersIdsArray[Math.floor(Math.random() * usersIdsArray.length)],
-  //     date: fakemeup.date.full('slash'),
-  //   };
-
-  //   comments.push(comment);
-  // }
-
-  // Creating total_time_spent data
-  // const commentsIdsArray = comments.map((_, index) => {
-  //   return comments[index]._id;
-  // });
-  // tickets.forEach((item) => {
-  //   item.total_time_spent =
-  //     item.initial_time_estimated - fakemeup.numbers.floatPrice(1, 3);
-  //   item.comments = [
-  //     commentsIdsArray[0],
-  //     commentsIdsArray[1],
-  //     commentsIdsArray[2],
-  //   ];
-  // });
-
   //   Creating projects collection data
-
   const projects = [];
   const ticketsIdsArray = tickets.map((_, index) => tickets[index]._id);
   for (let i = 0; i < numberOfProjects; i += 1) {
@@ -132,19 +101,13 @@ const createCollections = async () => {
     users,
     projects,
     tickets,
-    // , comments
   };
 };
 
 // Seeding DB
 
 const seed = async () => {
-  const {
-    users,
-    projects,
-    // , comments
-    tickets,
-  } = await createCollections();
+  const { users, projects, tickets } = await createCollections();
 
   try {
     fs.writeFile(
