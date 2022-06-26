@@ -8,6 +8,5 @@ COPY ./ ./
 RUN apk add g++ make py3-pip
 RUN apk --no-cache add curl
 RUN npm i
-RUN npm run mongoseed && echo 'mongo seeded !'
 
 CMD npm start

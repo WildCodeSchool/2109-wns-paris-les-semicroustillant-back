@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable global-require */
+const fs = require('fs');
 const fakemeup = require('fakemeup/dist').default;
 const bcrypt = require('bcrypt');
 
@@ -11,12 +12,7 @@ const position = [
   'Test Engineer',
 ];
 
-const db = 'semidb';
-const collectionProjects = 'projects';
-const collectionUsers = 'users';
-// const collectionComments = 'comments';
-const collectionTickets = 'tickets';
-const numberOfUsers = 6;
+const numberOfUsers = 5;
 const numberOfTickets = 15;
 // const numberOfComments = 3;
 const numberOfProjects = 6;
@@ -30,22 +26,26 @@ const createCollections = async () => {
   for (let i = 0; i < numberOfUsers; i += 1) {
     let dynamicHash = '';
     let dynamicRole = '';
+    let dynamicEmail = '';
     if (i === 0) {
       dynamicHash = bcrypt.hashSync('semi', 10);
       dynamicRole = 'super admin';
+      dynamicEmail = 'semi@semi.com';
     }
     if (i === 1) {
       dynamicHash = bcrypt.hashSync('semi', 10);
       dynamicRole = 'admin';
+      dynamicEmail = fakemeup.user.email();
     }
     if (i > 1) {
       dynamicHash = Math.random().toString(36).substring(7);
       dynamicRole = 'users';
+      dynamicEmail = fakemeup.user.email();
     }
 
     const user = {
       _id: id(),
-      email: fakemeup.user.email(),
+      email: dynamicEmail,
       hash: dynamicHash,
       firstname: fakemeup.user.firstName(),
       lastname: fakemeup.user.lastName(),
@@ -114,13 +114,7 @@ const createCollections = async () => {
     const project = {
       name: `${fakemeup.user.fullName()}'s project`,
       projectOwner: users[1]._id,
-      members: [
-        users[1]._id,
-        users[2]._id,
-        users[3]._id,
-        users[4]._id,
-        users[5]._id,
-      ],
+      members: [users[1]._id, users[2]._id, users[3]._id, users[4]._id],
       description: fakemeup.lorem.sentence(10, 15),
       ticketsIds: [
         ticketsIdsArray[Math.floor(Math.random() * ticketsIdsArray.length)],
@@ -142,40 +136,46 @@ const createCollections = async () => {
   };
 };
 
-const mongo = async () => {
-  // Connecting to DB
+// Seeding DB
 
-  const fixtures = require('pow-mongodb-fixtures').connect(db, {
-    host: `mongodb://mongodb:27018/${db}`,
-  });
-
-  console.log('passed in connection');
-  // Clearing DB
-
-  // Seeding DB
+const seed = async () => {
   const {
     users,
     projects,
     // , comments
     tickets,
   } = await createCollections();
-  await fixtures.clearAllAndLoad(
-    {
-      [collectionUsers]: users,
-      // [collectionComments]: comments,
-      [collectionProjects]: projects,
-      [collectionTickets]: tickets,
-    },
-    () => {
-      // add // ${collectionComments},
-      console.log(
-        `Database cleared collections: ${collectionUsers}, 
-        
-         ${collectionProjects} ${collectionTickets}, and Seeded !`
-      );
-      process.exit();
-    }
-  );
-  // Closing connection
+
+  console.log('USERS: ', users, 'PROJECTS: ', projects, 'TICKETS: ', tickets);
+
+  try {
+    fs.writeFile(
+      'src/seed/usersSeed.json',
+      JSON.stringify(users),
+      'utf8',
+      (err) => {
+        if (err) console.log(err);
+      }
+    );
+    fs.writeFile(
+      'src/seed/projectsSeed.json',
+      JSON.stringify(projects),
+      'utf8',
+      (err) => {
+        if (err) console.log(err);
+      }
+    );
+    fs.writeFile(
+      'src/seed/ticketsSeed.json',
+      JSON.stringify(tickets),
+      'utf8',
+      (err) => {
+        if (err) console.log(err);
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
 };
-mongo();
+
+seed();
