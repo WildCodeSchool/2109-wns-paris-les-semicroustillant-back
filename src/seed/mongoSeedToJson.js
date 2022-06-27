@@ -72,7 +72,7 @@ const createCollections = async () => {
       // comments will be created later
       // total_time_spent will be created later
       advancement: Math.floor(Math.random() * 100),
-      project_id: i < 6 ? projectIds[i] : null,
+      project_id: i < 6 ? projectIds[i] : projectIds[0],
       created_by:
         usersIdsArray[Math.floor(Math.random() * usersIdsArray.length)],
     };
