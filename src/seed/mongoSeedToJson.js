@@ -57,6 +57,7 @@ const createCollections = async () => {
   const usersIdsArray = users.map((_, index) => users[index]._id);
 
   //   Creating Tickets collection data
+  const projectIds = [id(), id(), id(), id(), id(), id()];
   const tickets = [];
 
   for (let i = 0; i < numberOfTickets; i += 1) {
@@ -71,16 +72,20 @@ const createCollections = async () => {
       // comments will be created later
       // total_time_spent will be created later
       advancement: Math.floor(Math.random() * 100),
-      file_links: ['file1.pdf', 'file2.pdf'],
+      project_id: i < 6 ? projectIds[i] : null,
+      created_by:
+        usersIdsArray[Math.floor(Math.random() * usersIdsArray.length)],
     };
     tickets.push(ticket);
   }
 
+  console.log(projectIds);
   //   Creating projects collection data
-  const projects = [];
   const ticketsIdsArray = tickets.map((_, index) => tickets[index]._id);
+  const projects = [];
   for (let i = 0; i < numberOfProjects; i += 1) {
     const project = {
+      _id: projectIds[i],
       name: `${fakemeup.user.fullName()}'s project`,
       projectOwner: users[1]._id,
       members: [users[1]._id, users[2]._id, users[3]._id, users[4]._id],
@@ -97,6 +102,7 @@ const createCollections = async () => {
 
     projects.push(project);
   }
+
   return {
     users,
     projects,
