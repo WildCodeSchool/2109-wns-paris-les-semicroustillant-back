@@ -78,7 +78,6 @@ class ProjectsResolver {
     try {
       await ProjectModel.init();
       const project = await ProjectModel.create(projectInput);
-      await project.save();
 
       return project;
     } catch (err: any) {
@@ -113,7 +112,7 @@ class ProjectsResolver {
     try {
       await ProjectModel.init();
       // only delete a project, not the tickets
-      // @TODO: should we delete the ticket or the ID as well?
+      // @TODO: should we delete the ticket or the ID as well? check delete on cascade
       const result = await ProjectModel.findByIdAndRemove(projectId);
 
       if (!result) {

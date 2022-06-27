@@ -4,8 +4,8 @@ import Ticket from '../entities/TicketEntity';
 import TicketsModel from '../models/TicketModel';
 import TicketInput from '../inputs/TicketInput';
 import TicketInputUpdate from '../inputs/TicketInputUpdate';
-import IdInput from '../inputs/IdInput';
 
+// @TODO: put this function in utils folder + change ts type
 export const getAdvancement = (data: any) => {
   const timeSpent = data.total_time_spent;
   const estimatedTime = data.initial_time_estimated;
@@ -35,7 +35,9 @@ class TicketsResolver {
 
   @Authorized()
   @Query(() => Ticket)
-  async getOneTicket(@Arg('id', () => String) ticketId: IdInput) {
+  async getOneTicket(
+    @Arg('id', () => String) ticketId: TicketInputUpdate['_id']
+  ) {
     try {
       const getOneTicket = await TicketsModel.findById(ticketId);
 
@@ -57,7 +59,6 @@ class TicketsResolver {
     try {
       await TicketsModel.init();
       const ticket = await TicketsModel.create(ticketInput);
-      await ticket.save();
 
       return ticket;
     } catch (err) {
@@ -68,22 +69,30 @@ class TicketsResolver {
   @Authorized()
   @Mutation(() => Ticket)
   async updateTicket(
-    @Arg('id', () => String) ticketId: IdInput,
     @Arg('ticketInputUpdate') ticketInputUpdate: TicketInputUpdate
   ) {
+    // @TODO: Add verification that userId === created_by of the project OR Admin/super admin to allow update
+    // Or maybe check that the user belongs to the project>ticket to update anything
+    // This will be different for commentaries (only a user can modify his comments)
     try {
-      await TicketsModel.findByIdAndUpdate(ticketId, ticketInputUpdate, {
-        new: true,
-      });
+      await TicketsModel.findByIdAndUpdate(
+        ticketInputUpdate._id,
+        ticketInputUpdate,
+        {
+          new: true,
+        }
+      );
     } catch (err) {
       console.log(err);
     }
-    return TicketsModel.findById(ticketId);
+    return TicketsModel.findById(ticketInputUpdate._id);
   }
 
   @Authorized()
   @Mutation(() => String)
-  async deleteTicket(@Arg('id', () => String) ticketId: IdInput) {
+  async deleteTicket(
+    @Arg('id', () => String) ticketId: TicketInputUpdate['_id']
+  ) {
     try {
       await TicketsModel.init();
       await TicketsModel.findByIdAndRemove(ticketId);

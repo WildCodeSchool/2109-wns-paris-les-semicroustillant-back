@@ -15,9 +15,6 @@ class User {
   email: string;
 
   @Field()
-  hash: string;
-
-  @Field()
   role: string;
 
   @Field()

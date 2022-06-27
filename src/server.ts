@@ -7,6 +7,7 @@ import TicketsResolver from './resolvers/TicketsResolver';
 import ProjectsResolver from './resolvers/ProjectsResolver';
 import LoginResolver from './resolvers/LoginResolver';
 import customAuthChecker from './auth/customAuthChecker';
+import SanitizeInputMiddleware from './utils/sanitizeInput';
 
 async function createServer() {
   const schema = await buildSchema({
@@ -17,6 +18,7 @@ async function createServer() {
       LoginResolver,
     ],
     authChecker: customAuthChecker,
+    globalMiddlewares: [SanitizeInputMiddleware],
   });
 
   // Create the GraphQL server
@@ -26,6 +28,12 @@ async function createServer() {
       token: req?.headers.authorization,
       user: null,
     }),
+    csrfPrevention: true,
+    // TO BE ENABLED LATER + ADD ORIGIN FOR PROD AND STAGING
+    // cors: {
+    //   origin: [/http:\/\/localhost:/, 'https://studio.apollographql.com'],
+    //   credentials: true,
+    // },
   });
 
   return server;
