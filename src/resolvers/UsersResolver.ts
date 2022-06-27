@@ -8,6 +8,7 @@ import UserInputUpdate from '../inputs/UserInputUpdate';
 import { adminsOnly } from '../auth/usersRole';
 // Available authhorized:
 // roles adminsOnly = ['admin', 'super admin'] and superAdmin = ['super admin']
+import { IUser } from '../types/types';
 
 @Resolver()
 class UsersResolver {
@@ -15,7 +16,14 @@ class UsersResolver {
   @Query(() => [User])
   async allUsers() {
     try {
-      const getAllUsers = await UsersModel.find();
+      // @FIX: add -hash inside tests
+      const getAllUsers = await UsersModel.find().select('-hash');
+
+      // @FIX: add test for !getAllUsers
+      if (!getAllUsers || getAllUsers.length === 0) {
+        throw new Error('No users found');
+      }
+
       return getAllUsers;
     } catch (err) {
       return console.log(err);
@@ -28,7 +36,13 @@ class UsersResolver {
     @Arg('userId', () => String) userId: UserInputUpdate['_id']
   ) {
     try {
-      const getOneUser = await UsersModel.findById(userId);
+      // @FIX: add -hash inside tests
+      const getOneUser = await UsersModel.findById(userId).select('-hash');
+
+      // @FIX: add test for !getOneUser
+      if (!getOneUser) {
+        throw new Error('User not found');
+      }
 
       return getOneUser;
     } catch (err) {
@@ -41,11 +55,13 @@ class UsersResolver {
   async addUser(@Arg('userInput') userInput: UserInput) {
     try {
       await UsersModel.init();
-      const user = await UsersModel.create({
+      let user: IUser = await UsersModel.create({
         ...userInput,
         hash: bcrypt.hashSync(userInput.hash, 10), // @FIXME: check right round of salt
       });
-      await user.save();
+      // Update UT
+      user = user.toObject();
+      delete user.hash;
 
       return user;
     } catch (err) {
@@ -64,7 +80,9 @@ class UsersResolver {
     } catch (err) {
       console.log(err);
     }
-    return UsersModel.findById(userInputUpdate._id);
+
+    // Update UT with -hash
+    return UsersModel.findById(userInputUpdate._id).select('-hash');
   }
 
   @Authorized(adminsOnly)

@@ -5,6 +5,9 @@ class Project {
   @Field(() => ID)
   _id: string;
 
+  @Field(() => ID)
+  created_by: string;
+
   @Field()
   name: string;
 
@@ -15,17 +18,17 @@ class Project {
   description: string;
 
   @Field(() => ID, { nullable: true })
-  projectOwner: string;
+  project_owner: string;
 
   @Field(() => [ID], { nullable: true })
   members: string[];
 
   // These two fields will be computed in resolver by querying the right data from Tickets
   @Field({ nullable: true })
-  completedTickets: number;
+  completed_tickets: number;
 
   @Field({ nullable: true })
-  totalTickets: number;
+  total_tickets: number;
 }
 
 export default Project;
