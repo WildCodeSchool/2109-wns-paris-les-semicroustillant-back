@@ -25,8 +25,7 @@ services:
     ports:
       - 5050:4000
     depends_on:
-      mongodb:
-        condition: service_healthy
+      - mongo-seed
     command: npm start
     volumes:
       - ./src/:/app/src
@@ -36,8 +35,18 @@ services:
       timeout: 10s
       retries: 5
       start_period: 10s
+  mongo-seed:
+    build:
+      context: ./
+      dockerfile: DockerFile-dev-mongo-seed
+    depends_on:
+      mongodb:
+        condition: service_healthy
   mongodb:
+    container_name: mongo-database
     image: mongo
+    ports:
+      - 27018:27017
     volumes:
       - ./data:/data/db
     healthcheck:
