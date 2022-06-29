@@ -16,7 +16,7 @@ export default class LoginResolver {
   ): Promise<string> {
     const userDB: IUserDB | null = await UserModel.findOne(
       { email },
-      'email hash'
+      'firstname lastname hash role'
     );
 
     if (userDB && bcrypt.compareSync(password, userDB.hash)) {
@@ -25,8 +25,13 @@ export default class LoginResolver {
         expiresIn: '24h',
       };
 
-      const userId = userDB._id.toString();
-      const token = jwt.sign({ userId }, privateKey, options);
+      const userData = {
+        userId: userDB._id.toString(),
+        userLastname: userDB.lastname,
+        userFirstname: userDB.firstname,
+        userRole: userDB.role,
+      };
+      const token = jwt.sign(userData, privateKey, options);
 
       return token;
     }
