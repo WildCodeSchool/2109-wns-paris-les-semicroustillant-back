@@ -52,9 +52,11 @@ export interface IProject {
 }
 
 export interface IUserDB {
-  email: string;
-  hash: string;
   _id: string;
+  firstname: string;
+  lastname: string;
+  hash: string;
+  role: string;
 }
 
 export interface IUser {

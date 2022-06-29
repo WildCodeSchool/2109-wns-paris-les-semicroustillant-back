@@ -11,7 +11,7 @@
     "test": "jest src/tests/**",
     "int-test": "jest src/tests/integration/**",
     "unit-test": "jest src/tests/unit/**",
-    "generate-mongoseed-file": "node src/seed/mongoSeedToJson.js"
+    "mongoseed": "node src/seed/mongoSeed.js"
   },
   "author": "",
   "license": "ISC",

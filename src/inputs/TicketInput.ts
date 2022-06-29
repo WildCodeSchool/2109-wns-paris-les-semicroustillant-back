@@ -5,7 +5,6 @@ import {
   IsString,
   IsMongoId,
   IsDate,
-  MinLength,
   IsNumber,
   IsEnum,
 } from 'class-validator';
@@ -35,7 +34,6 @@ export default class TicketInput {
 
   @Field({ nullable: true })
   @IsString()
-  @MinLength(5, { message: 'Project description must be at least 5 characters' })
   description?: string;
 
   @Field({ nullable: true })

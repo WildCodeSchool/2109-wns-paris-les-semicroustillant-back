@@ -1,0 +1,8 @@
+FROM node:lts-alpine
+
+COPY package*.json ./
+COPY src/seed ./src/seed
+
+RUN npm i
+
+CMD npm run mongoseed

@@ -1,7 +1,54 @@
+/* eslint-disable no-console */
 /* eslint-disable global-require */
-const fs = require('fs');
 const fakemeup = require('fakemeup/dist').default;
 const bcrypt = require('bcrypt');
+require('dotenv').config();
+const mongoose = require('mongoose');
+
+const UserModel = mongoose.model(
+  'users',
+  new mongoose.Schema({
+    id: mongoose.Types.ObjectId,
+    firstname: String,
+    lastname: String,
+    email: { type: String, unique: true },
+    hash: { type: String, unique: true },
+    role: String,
+    position: String,
+  })
+);
+const ProjectModel = mongoose.model(
+  'projects',
+  new mongoose.Schema({
+    id: mongoose.Types.ObjectId,
+    created_by: mongoose.Types.ObjectId,
+    name: String,
+    status: String,
+    description: String,
+    project_owner: {
+      type: mongoose.Types.ObjectId,
+      default: null,
+      ref: 'users',
+    },
+    members: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
+  })
+);
+const TicketModel = mongoose.model(
+  'tickets',
+  new mongoose.Schema({
+    id: mongoose.Types.ObjectId,
+    created_by: mongoose.Types.ObjectId,
+    subject: String,
+    status: String,
+    deadline: Date,
+    description: String,
+    initial_time_estimated: Number,
+    total_time_spent: Number,
+    advancement: Number,
+    project_id: String,
+    users: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
+  })
+);
 
 const position = [
   'Developer',
@@ -79,9 +126,10 @@ const createCollections = async () => {
     tickets.push(ticket);
   }
 
-  console.log(projectIds);
-  //   Creating projects collection data
+  // Creating ticketsIds Array that will be used in projects collection
   const ticketsIdsArray = tickets.map((_, index) => tickets[index]._id);
+
+  //   Creating projects collection data
   const projects = [];
   for (let i = 0; i < numberOfProjects; i += 1) {
     const project = {
@@ -111,38 +159,51 @@ const createCollections = async () => {
 };
 
 // Seeding DB
-
 const seed = async () => {
   const { users, projects, tickets } = await createCollections();
 
-  try {
-    fs.writeFile(
-      'src/seed/usersSeed.json',
-      JSON.stringify(users),
-      'utf8',
-      (err) => {
-        if (err) console.log(err);
-      }
-    );
-    fs.writeFile(
-      'src/seed/projectsSeed.json',
-      JSON.stringify(projects),
-      'utf8',
-      (err) => {
-        if (err) console.log(err);
-      }
-    );
-    fs.writeFile(
-      'src/seed/ticketsSeed.json',
-      JSON.stringify(tickets),
-      'utf8',
-      (err) => {
-        if (err) console.log(err);
-      }
-    );
-  } catch (error) {
-    console.log(error);
-  }
+  const database = process.env.DB_NAME;
+  const dbUrl = `mongodb://mongodb:27017/${database}`;
+  const options = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  };
+  console.log('...waiting for database connection...');
+
+  await mongoose.connect(dbUrl, options);
+
+  await UserModel.deleteMany();
+  console.log('users collection deleted');
+  await ProjectModel.deleteMany();
+  console.log('projects collection deleted');
+  await TicketModel.deleteMany();
+  console.log('tickets collection deleted');
+
+  console.log('Start Seeding...');
+  const newPromises = [];
+  users.forEach(async (user) => {
+    const userInDB = new UserModel(user);
+    newPromises.push(userInDB.save());
+    console.log(`New user created!`);
+  });
+  console.log('==> users collection creation done!');
+
+  projects.forEach(async (project) => {
+    const projectInDB = new ProjectModel(project);
+    newPromises.push(projectInDB.save());
+    console.log(`New project created!`);
+  });
+  console.log('==> projects collection creation done!');
+
+  tickets.forEach(async (ticket) => {
+    const ticketInDB = new TicketModel(ticket);
+    newPromises.push(ticketInDB.save());
+    console.log(`New ticket created!`);
+  });
+  console.log('==> tickets collection creation done!');
+
+  Promise.all(newPromises).then(mongoose.disconnect);
+  console.log(`☆(◒‿◒)☆ Database Seeded!`);
 };
 
 seed();
