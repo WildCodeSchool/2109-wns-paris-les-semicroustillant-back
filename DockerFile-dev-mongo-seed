@@ -1,9 +1,7 @@
-FROM mongo
+FROM node:lts-alpine
 
-COPY src/seed/usersSeed.json /src/seed/usersSeed.json
-COPY src/seed/projectsSeed.json /src/seed/projectsSeed.json
-COPY src/seed/ticketsSeed.json /src/seed/ticketsSeed.json
+COPY ./ ./
 
-CMD mongoimport --host mongodb --db semidb --collection users --drop --type json --file /src/seed/usersSeed.json --jsonArray && \
-    mongoimport --host mongodb --db semidb --collection projects --drop --type json --file /src/seed/projectsSeed.json --jsonArray && \
-    mongoimport --host mongodb --db semidb --collection tickets --drop --type json --file /src/seed/ticketsSeed.json --jsonArray
+RUN npm i
+
+CMD npm run mongoseed
