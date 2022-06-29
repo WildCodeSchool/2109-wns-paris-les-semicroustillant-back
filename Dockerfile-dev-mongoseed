@@ -1,6 +1,7 @@
 FROM node:lts-alpine
 
-COPY ./ ./
+COPY package*.json ./
+COPY src/seed ./src/seed
 
 RUN npm i
 

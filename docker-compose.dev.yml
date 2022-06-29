@@ -39,7 +39,7 @@ services:
   mongoseed:
     build:
       context: ./
-      dockerfile: Dockerfile-dev-mongo-seed
+      dockerfile: Dockerfile-dev-mongoseed
     depends_on:
       back:
         condition: service_healthy
