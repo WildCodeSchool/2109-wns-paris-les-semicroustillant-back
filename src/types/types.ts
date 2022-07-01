@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { Types } from 'mongoose';
 
 export declare type IFieldResolver<
   TSource,
@@ -37,4 +38,34 @@ export interface IProjectInput {
   status: string;
   projectOwner: string;
   members: string;
+}
+export interface IProject {
+  [x: string]: any;
+  _id: string;
+  name: string;
+  status: string;
+  description: string;
+  projectOwner: string;
+  members: string[];
+  totalTickets?: number;
+  completedTickets?: number;
+}
+
+export interface IUserDB {
+  _id: string;
+  firstname: string;
+  lastname: string;
+  hash: string;
+  role: string;
+}
+
+export interface IUser {
+  [x: string]: any;
+  _id: Types.ObjectId;
+  firstname: string;
+  lastname: string;
+  email: string;
+  hash?: string;
+  role: string;
+  position: string;
 }

@@ -4,6 +4,8 @@ import { ApolloError } from 'apollo-server';
 import jwt, { Secret } from 'jsonwebtoken';
 import UserModel from '../models/UserModel';
 
+import { IUserDB } from '../types/types';
+
 const privateKey = process.env.SECRET_JWT_KEY as Secret;
 @Resolver()
 export default class LoginResolver {
@@ -12,18 +14,24 @@ export default class LoginResolver {
     @Arg('email') email: string,
     @Arg('password') password: string,
   ): Promise<string> {
-
-    const userDB = await UserModel.findOne({ email }, 'email hash');
+    const userDB: IUserDB | null = await UserModel.findOne(
+      { email },
+      'firstname lastname hash role'
+    );
 
     if (userDB && bcrypt.compareSync(password, userDB.hash)) {
-
       // @FIX: other options to be added?
       const options = {
         expiresIn: '24h',
       };
 
-      const userId = userDB._id.toString();
-      const token = jwt.sign({ userId }, privateKey, options);
+      const userData = {
+        userId: userDB._id.toString(),
+        userLastname: userDB.lastname,
+        userFirstname: userDB.firstname,
+        userRole: userDB.role,
+      };
+      const token = jwt.sign(userData, privateKey, options);
 
       return token;
     }
