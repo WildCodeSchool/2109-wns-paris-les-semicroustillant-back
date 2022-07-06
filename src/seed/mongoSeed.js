@@ -50,13 +50,24 @@ const TicketModel = mongoose.model(
   })
 );
 
-const position = [
+const positions = [
   'Developer',
   'Product Owner',
   'Scrum Master',
   'Team Lead',
   'Test Engineer',
 ];
+
+const randomStatuses = i => {
+  switch(i) {
+    case i<3:
+      return 'Pending';
+    case i<5:
+      return 'In progress';
+    default:
+      return 'Done';
+  }
+}
 
 const numberOfUsers = 5;
 const numberOfTickets = 15;
@@ -91,12 +102,12 @@ const createCollections = async () => {
 
     const user = {
       _id: id(),
-      email: dynamicEmail,
-      hash: dynamicHash,
       firstname: fakemeup.user.firstName(),
       lastname: fakemeup.user.lastName(),
-      position: position[i],
+      email: dynamicEmail,
+      hash: dynamicHash,
       role: dynamicRole,
+      position: positions[i],
     };
     users.push(user);
   }
@@ -108,44 +119,35 @@ const createCollections = async () => {
   const tickets = [];
 
   for (let i = 0; i < numberOfTickets; i += 1) {
+    const timeBase = Math.floor(fakemeup.numbers.floatPrice(4, 35)) + 10;
     const ticket = {
       _id: id(),
+      created_by: usersIdsArray[Math.floor(Math.random() * usersIdsArray.length)],
       subject: fakemeup.lorem.sentence(2, 3),
-      status: 'in progress',
-      users: [usersIdsArray[1], usersIdsArray[2]],
+      status: randomStatuses(i),
       deadline: fakemeup.date.full('slash'),
       description: fakemeup.lorem.sentence(10, 15),
-      initial_time_estimated: fakemeup.numbers.floatPrice(4, 35),
+      initial_time_estimated: timeBase,
       // comments will be created later
-      // total_time_spent will be created later
+      total_time_spent: timeBase > 5 ? timeBase - 5 : 0,
       advancement: Math.floor(Math.random() * 100),
       project_id: i < 6 ? projectIds[i] : projectIds[0],
-      created_by:
-        usersIdsArray[Math.floor(Math.random() * usersIdsArray.length)],
+      users: [usersIdsArray[1], usersIdsArray[2]],
     };
     tickets.push(ticket);
   }
-
-  // Creating ticketsIds Array that will be used in projects collection
-  const ticketsIdsArray = tickets.map((_, index) => tickets[index]._id);
 
   //   Creating projects collection data
   const projects = [];
   for (let i = 0; i < numberOfProjects; i += 1) {
     const project = {
       _id: projectIds[i],
+      created_by: users[1]._id,
       name: `${fakemeup.user.fullName()}'s project`,
-      projectOwner: users[1]._id,
-      members: [users[1]._id, users[2]._id, users[3]._id, users[4]._id],
+      status: randomStatuses(i),
       description: fakemeup.lorem.sentence(10, 15),
-      ticketsIds: [
-        ticketsIdsArray[Math.floor(Math.random() * ticketsIdsArray.length)],
-        ticketsIdsArray[Math.floor(Math.random() * ticketsIdsArray.length)],
-        ticketsIdsArray[Math.floor(Math.random() * ticketsIdsArray.length)],
-        ticketsIdsArray[Math.floor(Math.random() * ticketsIdsArray.length)],
-        ticketsIdsArray[Math.floor(Math.random() * ticketsIdsArray.length)],
-        ticketsIdsArray[Math.floor(Math.random() * ticketsIdsArray.length)],
-      ],
+      project_owner: users[1]._id,
+      members: [users[1]._id, users[2]._id, users[3]._id, users[4]._id],
     };
 
     projects.push(project);
