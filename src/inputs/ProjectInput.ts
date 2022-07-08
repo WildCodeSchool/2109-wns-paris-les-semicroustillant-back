@@ -1,5 +1,14 @@
 import { InputType, Field, ID } from 'type-graphql';
-import { MaxLength, IsNotEmpty, IsString, IsMongoId } from 'class-validator';
+import {
+  MaxLength,
+  IsNotEmpty,
+  IsString,
+  IsMongoId,
+  IsEnum,
+} from 'class-validator';
+import User from '../entities/UserEntity';
+
+import StatusEnum from '../common-values/status.enum';
 
 @InputType()
 export default class ProjectInput {
@@ -10,30 +19,29 @@ export default class ProjectInput {
   @Field()
   @IsNotEmpty()
   @IsString()
-  @MaxLength(30, {
-    message: 'Project Name must be between 1 and 30 characters',
+  @MaxLength(125, {
+    message: 'Project\'s name must be between 1 and 125 characters',
   })
   name: string;
 
   @Field()
   @IsNotEmpty()
   @IsString()
-  @MaxLength(30, {
-    message: 'Project Name must be between 1 and 30 characters',
-  })
-  // contains specified values ?
+  @IsEnum(StatusEnum)
   status: string;
 
-  @Field()
-  @IsNotEmpty()
+  @Field({ nullable: true })
   @IsString()
+  @MaxLength(250, {
+    message: 'Project\'s name must be between 1 and 250 characters',
+  })
   description: string;
 
-  @Field({ nullable: true })
+  @Field(() => ID, { nullable: true })
   @IsMongoId()
-  project_owner?: string;
+  project_owner?: User;
 
   @Field(() => [ID], { nullable: true })
   @IsMongoId({ each: true })
-  members?: string[];
+  members?: User[];
 }

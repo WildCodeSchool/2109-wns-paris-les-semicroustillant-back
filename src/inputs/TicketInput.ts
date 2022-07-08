@@ -21,7 +21,7 @@ export default class TicketInput {
   @Field()
   @IsString()
   @IsNotEmpty()
-  @MaxLength(30, { message: 'Project subject must be between 1 and 30 characters' })
+  @MaxLength(125, { message: 'Project subject must be between 1 and 125 characters' })
   subject: string;
 
   @Field({ nullable: true })
