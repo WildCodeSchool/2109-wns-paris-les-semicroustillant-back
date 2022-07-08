@@ -8,9 +8,9 @@ class Filelink {
   @Field()
   link: string;
 
-  // @FIXME: Change to @Field(() => IdInput) or @Field(() => Ticket) ?
+  // @FIXME: Change to @Field(() => ID) and ticket_id: TicketEntity ?
   @Field()
-  ticketId: string;
+  ticket_id: string;
 }
 
 export default Filelink;

@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { Resolver, Query, Arg } from 'type-graphql';
 import { ApolloError } from 'apollo-server';
-import jwt, { Secret } from 'jsonwebtoken';
+import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
 import UserModel from '../models/UserModel';
 
 import { IUserDB } from '../types/types';
@@ -12,7 +12,7 @@ export default class LoginResolver {
   @Query(() => String)
   async login(
     @Arg('email') email: string,
-    @Arg('password') password: string,
+    @Arg('password') password: string
   ): Promise<string> {
     const userDB: IUserDB | null = await UserModel.findOne(
       { email },
@@ -36,5 +36,24 @@ export default class LoginResolver {
       return token;
     }
     throw new ApolloError('Invalid credentials');
+  }
+
+  @Query(() => Boolean)
+  async checkUserToken(@Arg('token') token: string): Promise<boolean> {
+    const date: number = new Date().getTime();
+
+    try {
+      const userJwt = <JwtPayload>jwt.verify(token, privateKey);
+
+      if (userJwt.userId || userJwt.exp && userJwt.exp < date) {
+        return true;
+      }
+
+      return false;
+    } catch (err) {
+      console.log(err);
+
+      return false;
+    }
   }
 }
