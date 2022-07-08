@@ -8,13 +8,6 @@ import UserInputUpdate from '../inputs/UserInputUpdate';
 import { adminsOnly } from '../auth/usersRole';
 // Available authorized:
 // roles adminsOnly = ['admin', 'super admin'] and superAdmin = ['super admin']
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-// import { IUser } from '../types/types';
->>>>>>> 348aeaf2e25a29d4f77dfabc02c023de249e9684
-=======
->>>>>>> sub-dev
 
 @Resolver()
 class UsersResolver {
