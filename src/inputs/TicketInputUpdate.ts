@@ -60,7 +60,7 @@ export default class TicketInputUpdate {
   @IsNumber()
   advancement?: number;
 
-  @Field()
+  @Field(() => ID)
   @IsNotEmpty()
   @IsMongoId()
   project_id: Project;

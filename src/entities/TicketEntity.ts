@@ -9,6 +9,9 @@ import {
   IsEnum,
 } from 'class-validator';
 
+import Project from './ProjectEntity';
+import User from './UserEntity';
+
 import StatusEnum from '../common-values/status.enum';
 
 @ObjectType()
@@ -59,14 +62,13 @@ class Ticket {
   @IsNumber()
   advancement?: number;
 
-  @Field(() => ID)
-  @IsMongoId()
+  @Field(() => Project)
   @IsNotEmpty()
-  project_id: string;
+  project_id: Project;
 
-  @Field(() => [ID], { nullable: true })
+  @Field(() => [User], { nullable: true })
   @IsMongoId({ each: true })
-  users?: string[];
+  users?: User[];
 }
 
 export default Ticket;
