@@ -83,7 +83,12 @@ const createCollections = async () => {
       dynamicRole = 'admin';
       dynamicEmail = fakemeup.user.email();
     }
-    if (i > 1) {
+    if (i === 2) {
+      dynamicHash = bcrypt.hashSync('semi', 10);
+      dynamicRole = 'users';
+      dynamicEmail = 'semiuser@semi.com';
+    }
+    if (i > 2) {
       dynamicHash = Math.random().toString(36).substring(7);
       dynamicRole = 'users';
       dynamicEmail = fakemeup.user.email();
@@ -111,7 +116,7 @@ const createCollections = async () => {
     const ticket = {
       _id: id(),
       subject: fakemeup.lorem.sentence(2, 3),
-      status: 'in progress',
+      status: 'In progress',
       users: [usersIdsArray[1], usersIdsArray[2]],
       deadline: fakemeup.date.full('slash'),
       description: fakemeup.lorem.sentence(10, 15),
@@ -163,7 +168,7 @@ const seed = async () => {
   const { users, projects, tickets } = await createCollections();
 
   const database = process.env.DB_NAME;
-  const dbUrl = `mongodb://mongodb:27017/${database}`;
+  const dbUrl = `mongodb://mongodb:27017/semidb`;
   const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
