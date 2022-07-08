@@ -21,7 +21,7 @@ export default class ProjectInput {
   @MaxLength(30, {
     message: 'Project Name must be between 1 and 30 characters',
   })
-  // contains specified values ?
+  // @FIXME: should be enum
   status: string;
 
   @Field()

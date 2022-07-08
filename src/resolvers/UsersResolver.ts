@@ -6,9 +6,8 @@ import UsersModel from '../models/UserModel';
 import UserInput from '../inputs/UserInput';
 import UserInputUpdate from '../inputs/UserInputUpdate';
 import { adminsOnly } from '../auth/usersRole';
-// Available authhorized:
+// Available authorized:
 // roles adminsOnly = ['admin', 'super admin'] and superAdmin = ['super admin']
-// import { IUser } from '../types/types';
 
 @Resolver()
 class UsersResolver {
