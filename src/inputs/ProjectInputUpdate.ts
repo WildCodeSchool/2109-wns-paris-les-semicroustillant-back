@@ -1,5 +1,6 @@
 import { InputType, Field, ID } from 'type-graphql';
 import Project from '../entities/ProjectEntity';
+import User from '../entities/UserEntity';
 
 @InputType()
 export default class ProjectInputUpdate implements Partial<Project> {
@@ -18,9 +19,9 @@ export default class ProjectInputUpdate implements Partial<Project> {
   @Field({ nullable: true })
   description?: string;
 
-  @Field({ nullable: true })
-  project_owner?: string;
+  @Field(() => ID, { nullable: true })
+  project_owner?: User;
 
   @Field(() => [ID], { nullable: true })
-  members?: string[];
+  members?: User[];
 }
