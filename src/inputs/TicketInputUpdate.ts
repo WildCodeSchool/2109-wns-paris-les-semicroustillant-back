@@ -9,7 +9,7 @@ import {
   IsEnum,
 } from 'class-validator';
 
-import StatusEnum from '../common-values/ticket.enum';
+import StatusEnum from '../common-values/status.enum';
 
 @InputType()
 export default class TicketInputUpdate {
