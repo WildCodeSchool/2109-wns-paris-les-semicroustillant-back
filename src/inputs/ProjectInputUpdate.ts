@@ -17,11 +17,13 @@ export default class ProjectInputUpdate implements Partial<Project> {
   _id!: string;
 
   @Field(() => ID)
+  @IsMongoId()
+  @IsNotEmpty()
   created_by: string;
 
   @Field()
   @MaxLength(125, {
-    message: 'Project\'s name must be between 1 and 125 characters',
+    message: 'Project name must be between 1 and 125 characters',
   })
   name?: string;
 
@@ -34,7 +36,7 @@ export default class ProjectInputUpdate implements Partial<Project> {
   @Field({ nullable: true })
   @IsString()
   @MaxLength(250, {
-    message: 'Project\'s name must be between 1 and 250 characters',
+    message: 'Project description must be between 1 and 250 characters',
   })
   description?: string;
 

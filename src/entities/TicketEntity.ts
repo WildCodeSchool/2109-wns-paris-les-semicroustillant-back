@@ -26,10 +26,12 @@ class Ticket {
   @Field()
   @IsString()
   @IsNotEmpty()
-  @MaxLength(30, { message: 'Project subject must be between 1 and 30 characters' })
+  @MaxLength(125, { message: 'Ticket subject must be between 1 and 125 characters' })
   subject: string;
 
-  @Field({ nullable: true })
+  @Field()
+  @IsNotEmpty()
+  @IsString()
   @IsEnum(StatusEnum)
   status?: string;
 
@@ -39,6 +41,10 @@ class Ticket {
 
   @Field({ nullable: true })
   @IsString()
+
+  @MaxLength(250, {
+    message: 'Ticket description must be between 1 and 250 characters',
+  })
   description?: string;
 
   @Field({ nullable: true })
