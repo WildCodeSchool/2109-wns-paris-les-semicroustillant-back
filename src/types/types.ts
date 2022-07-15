@@ -45,7 +45,7 @@ export interface IProject {
   name: string;
   status: string;
   description: string;
-  projectOwner: string;
+  project_owner: string;
   members: string[];
   totalTickets?: number;
   completedTickets?: number;
