@@ -29,14 +29,14 @@ export interface ITicketInput {
   initial_time_estimated?: number;
   total_time_spent?: number;
   advancement?: number;
-  projectId?: string;
+  project_id?: string;
   users?: IUserInput[];
 }
 
 export interface IProjectInput {
   name: string;
   status: string;
-  projectOwner: string;
+  project_owner: string;
   members: string;
 }
 export interface IProject {
