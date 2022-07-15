@@ -10,7 +10,7 @@ const TicketSchema = new Schema({
   initial_time_estimated: Number,
   total_time_spent: Number,
   advancement: Number,
-  project_id: String,
+  project_id: { type: mongoose.Types.ObjectId, ref: 'projects' },
   users: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
 });
 const TicketModel = model('tickets', TicketSchema);

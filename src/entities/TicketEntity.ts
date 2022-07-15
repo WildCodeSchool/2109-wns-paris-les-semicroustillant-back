@@ -9,7 +9,10 @@ import {
   IsEnum,
 } from 'class-validator';
 
-import StatusEnum from '../common-values/ticket.enum';
+import Project from './ProjectEntity';
+import User from './UserEntity';
+
+import StatusEnum from '../common-values/status.enum';
 
 @ObjectType()
 class Ticket {
@@ -26,10 +29,12 @@ class Ticket {
   @Field()
   @IsString()
   @IsNotEmpty()
-  @MaxLength(30, { message: 'Project subject must be between 1 and 30 characters' })
+  @MaxLength(125, { message: 'Ticket subject must be between 1 and 125 characters' })
   subject: string;
 
-  @Field({ nullable: true })
+  @Field()
+  @IsNotEmpty()
+  @IsString()
   @IsEnum(StatusEnum)
   status?: string;
 
@@ -39,6 +44,10 @@ class Ticket {
 
   @Field({ nullable: true })
   @IsString()
+
+  @MaxLength(250, {
+    message: 'Ticket description must be between 1 and 250 characters',
+  })
   description?: string;
 
   @Field({ nullable: true })
@@ -53,14 +62,13 @@ class Ticket {
   @IsNumber()
   advancement?: number;
 
-  @Field(() => ID)
-  @IsMongoId()
+  @Field(() => Project)
   @IsNotEmpty()
-  project_id: string;
+  project_id: Project;
 
-  @Field(() => [ID], { nullable: true })
+  @Field(() => [User], { nullable: true })
   @IsMongoId({ each: true })
-  users?: string[];
+  users?: User[];
 }
 
 export default Ticket;
