@@ -17,7 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "apollo-server": "^3.8.0",
-    "bcrypt": "^5.0.1",
+    "bcrypt": "5.0.0",
     "class-validator": "^0.13.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
@@ -35,13 +35,13 @@
     "type-graphql": "^1.1.1"
   },
   "devDependencies": {
-    "@types/node": "^18.0.0",
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/jest": "^27.0.3",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/mongo-sanitize": "^1.0.1",
+    "@types/node": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^4.29.3",
     "@typescript-eslint/parser": "^4.29.3",
     "eslint": "^7.32.0",

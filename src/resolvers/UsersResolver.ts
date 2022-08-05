@@ -6,6 +6,8 @@ import UsersModel from '../models/UserModel';
 import UserInput from '../inputs/UserInput';
 import UserInputUpdate from '../inputs/UserInputUpdate';
 import { adminsOnly } from '../auth/usersRole';
+
+import { IUserEntity } from '../types/types';
 // Available authhorized:
 // roles adminsOnly = ['admin', 'super admin'] and superAdmin = ['super admin']
 
@@ -54,7 +56,7 @@ class UsersResolver {
   async addUser(@Arg('userInput') userInput: UserInput) {
     try {
       await UsersModel.init();
-      let user = await UsersModel.create({
+      let user: IUserEntity = await UsersModel.create({
         ...userInput,
         hash: bcrypt.hashSync(userInput.hash, 10), // @FIXME: check right round of salt
       });
