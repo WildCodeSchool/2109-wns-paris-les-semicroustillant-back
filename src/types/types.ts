@@ -41,7 +41,7 @@ export interface IProjectInput {
 }
 export interface IProject {
   [x: string]: any;
-  _id: string;
+  _id: string | Types.ObjectId;
   name: string;
   status: string;
   description: string;
