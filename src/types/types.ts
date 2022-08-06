@@ -42,7 +42,7 @@ export interface IProjectInput {
 export interface IProject {
   [x: string]: any;
   _id: string | Types.ObjectId;
-  name: string | undefined;
+  name: string;
   status: string;
   description: string;
   project_owner: string;
@@ -52,7 +52,7 @@ export interface IProject {
 }
 
 export interface IUserDB {
-  _id: string;
+  _id: string | Types.ObjectId;
   firstname: string;
   lastname: string;
   hash: string;
