@@ -51,7 +51,7 @@ class ProjectsResolver {
     @Arg('projectId', () => String) projectId: ProjectInputUpdate['_id']
   ) {
     try {
-      const getOneProject: IProject = await ProjectModel.findById(
+      const getOneProject: IProject | null = await ProjectModel.findById(
         projectId
       )
         .populate('project_owner')
