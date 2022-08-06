@@ -54,15 +54,15 @@ class UsersResolver {
   async addUser(@Arg('userInput') userInput: UserInput) {
     try {
       await UsersModel.init();
-      let user = await UsersModel.create({
+      const user = await UsersModel.create({
         ...userInput,
         hash: bcrypt.hashSync(userInput.hash, 10), // @FIXME: check right round of salt
       });
       // Update UT
-      user = user.toObject();
-      delete user.hash;
+      const userToObject = user.toObject();
+      delete userToObject.hash;
 
-      return user;
+      return userToObject;
     } catch (err) {
       return console.log(err);
     }
