@@ -47,8 +47,8 @@ export interface IProject {
   description: string;
   project_owner: string;
   members: string[];
-  totalTickets?: number;
-  completedTickets?: number;
+  total_tickets?: number;
+  completed_tickets?: number;
 }
 
 export interface IUserDB {

@@ -28,11 +28,11 @@ class ProjectsResolver {
         getAllProjects.map(async (project) => {
           const projectToJson: IProject = project.toJSON();
 
-          projectToJson.totalTickets = await countTicketsByProjectId({
+          projectToJson.total_tickets = await countTicketsByProjectId({
             projectId: project._id.toString(),
           });
 
-          projectToJson.completedTickets = await countTicketsByProjectId({
+          projectToJson.completed_tickets = await countTicketsByProjectId({
             projectId: project._id.toString(),
             status: 'Done',
           });
@@ -63,11 +63,11 @@ class ProjectsResolver {
         throw new Error('Project not found');
       }
 
-      getOneProject.totalTickets = await countTicketsByProjectId({
+      getOneProject.total_tickets = await countTicketsByProjectId({
         projectId: getOneProject._id.toString(),
       });
 
-      getOneProject.completedTickets = await countTicketsByProjectId({
+      getOneProject.completed_tickets = await countTicketsByProjectId({
         projectId: getOneProject._id.toString(),
         status: 'Done',
       });
