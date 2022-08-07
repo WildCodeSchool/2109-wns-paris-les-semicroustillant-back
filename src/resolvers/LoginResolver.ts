@@ -45,7 +45,7 @@ export default class LoginResolver {
     try {
       const userJwt = <JwtPayload>jwt.verify(token, privateKey);
 
-      if (userJwt.userId || userJwt.exp && userJwt.exp < date) {
+      if (userJwt.userId && userJwt.exp && userJwt.exp < date) {
         return true;
       }
 
