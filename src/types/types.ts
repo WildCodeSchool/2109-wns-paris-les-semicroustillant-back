@@ -21,16 +21,6 @@ export interface IUserInput {
   position: string;
 }
 
-export interface IUserEntity {
-  [x: string]: any;
-  firstname: string;
-  lastname: string;
-  email: string;
-  hash?: string;
-  role: string;
-  position: string;
-}
-
 export interface ITicketInput {
   subject: string;
   status?: string;
