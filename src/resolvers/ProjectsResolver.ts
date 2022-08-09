@@ -14,7 +14,7 @@ class ProjectsResolver {
   @Query(() => [Project])
   async getAllProjects() {
     try {
-      const getAllProjects: IProject[] = await ProjectModel.find()
+      const getAllProjects = await ProjectModel.find()
         .populate('project_owner')
         .populate('members')
         .exec();
@@ -51,7 +51,7 @@ class ProjectsResolver {
     @Arg('projectId', () => String) projectId: ProjectInputUpdate['_id']
   ) {
     try {
-      const getOneProject = await ProjectModel.findById(
+      const getOneProject: IProject | any = await ProjectModel.findById(
         projectId
       )
         .populate('project_owner')
@@ -72,7 +72,6 @@ class ProjectsResolver {
         status: 'Done',
       });
 
-      // check why get ticket nb = 0
       return getOneProject;
     } catch (err: any) {
       throw new Error(err);
