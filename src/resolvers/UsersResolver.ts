@@ -6,6 +6,8 @@ import UsersModel from '../models/UserModel';
 import UserInput from '../inputs/UserInput';
 import UserInputUpdate from '../inputs/UserInputUpdate';
 import { adminsOnly } from '../auth/usersRole';
+
+import { IUser } from '../types/types';
 // Available authhorized:
 // roles adminsOnly = ['admin', 'super admin'] and superAdmin = ['super admin']
 
@@ -16,7 +18,7 @@ class UsersResolver {
   async allUsers() {
     try {
       // @FIX: add -hash inside tests
-      const getAllUsers = await UsersModel.find().select('-hash');
+      const getAllUsers: IUser[] | [] = await UsersModel.find().select('-hash');
 
       // @FIX: add test for !getAllUsers
       if (!getAllUsers || getAllUsers.length === 0) {
@@ -36,7 +38,7 @@ class UsersResolver {
   ) {
     try {
       // @FIX: add -hash inside tests
-      const getOneUser = await UsersModel.findById(userId).select('-hash');
+      const getOneUser: IUser | null = await UsersModel.findById(userId).select('-hash');
 
       // @FIX: add test for !getOneUser
       if (!getOneUser) {
@@ -54,15 +56,15 @@ class UsersResolver {
   async addUser(@Arg('userInput') userInput: UserInput) {
     try {
       await UsersModel.init();
-      const user = await UsersModel.create({
+      let user: IUser = await UsersModel.create({
         ...userInput,
         hash: bcrypt.hashSync(userInput.hash, 10), // @FIXME: check right round of salt
       });
       // Update UT
-      const userToObject = user.toObject();
-      delete userToObject.hash;
+      user = user.toObject();
+      delete user.hash;
 
-      return userToObject;
+      return user;
     } catch (err) {
       return console.log(err);
     }

@@ -14,7 +14,7 @@ class ProjectsResolver {
   @Query(() => [Project])
   async getAllProjects() {
     try {
-      const getAllProjects = await ProjectModel.find()
+      const getAllProjects: IProject[] | [] = await ProjectModel.find()
         .populate('project_owner')
         .populate('members')
         .exec();
@@ -72,6 +72,7 @@ class ProjectsResolver {
         status: 'Done',
       });
 
+      // check why get ticket nb = 0
       return getOneProject;
     } catch (err: any) {
       throw new Error(err);
