@@ -207,6 +207,7 @@ describe('ProjectResolver', () => {
       expect(res.errors).toMatchSnapshot();
     });
   });
+
   describe('getOneProject()', () => {
     it('gets a specific project', async () => {
       const user1InDb = new UserModel(userData1);

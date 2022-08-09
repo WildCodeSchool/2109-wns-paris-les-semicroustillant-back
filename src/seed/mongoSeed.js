@@ -115,7 +115,6 @@ const createCollections = async () => {
 
   for (let i = 0; i < numberOfTickets; i += 1) {
     const timeBase = Math.floor(fakemeup.numbers.floatPrice(4, 35)) + 10;
-    console.log('HERE');
     const ticket = {
       _id: id(),
       created_by:
