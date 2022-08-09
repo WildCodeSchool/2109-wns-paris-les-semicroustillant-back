@@ -14,7 +14,7 @@ class ProjectsResolver {
   @Query(() => [Project])
   async getAllProjects() {
     try {
-      const getAllProjects: IProject[] | [] = await ProjectModel.find()
+      const getAllProjects: IProject[] = await ProjectModel.find()
         .populate('project_owner')
         .populate('members')
         .exec();
