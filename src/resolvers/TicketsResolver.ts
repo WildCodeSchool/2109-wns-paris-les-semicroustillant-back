@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 import { Arg, Query, Resolver, Mutation, Authorized } from 'type-graphql';
+import TicketModel from '../models/TicketModel';
+import ProjectModel from '../models/ProjectModel';
 import Ticket from '../entities/TicketEntity';
-import TicketsModel from '../models/TicketModel';
 import TicketInput from '../inputs/TicketInput';
 import TicketInputUpdate from '../inputs/TicketInputUpdate';
 
@@ -17,8 +18,11 @@ class TicketsResolver {
   @Query(() => [Ticket])
   async allTickets() {
     try {
-      const getAllTickets = await TicketsModel.find();
-      
+      const getAllTickets = await TicketModel.find()
+        .populate('project_id')
+        .populate('users')
+        .exec();
+
       // @FIX: add test for !getAllProjects
       if (!getAllTickets || getAllTickets.length === 0) {
         throw new Error('No projects found');
@@ -39,7 +43,10 @@ class TicketsResolver {
     @Arg('id', () => String) ticketId: TicketInputUpdate['_id']
   ) {
     try {
-      const getOneTicket = await TicketsModel.findById(ticketId);
+      const getOneTicket = await TicketModel.findById(ticketId)
+        .populate('project_id')
+        .populate('users')
+        .exec();
 
       // @FIX: add test for !getOneTicket
       if (!getOneTicket) {
@@ -57,8 +64,17 @@ class TicketsResolver {
   @Mutation(() => Ticket)
   async addTicket(@Arg('ticketInput') ticketInput: TicketInput) {
     try {
-      await TicketsModel.init();
-      const ticket = await TicketsModel.create(ticketInput);
+
+      const project = await ProjectModel.findById(ticketInput.project_id);
+      if (!project) throw new Error('Project not found');
+
+      await TicketModel.init();
+      const ticket = await TicketModel.create(ticketInput).then((tick) =>
+        TicketModel.findById(tick._id)
+          .populate('project_id')
+          .populate('users')
+          .exec()
+      );
 
       return ticket;
     } catch (err) {
@@ -75,7 +91,7 @@ class TicketsResolver {
     // Or maybe check that the user belongs to the project>ticket to update anything
     // This will be different for commentaries (only a user can modify his comments)
     try {
-      await TicketsModel.findByIdAndUpdate(
+      await TicketModel.findByIdAndUpdate(
         ticketInputUpdate._id,
         ticketInputUpdate,
         {
@@ -85,7 +101,10 @@ class TicketsResolver {
     } catch (err) {
       console.log(err);
     }
-    return TicketsModel.findById(ticketInputUpdate._id);
+    return TicketModel.findById(ticketInputUpdate._id)
+      .populate('project_id')
+      .populate('users')
+      .exec();
   }
 
   @Authorized()
@@ -94,8 +113,8 @@ class TicketsResolver {
     @Arg('id', () => String) ticketId: TicketInputUpdate['_id']
   ) {
     try {
-      await TicketsModel.init();
-      await TicketsModel.findByIdAndRemove(ticketId);
+      await TicketModel.init();
+      await TicketModel.findByIdAndRemove(ticketId);
     } catch (err) {
       console.log(err);
     }

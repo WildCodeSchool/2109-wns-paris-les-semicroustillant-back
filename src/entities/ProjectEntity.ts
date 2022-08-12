@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from 'type-graphql';
+import User from './UserEntity';
 
 @ObjectType()
 class Project {
@@ -17,11 +18,11 @@ class Project {
   @Field()
   description: string;
 
-  @Field(() => ID, { nullable: true })
-  project_owner: string;
+  @Field(() => User, { nullable: true })
+  project_owner: User;
 
-  @Field(() => [ID], { nullable: true })
-  members: string[];
+  @Field(() => [User], { nullable: true })
+  members: User[];
 
   // These two fields will be computed in resolver by querying the right data from Tickets
   @Field({ nullable: true })

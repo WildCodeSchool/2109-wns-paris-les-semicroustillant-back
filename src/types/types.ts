@@ -29,30 +29,30 @@ export interface ITicketInput {
   initial_time_estimated?: number;
   total_time_spent?: number;
   advancement?: number;
-  projectId?: string;
+  project_id?: string;
   users?: IUserInput[];
 }
 
 export interface IProjectInput {
   name: string;
   status: string;
-  projectOwner: string;
+  project_owner: string;
   members: string;
 }
 export interface IProject {
   [x: string]: any;
-  _id: string;
+  _id: string | Types.ObjectId;
   name: string;
   status: string;
   description: string;
-  projectOwner: string;
+  project_owner: string;
   members: string[];
-  totalTickets?: number;
-  completedTickets?: number;
+  total_tickets?: number;
+  completed_tickets?: number;
 }
 
 export interface IUserDB {
-  _id: string;
+  _id: string | Types.ObjectId;
   firstname: string;
   lastname: string;
   hash: string;

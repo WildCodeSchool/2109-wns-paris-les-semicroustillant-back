@@ -45,7 +45,7 @@ const TicketModel = mongoose.model(
     initial_time_estimated: Number,
     total_time_spent: Number,
     advancement: Number,
-    project_id: String,
+    project_id: { type: mongoose.Types.ObjectId, ref: 'projects' },
     users: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
   })
 );
@@ -58,16 +58,11 @@ const positions = [
   'Test Engineer',
 ];
 
-const randomStatuses = i => {
-  switch(i) {
-    case i<3:
-      return 'Pending';
-    case i<5:
-      return 'In progress';
-    default:
-      return 'Done';
-  }
-}
+const randomStatuses = (i) => {
+  if (i < 3) return 'Pending';
+  if (i < 5) return 'In progress';
+  return 'Done';
+};
 
 const numberOfUsers = 5;
 const numberOfTickets = 15;
@@ -122,10 +117,11 @@ const createCollections = async () => {
     const timeBase = Math.floor(fakemeup.numbers.floatPrice(4, 35)) + 10;
     const ticket = {
       _id: id(),
-      created_by: usersIdsArray[Math.floor(Math.random() * usersIdsArray.length)],
+      created_by:
+        usersIdsArray[Math.floor(Math.random() * usersIdsArray.length)],
       subject: fakemeup.lorem.sentence(2, 3),
       status: randomStatuses(i),
-      deadline: fakemeup.date.full('slash'),
+      deadline: new Date(fakemeup.date.full()),
       description: fakemeup.lorem.sentence(10, 15),
       initial_time_estimated: timeBase,
       // comments will be created later

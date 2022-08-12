@@ -14,7 +14,10 @@ class ProjectsResolver {
   @Query(() => [Project])
   async getAllProjects() {
     try {
-      const getAllProjects = await ProjectModel.find();
+      const getAllProjects = await ProjectModel.find()
+        .populate('project_owner')
+        .populate('members')
+        .exec();
 
       // @FIX: add test for !getAllProjects
       if (!getAllProjects || getAllProjects.length === 0) {
@@ -25,11 +28,11 @@ class ProjectsResolver {
         getAllProjects.map(async (project) => {
           const projectToJson: IProject = project.toJSON();
 
-          projectToJson.totalTickets = await countTicketsByProjectId({
+          projectToJson.total_tickets = await countTicketsByProjectId({
             projectId: project._id.toString(),
           });
 
-          projectToJson.completedTickets = await countTicketsByProjectId({
+          projectToJson.completed_tickets = await countTicketsByProjectId({
             projectId: project._id.toString(),
             status: 'Done',
           });
@@ -48,20 +51,23 @@ class ProjectsResolver {
     @Arg('projectId', () => String) projectId: ProjectInputUpdate['_id']
   ) {
     try {
-      const getOneProject: IProject | null = await ProjectModel.findById(
+      const getOneProject: IProject | any = await ProjectModel.findById(
         projectId
-      );
-      
+      )
+        .populate('project_owner')
+        .populate('members')
+        .exec();
+
       // @FIX: add test for !getOneProject
       if (!getOneProject) {
         throw new Error('Project not found');
       }
 
-      getOneProject.totalTickets = await countTicketsByProjectId({
+      getOneProject.total_tickets = await countTicketsByProjectId({
         projectId: getOneProject._id.toString(),
       });
 
-      getOneProject.completedTickets = await countTicketsByProjectId({
+      getOneProject.completed_tickets = await countTicketsByProjectId({
         projectId: getOneProject._id.toString(),
         status: 'Done',
       });
@@ -77,7 +83,12 @@ class ProjectsResolver {
   async createProject(@Arg('projectInput') projectInput: ProjectInput) {
     try {
       await ProjectModel.init();
-      const project = await ProjectModel.create(projectInput);
+      const project = await ProjectModel.create(projectInput).then((proj) =>
+        ProjectModel.findById(proj._id)
+          .populate('project_owner')
+          .populate('members')
+          .exec()
+      );
 
       return project;
     } catch (err: any) {
@@ -101,7 +112,10 @@ class ProjectsResolver {
     }
 
     // This mutation does not return totalTickets and completedTickets
-    return ProjectModel.findById(projectId);
+    return ProjectModel.findById(projectId)
+      .populate('project_owner')
+      .populate('members')
+      .exec();
   }
 
   @Authorized()
