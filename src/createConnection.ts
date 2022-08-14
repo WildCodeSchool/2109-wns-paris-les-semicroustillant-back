@@ -1,12 +1,13 @@
 import mongoose from 'mongoose';
 
 async function createConnection(uri: string) {
-  return mongoose.connect(uri, {
-    // useNewUrlParser: true,
-    // useUnifiedTopology: true,
-    // useCreateIndex: true,
+  const options = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
     autoIndex: true,
-  });
+  };
+
+  return mongoose.connect(uri, options);
 }
 
 export default createConnection;
