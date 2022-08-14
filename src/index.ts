@@ -10,11 +10,11 @@ async function start() {
     console.log('awaiting for database connection');
 
     if (process.env.NODE_APP_DOCKER === 'true') {
-      /* ---- If running the server locally, use : ---- */
-      await createConnection(`mongodb://127.0.0.1:27017/${db}`);
-    } else {
       /* ---- If running with Docker, use : ---- */
       await createConnection(`mongodb://mongodb:27017/${db}`);
+    } else {
+      /* ---- If running the server locally, use : ---- */
+      await createConnection(`mongodb://127.0.0.1:27017/${db}`);
     }
 
     console.log('connected to database');
