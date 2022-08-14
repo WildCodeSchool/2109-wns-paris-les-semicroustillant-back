@@ -92,7 +92,7 @@ const createCollections = async () => {
     if (i === 2) {
       dynamicHash = bcrypt.hashSync('semi', 10);
       dynamicRole = 'users';
-      dynamicEmail = 'semi-user@email.com';
+      dynamicEmail = 'semi-user@semi.com';
     }
     if (i > 2) {
       dynamicHash = Math.random().toString(36).substring(7);
