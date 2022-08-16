@@ -52,11 +52,8 @@ class ProjectsResolver {
   async countProjectsByUserId(
     @Arg('id', () => String) userId: UserInputUpdate['_id']
   ) {
-
-    console.log({userId})
     try {
       const countProjectsByUserId = await ProjectModel.countDocuments({ members: userId });
-      console.log({countProjectsByUserId})
 
       return countProjectsByUserId;
     } catch (err) {
