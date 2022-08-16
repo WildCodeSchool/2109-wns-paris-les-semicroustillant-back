@@ -87,9 +87,14 @@ const createCollections = async () => {
     if (i === 1) {
       dynamicHash = bcrypt.hashSync('semi', 10);
       dynamicRole = 'admin';
-      dynamicEmail = fakemeup.user.email();
+      dynamicEmail = 'semi-admin@semi.com';
     }
-    if (i > 1) {
+    if (i === 2) {
+      dynamicHash = bcrypt.hashSync('semi', 10);
+      dynamicRole = 'users';
+      dynamicEmail = 'semi-user@semi.com';
+    }
+    if (i > 2) {
       dynamicHash = Math.random().toString(36).substring(7);
       dynamicRole = 'users';
       dynamicEmail = fakemeup.user.email();
@@ -161,8 +166,18 @@ const seed = async () => {
   const { users, projects, tickets } = await createCollections();
 
   const database = process.env.DB_NAME;
-  const dbUrl = `mongodb://mongodb:27017/${database}`;
-  const options = {
+
+  let dbUrl;
+
+  if (process.env.NODE_APP_DOCKER === 'true') {
+    /* ---- If running with Docker, use : ---- */
+    dbUrl = `mongodb://mongodb:27017/${database}`;
+  } else {
+    /* ---- If running the server locally, use : ---- */
+    dbUrl = `mongodb://127.0.0.1:27017/${database}`;
+  }
+
+    const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   };
