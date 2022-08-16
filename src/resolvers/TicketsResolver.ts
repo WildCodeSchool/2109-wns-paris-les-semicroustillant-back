@@ -36,6 +36,20 @@ class TicketsResolver {
       return console.log(err);
     }
   }
+  
+  @Authorized()
+  @Query(() => Number)
+  async countTicketsByUserId(
+    @Arg('id', () => String) ticketId: TicketInputUpdate['_id']
+  ) {
+    try {
+      const countTicketsByUserId = await TicketModel.countDocuments({ users: ticketId });
+
+      return countTicketsByUserId;
+    } catch (err) {
+      return console.log(err);
+    }
+  }
 
   @Authorized()
   @Query(() => Ticket)
