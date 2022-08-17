@@ -4,6 +4,7 @@ import Project from '../entities/ProjectEntity';
 import ProjectModel from '../models/ProjectModel';
 import ProjectInput from '../inputs/ProjectInput';
 import ProjectInputUpdate from '../inputs/ProjectInputUpdate';
+import UserInputUpdate from '../inputs/UserInputUpdate';
 import countTicketsByProjectId from '../utils/countTicketsByProjectId';
 
 import { IProject } from '../types/types';
@@ -44,6 +45,22 @@ class ProjectsResolver {
       throw new Error(err);
     }
   }
+
+    
+  @Authorized()
+  @Query(() => Number)
+  async countProjectsByUserId(
+    @Arg('id', () => String) userId: UserInputUpdate['_id']
+  ) {
+    try {
+      const countProjectsByUserId = await ProjectModel.countDocuments({ members: userId });
+
+      return countProjectsByUserId;
+    } catch (err) {
+      return console.log(err);
+    }
+  }
+
 
   @Authorized()
   @Query(() => Project)

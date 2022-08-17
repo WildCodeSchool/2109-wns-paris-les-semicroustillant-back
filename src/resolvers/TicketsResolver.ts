@@ -5,6 +5,7 @@ import ProjectModel from '../models/ProjectModel';
 import Ticket from '../entities/TicketEntity';
 import TicketInput from '../inputs/TicketInput';
 import TicketInputUpdate from '../inputs/TicketInputUpdate';
+import UserInputUpdate from '../inputs/UserInputUpdate';
 
 // @TODO: put this function in utils folder + change ts type
 export const getAdvancement = (data: any) => {
@@ -32,6 +33,20 @@ class TicketsResolver {
         getAllTickets[i].advancement = getAdvancement(getAllTickets[i]);
       }
       return getAllTickets;
+    } catch (err) {
+      return console.log(err);
+    }
+  }
+  
+  @Authorized()
+  @Query(() => Number)
+  async countTicketsByUserId(
+    @Arg('id', () => String) userId: UserInputUpdate['_id']
+  ) {
+    try {
+      const countTicketsByUserId = await TicketModel.countDocuments({ users: userId });
+
+      return countTicketsByUserId;
     } catch (err) {
       return console.log(err);
     }
