@@ -29,9 +29,13 @@ async function createServer() {
       user: null,
     }),
     csrfPrevention: true,
-    // ADD ORIGIN FOR PROD AND STAGING
     cors: {
-      origin: [/http:\/\/localhost:/, 'https://studio.apollographql.com'],
+      origin: [
+        /http:\/\/localhost:/,
+        'https://studio.apollographql.com',
+        'https://paris2-0921.wns.wilders.dev',
+        'https://staging.paris2-0921.wns.wilders.dev/',
+      ],
       credentials: true,
     },
   });

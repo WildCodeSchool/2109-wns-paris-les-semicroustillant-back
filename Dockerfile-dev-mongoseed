@@ -2,6 +2,7 @@ FROM node:lts-alpine
 
 COPY package*.json ./
 COPY src/seed ./src/seed
+COPY ./.env ./.env
 
 RUN npm i
 
