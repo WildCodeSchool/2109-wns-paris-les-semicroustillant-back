@@ -14,6 +14,7 @@ import Project from '../entities/ProjectEntity';
 
 import StatusEnum from '../common-values/status.enum';
 
+// /entities/TicketInput.ts
 @InputType()
 export default class TicketInput {
   @Field(() => ID)
@@ -24,7 +25,9 @@ export default class TicketInput {
   @Field()
   @IsString()
   @IsNotEmpty()
-  @MaxLength(125, { message: 'Ticket subject must be between 1 and 125 characters' })
+  @MaxLength(125, {
+    message: 'Ticket subject must be between 1 and 125 characters',
+  })
   subject: string;
 
   @Field()

@@ -13,14 +13,13 @@ import { IUser } from '../types/types';
 
 @Resolver()
 class UsersResolver {
+  // UsersResolver.ts
   @Authorized()
   @Query(() => [User])
   async allUsers() {
     try {
-      // @FIX: add -hash inside tests
       const getAllUsers = await UsersModel.find().select('-hash');
 
-      // @FIX: add test for !getAllUsers
       if (!getAllUsers || getAllUsers.length === 0) {
         throw new Error('No users found');
       }
@@ -50,17 +49,22 @@ class UsersResolver {
       return console.log(err);
     }
   }
+  // UsersResolver.ts
 
   @Authorized(adminsOnly)
   @Mutation(() => User)
   async addUser(@Arg('userInput') userInput: UserInput) {
     try {
+      // create DB index
       await UsersModel.init();
+      // save user in DB
       let user: IUser = await UsersModel.create({
         ...userInput,
-        hash: bcrypt.hashSync(userInput.hash, 10), // @FIXME: check right round of salt
+
+        // hash password with salt and save in document
+        hash: bcrypt.hashSync(userInput.hash, 10),
       });
-      // Update UT
+      // remove hash to returned object
       user = user.toObject();
       delete user.hash;
 

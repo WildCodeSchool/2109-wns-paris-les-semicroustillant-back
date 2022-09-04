@@ -4,15 +4,16 @@ import TicketModel from '../../models/TicketModel';
 
 let server: ApolloServer;
 
+// /tests/integragration/TicketsResolver.test.ts
 beforeAll(async () => {
+  // creates the mocked server
   server = await createServer();
 });
 
-// @TODO: integration tests to be fixed.
-describe.skip('TicketsResolver', () => {
+describe('TicketsResolver', () => {
   let ticket1Data = {};
   let ticket2Data = {};
-
+  // set test data
   beforeEach(() => {
     ticket1Data = {
       subject: 'Test users',
@@ -45,8 +46,12 @@ describe.skip('TicketsResolver', () => {
     };
   });
 
+  // /tests/integragration/TicketsResolver.test.ts
+  // allTickets resolver testing
   describe('allTickets()', () => {
     it('gets an array of all tickets', async () => {
+      // we initiate and save the two tickets in the DB
+      // the tickets are added objectIDs
       const ticket1InDb = new TicketModel(ticket1Data);
       const ticket2InDb = new TicketModel(ticket2Data);
       await ticket1InDb.save();
@@ -70,18 +75,23 @@ describe.skip('TicketsResolver', () => {
         }
       `;
 
+      // executes the query, mocking frontend connection
       const res = await server.executeOperation({
         query: allTicketsQuery,
       });
 
+      // we expect the tickets saved and fetched from DB to be there
       expect(res.data?.allTickets).toEqual([
         expect.objectContaining(ticket1Data),
         expect.objectContaining(ticket2Data),
       ]);
+      // we expect the objectIDs of theses documents to the response ones
       expect(res.data?.allTickets[0]._id).toBe(ticket1InDb._id.toString());
       expect(res.data?.allTickets[1]._id).toBe(ticket2InDb._id.toString());
     });
 
+    // /tests/integragration/TicketsResolver.test.ts
+    // allTickets resolver testing
     it('console logs an error if data does not exist in query', async () => {
       const ticket1InDb = new TicketModel(ticket1Data);
       const ticket2InDb = new TicketModel(ticket2Data);
@@ -115,6 +125,8 @@ describe.skip('TicketsResolver', () => {
     });
   });
 
+  // /tests/integragration/TicketsResolver.test.ts
+  // addTickets resolver testing
   describe('addTicket()', () => {
     it('adds a new ticket', async () => {
       const addTicketMutation = gql`
@@ -143,6 +155,9 @@ describe.skip('TicketsResolver', () => {
 
       expect(res.data?.addTicket).toEqual(expect.objectContaining(ticket2Data));
     });
+
+    // /tests/integragration/TicketsResolver.test.ts
+    // addTickets resolver testing
     it('fails adding a new ticket due to missing data', async () => {
       const addTicketMutation = gql`
         mutation addTicket($ticketInput: TicketInput!) {
@@ -185,6 +200,8 @@ describe.skip('TicketsResolver', () => {
       expect(res.errors).toMatchSnapshot();
     });
 
+    // /tests/integragration/TicketsResolver.test.ts
+    // addTickets resolver testing
     it('fails adding a new ticket due to wrong data', async () => {
       const addTicketMutation = gql`
         mutation addTicket($ticketInput: TicketInput!) {

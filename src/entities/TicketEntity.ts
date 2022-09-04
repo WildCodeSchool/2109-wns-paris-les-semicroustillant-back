@@ -14,6 +14,7 @@ import User from './UserEntity';
 
 import StatusEnum from '../common-values/status.enum';
 
+// /entities/TicketEntity.ts
 @ObjectType()
 class Ticket {
   @Field(() => ID)
@@ -29,7 +30,9 @@ class Ticket {
   @Field()
   @IsString()
   @IsNotEmpty()
-  @MaxLength(125, { message: 'Ticket subject must be between 1 and 125 characters' })
+  @MaxLength(125, {
+    message: 'Ticket subject must be between 1 and 125 characters',
+  })
   subject: string;
 
   @Field()
@@ -44,7 +47,6 @@ class Ticket {
 
   @Field({ nullable: true })
   @IsString()
-
   @MaxLength(250, {
     message: 'Ticket description must be between 1 and 250 characters',
   })

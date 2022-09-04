@@ -15,21 +15,26 @@ export const getAdvancement = (data: any) => {
 };
 @Resolver()
 class TicketsResolver {
+  // TicketsResolver.ts
   @Authorized()
   @Query(() => [Ticket])
+  // fetch all tickets in DB
   async allTickets() {
     try {
       const getAllTickets = await TicketModel.find()
+        // reference to projects collection
         .populate('project_id')
+        // reference to users collection
         .populate('users')
+        // execute populate()
         .exec();
 
-      // @FIX: add test for !getAllProjects
       if (!getAllTickets || getAllTickets.length === 0) {
         throw new Error('No projects found');
       }
 
       for (let i = 0; i < getAllTickets.length; i += 1) {
+        // calculate advancement based on total tickets and done tickets
         getAllTickets[i].advancement = getAdvancement(getAllTickets[i]);
       }
       return getAllTickets;
@@ -37,14 +42,16 @@ class TicketsResolver {
       return console.log(err);
     }
   }
-  
+
   @Authorized()
   @Query(() => Number)
   async countTicketsByUserId(
     @Arg('id', () => String) userId: UserInputUpdate['_id']
   ) {
     try {
-      const countTicketsByUserId = await TicketModel.countDocuments({ users: userId });
+      const countTicketsByUserId = await TicketModel.countDocuments({
+        users: userId,
+      });
 
       return countTicketsByUserId;
     } catch (err) {
@@ -52,6 +59,7 @@ class TicketsResolver {
     }
   }
 
+  // TicketsRsolver.ts
   @Authorized()
   @Query(() => Ticket)
   async getOneTicket(
@@ -63,7 +71,6 @@ class TicketsResolver {
         .populate('users')
         .exec();
 
-      // @FIX: add test for !getOneTicket
       if (!getOneTicket) {
         throw new Error('This ticket does not exist');
       }
@@ -75,11 +82,11 @@ class TicketsResolver {
     }
   }
 
+  // TicketsRsolver.ts
   @Authorized()
   @Mutation(() => Ticket)
   async addTicket(@Arg('ticketInput') ticketInput: TicketInput) {
     try {
-
       const project = await ProjectModel.findById(ticketInput.project_id);
       if (!project) throw new Error('Project not found');
 
@@ -97,18 +104,20 @@ class TicketsResolver {
     }
   }
 
+  // TicketsResolver.ts
   @Authorized()
   @Mutation(() => Ticket)
   async updateTicket(
     @Arg('ticketInputUpdate') ticketInputUpdate: TicketInputUpdate
   ) {
-    // @TODO: Add verification that userId === created_by of the project OR Admin/super admin to allow update
-    // Or maybe check that the user belongs to the project>ticket to update anything
-    // This will be different for commentaries (only a user can modify his comments)
     try {
+      // finds to corresponding document with it's id
+      // and update it with the input received
       await TicketModel.findByIdAndUpdate(
         ticketInputUpdate._id,
         ticketInputUpdate,
+        // if true, returns the modified document
+        // if false, returns the document before modification
         {
           new: true,
         }
@@ -122,6 +131,7 @@ class TicketsResolver {
       .exec();
   }
 
+  // TicketsResolver.ts
   @Authorized()
   @Mutation(() => String)
   async deleteTicket(
