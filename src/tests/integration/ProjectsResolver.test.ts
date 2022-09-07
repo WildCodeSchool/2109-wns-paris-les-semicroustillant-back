@@ -20,15 +20,11 @@ describe('ProjectResolver', () => {
   let userData1 = {};
   let userData2 = {};
   let fakeUserId: String;
-  // let fakeUserId2: String;
-  // let emptyObjectId: String;
 
   let userJWT: string;
 
   beforeEach(async () => {
-    // emptyObjectId = '000000000000000000000000';
     fakeUserId = '619e14d317fc7b24dca41e56';
-    // fakeUserId2 = '619e14d317fc7b24dca41e88';
 
     projectData1 = {
       name: 'project-1',

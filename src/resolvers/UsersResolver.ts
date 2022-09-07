@@ -17,10 +17,8 @@ class UsersResolver {
   @Query(() => [User])
   async allUsers() {
     try {
-      // @FIX: add -hash inside tests
       const getAllUsers = await UsersModel.find().select('-hash');
 
-      // @FIX: add test for !getAllUsers
       if (!getAllUsers || getAllUsers.length === 0) {
         throw new Error('No users found');
       }
@@ -37,10 +35,8 @@ class UsersResolver {
     @Arg('userId', () => String) userId: UserInputUpdate['_id']
   ) {
     try {
-      // @FIX: add -hash inside tests
       const getOneUser = await UsersModel.findById(userId).select('-hash');
 
-      // @FIX: add test for !getOneUser
       if (!getOneUser) {
         throw new Error('User not found');
       }
@@ -60,7 +56,6 @@ class UsersResolver {
         ...userInput,
         hash: bcrypt.hashSync(userInput.hash, 10), // @FIXME: check right round of salt
       });
-      // Update UT
       user = user.toObject();
       delete user.hash;
 
@@ -70,7 +65,6 @@ class UsersResolver {
     }
   }
 
-  // @TODO: missing mutation for updating a user's own profile
   @Authorized(adminsOnly)
   @Mutation(() => User)
   async updateUser(@Arg('userInputUpdate') userInputUpdate: UserInputUpdate) {
@@ -82,7 +76,6 @@ class UsersResolver {
       console.log(err);
     }
 
-    // Update UT with -hash
     return UsersModel.findById(userInputUpdate._id).select('-hash');
   }
 

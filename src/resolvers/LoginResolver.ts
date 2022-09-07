@@ -20,7 +20,6 @@ export default class LoginResolver {
     );
 
     if (userDB && bcrypt.compareSync(password, userDB.hash)) {
-      // @FIX: other options to be added?
       const options = {
         expiresIn: '24h',
       };

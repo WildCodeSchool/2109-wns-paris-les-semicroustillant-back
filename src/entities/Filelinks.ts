@@ -8,7 +8,6 @@ class Filelink {
   @Field()
   link: string;
 
-  // @FIXME: Change to @Field(() => ID) and ticket_id: TicketEntity ?
   @Field()
   ticket_id: string;
 }

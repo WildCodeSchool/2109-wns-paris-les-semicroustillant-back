@@ -19,9 +19,9 @@ describe.skip('UserResolver', () => {
     user1Data = {
       firstname: 'Jane',
       lastname: 'Doe',
-      email: 'jd@gmail.com',
+      email: 'jdoe@gmail.com',
       hash: 'azert1234',
-      role: 'user',
+      role: 'users',
       position: 'Developer',
     };
 
@@ -30,8 +30,8 @@ describe.skip('UserResolver', () => {
       lastname: 'Doze',
       email: 'jdoze@gmail.com',
       hash: 'azert123456',
-      role: 'user',
-      position: 'PO',
+      role: 'admin',
+      position: 'Product Owner',
     };
 
     userJWT = await authHeaderMock(server);
