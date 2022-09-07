@@ -8,7 +8,6 @@ beforeAll(async () => {
   server = await createServer();
 });
 
-// @TODO: integration tests to be fixed.
 describe.skip('TicketsResolver', () => {
   let ticket1Data = {};
   let ticket2Data = {};

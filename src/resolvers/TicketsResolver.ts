@@ -7,7 +7,6 @@ import TicketInput from '../inputs/TicketInput';
 import TicketInputUpdate from '../inputs/TicketInputUpdate';
 import UserInputUpdate from '../inputs/UserInputUpdate';
 
-// @TODO: put this function in utils folder + change ts type
 export const getAdvancement = (data: any) => {
   const timeSpent = data.total_time_spent;
   const estimatedTime = data.initial_time_estimated;
@@ -24,7 +23,6 @@ class TicketsResolver {
         .populate('users')
         .exec();
 
-      // @FIX: add test for !getAllProjects
       if (!getAllTickets || getAllTickets.length === 0) {
         throw new Error('No projects found');
       }
@@ -63,7 +61,6 @@ class TicketsResolver {
         .populate('users')
         .exec();
 
-      // @FIX: add test for !getOneTicket
       if (!getOneTicket) {
         throw new Error('This ticket does not exist');
       }
@@ -102,9 +99,6 @@ class TicketsResolver {
   async updateTicket(
     @Arg('ticketInputUpdate') ticketInputUpdate: TicketInputUpdate
   ) {
-    // @TODO: Add verification that userId === created_by of the project OR Admin/super admin to allow update
-    // Or maybe check that the user belongs to the project>ticket to update anything
-    // This will be different for commentaries (only a user can modify his comments)
     try {
       await TicketModel.findByIdAndUpdate(
         ticketInputUpdate._id,

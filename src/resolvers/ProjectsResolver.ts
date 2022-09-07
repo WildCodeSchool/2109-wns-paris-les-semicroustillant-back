@@ -20,7 +20,6 @@ class ProjectsResolver {
         .populate('members')
         .exec();
 
-      // @FIX: add test for !getAllProjects
       if (!getAllProjects || getAllProjects.length === 0) {
         throw new Error('No projects found');
       }
@@ -75,7 +74,6 @@ class ProjectsResolver {
         .populate('members')
         .exec();
 
-      // @FIX: add test for !getOneProject
       if (!getOneProject) {
         throw new Error('Project not found');
       }
@@ -143,7 +141,6 @@ class ProjectsResolver {
     try {
       await ProjectModel.init();
       // only delete a project, not the tickets
-      // @TODO: should we delete the ticket or the ID as well? check delete on cascade
       const result = await ProjectModel.findByIdAndRemove(projectId);
 
       if (!result) {
